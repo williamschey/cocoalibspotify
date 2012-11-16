@@ -20,6 +20,12 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #endif
 
+#define SP_CA_CHECK(err, msg, status) \
+if (status != noErr) { \
+fillWithError(err, msg, status); \
+return NO; \
+}
+
 #if !TARGET_OS_IPHONE
 
 @interface SPCoreAudioDevice ()
@@ -53,8 +59,6 @@
 -(void)applyVolumeToMixerAudioUnit:(double)vol;
 -(void)applyAudioStreamDescriptionToInputUnit:(AudioStreamBasicDescription)newInputDescription;
 
-@property (readwrite, nonatomic, copy) NSArray *availableOutputDevices;
-
 @property (readwrite, nonatomic) AudioStreamBasicDescription inputAudioDescription;
 
 static OSStatus AudioUnitRenderDelegateCallback(void *inRefCon,
@@ -67,6 +71,7 @@ static OSStatus AudioUnitRenderDelegateCallback(void *inRefCon,
 #if !TARGET_OS_IPHONE
 
 -(NSArray *)queryOutputDevices:(NSError **)error;
+@property (readwrite, nonatomic, copy) NSArray *availableOutputDevices;
 
 static OSStatus AOPropertyListenerProc(AudioObjectID inObjectID,
 									   UInt32 inNumberAddresses,
@@ -83,18 +88,10 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 @implementation SPCoreAudioController {
 	
 	AUGraph audioProcessingGraph;
-	AudioUnit outputUnit;
-	AudioUnit mixerUnit;
-	AudioUnit inputConverterUnit;
-	
-	AUNode inputConverterNode;
-	AUNode mixerNode;
-	AUNode outputNode;
+	AudioUnit outputUnit, mixerUnit, inputConverterUnit;
+	AUNode inputConverterNode, mixerNode, outputNode;
 	
 	UInt32 framesSinceLastTimeUpdate;
-	
-	NSMethodSignature *incrementTrackPositionMethodSignature;
-	NSInvocation *incrementTrackPositionInvocation;
 }
 
 -(id)init {
@@ -104,12 +101,6 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 		self.volume = 1.0;
 		self.audioOutputEnabled = NO; // Don't start audio playback until we're told.
 		
-		SEL incrementTrackPositionSelector = @selector(incrementTrackPositionWithFrameCount:);
-		incrementTrackPositionMethodSignature = [SPCoreAudioController instanceMethodSignatureForSelector:incrementTrackPositionSelector];
-		incrementTrackPositionInvocation = [NSInvocation invocationWithMethodSignature:incrementTrackPositionMethodSignature];
-		[incrementTrackPositionInvocation setSelector:incrementTrackPositionSelector];
-		[incrementTrackPositionInvocation setTarget:self];
-		
 		[self addObserver:self forKeyPath:@"volume" options:0 context:nil];
 		[self addObserver:self forKeyPath:@"audioOutputEnabled" options:0 context:nil];
 
@@ -118,11 +109,11 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 		[self addObserver:self forKeyPath:@"currentOutputDevice" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
 
 		// Add observer for audio device changes
-		AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyDevices,
-			kAudioObjectPropertyScopeGlobal,
-			kAudioObjectPropertyElementMaster };
-
-		AudioObjectAddPropertyListener(kAudioObjectSystemObject, &theAddress, AOPropertyListenerProc, (__bridge void *)self);
+		AudioObjectPropertyAddress address;
+		address.mSelector = kAudioHardwarePropertyDevices;
+		address.mScope = kAudioObjectPropertyScopeGlobal;
+		address.mElement = kAudioObjectPropertyElementMaster;
+		AudioObjectAddPropertyListener(kAudioObjectSystemObject, &address, AOPropertyListenerProc, (__bridge void *)self);
 		#endif
 	}
 	return self;
@@ -132,11 +123,11 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 
 	#if !TARGET_OS_IPHONE
 	// Remove observer for audio device changes
-	AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyDevices,
-		kAudioObjectPropertyScopeGlobal,
-		kAudioObjectPropertyElementMaster };
-
-	AudioObjectRemovePropertyListener(kAudioObjectSystemObject, &theAddress, AOPropertyListenerProc, (__bridge void *)self);
+	AudioObjectPropertyAddress address;
+	address.mSelector = kAudioHardwarePropertyDevices;
+	address.mScope = kAudioObjectPropertyScopeGlobal;
+	address.mElement = kAudioObjectPropertyElementMaster;
+	AudioObjectRemovePropertyListener(kAudioObjectSystemObject, &address, AOPropertyListenerProc, (__bridge void *)self);
 
 	[self removeObserver:self forKeyPath:@"currentOutputDevice"];
 	#endif
@@ -203,23 +194,16 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 		[self clearAudioBuffers];
 		return 0; // Audio discontinuity!
 	}
-	
-    if (audioProcessingGraph == NULL) {
-        NSError *error = nil;
-        if (![self setupCoreAudioWithInputFormat:audioDescription error:&error]) {
-            NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
-            return 0;
-        }
+
+	NSError *error = nil;
+    if (audioProcessingGraph == NULL && ![self setupCoreAudioWithInputFormat:audioDescription error:&error]) {
+		NSLog(@"ERROR: Core audio setup failed: %@", error);
+		return 0;
     }
-	
+
 	AudioStreamBasicDescription currentAudioInputDescription = self.inputAudioDescription;
-	
-	if (audioDescription.mBitsPerChannel != currentAudioInputDescription.mBitsPerChannel ||
-		audioDescription.mBytesPerFrame != currentAudioInputDescription.mBytesPerFrame ||
-		audioDescription.mChannelsPerFrame != currentAudioInputDescription.mChannelsPerFrame ||
-		audioDescription.mFormatFlags != currentAudioInputDescription.mFormatFlags ||
-		audioDescription.mFormatID != currentAudioInputDescription.mFormatID ||
-		audioDescription.mSampleRate != currentAudioInputDescription.mSampleRate) {
+
+	if (memcmp(&currentAudioInputDescription, &audioDescription, sizeof(AudioStreamBasicDescription)) != 0) {
 		// New format. Panic!! I mean, calmly tell Core Audio that a new audio format is incoming.
 		[self clearAudioBuffers];
 		[self applyAudioStreamDescriptionToInputUnit:audioDescription];
@@ -371,65 +355,27 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 	converterDescription.componentFlags = 0;
 	converterDescription.componentFlagsMask = 0;
     
-	// Create an AUGraph
-	OSErr status = NewAUGraph(&audioProcessingGraph);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't init graph", status);
-        return NO;
-    }
+	// Create and open an AUGraph
+	SP_CA_CHECK(err, @"Couldn't init graph", NewAUGraph(&audioProcessingGraph));
+	SP_CA_CHECK(err, @"Couldn't open graph", AUGraphOpen(audioProcessingGraph));
+
+	// Add mixer, get unit and set it up
+	SP_CA_CHECK(err, @"Couldn't add mixer node", AUGraphAddNode(audioProcessingGraph, &mixerDescription, &mixerNode));
+	SP_CA_CHECK(err, @"Couldn't get mixer unit", AUGraphNodeInfo(audioProcessingGraph, mixerNode, NULL, &mixerUnit));
 	
-	// Open the graph. AudioUnits are open but not initialized (no resource allocation occurs here)
-	AUGraphOpen(audioProcessingGraph);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't open graph", status);
-        return NO;
-    }
-	
-	// Add mixer
-	status = AUGraphAddNode(audioProcessingGraph, &mixerDescription, &mixerNode);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add mixer node", status);
-        return NO;
-    }
-	
-	// Get mixer unit so we can change volume etc
-	status = AUGraphNodeInfo(audioProcessingGraph, mixerNode, NULL, &mixerUnit);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't get mixer unit", status);
-        return NO;
-    }
-	
-	// Set mixer bus count
 	UInt32 busCount = 1;
-	status = AudioUnitSetProperty(mixerUnit, kAudioUnitProperty_ElementCount, kAudioUnitScope_Input, 0, &busCount, sizeof(busCount));
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't set mixer bus count", status);
-        return NO;
-    }
+	SP_CA_CHECK(err, @"Couldn't set mixer bus count", AudioUnitSetProperty(mixerUnit, kAudioUnitProperty_ElementCount, kAudioUnitScope_Input, 0, &busCount, sizeof(busCount)));
+	SP_CA_CHECK(err, @"Couldn't set mixer volume", AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, 0, 1.0, 0));
 	
-	// Set mixer input volume
-	status = AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, 0, 1.0, 0);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't set mixer volume", status);
-        return NO;
-    }
-	
-	// Create PCM converter
-	status = AUGraphAddNode(audioProcessingGraph, &converterDescription, &inputConverterNode);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add converter node", status);
-        return NO;
-    }
-	
-	status = AUGraphNodeInfo(audioProcessingGraph, inputConverterNode, NULL, &inputConverterUnit);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't get input unit", status);
-        return NO;
-    }
-	
+	// Create PCM converter and get unit
+	SP_CA_CHECK(err, @"Couldn't add converter node", AUGraphAddNode(audioProcessingGraph, &converterDescription, &inputConverterNode));
+	SP_CA_CHECK(err, @"Couldn't get input unit", AUGraphNodeInfo(audioProcessingGraph, inputConverterNode, NULL, &inputConverterUnit));
+
+	// Setup audio output
 	if (![self setupAudioOutputFromBus:0 ofNode:mixerNode inGraph:audioProcessingGraph error:err])
 		return NO;
-	
+
+	// Connect graph together
 	if (![self connectOutputBus:0 ofNode:inputConverterNode toInputBus:0 ofNode:mixerNode inGraph:audioProcessingGraph error:err])
 		return NO;
 	
@@ -437,38 +383,19 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 	AURenderCallbackStruct rcbs;
 	rcbs.inputProc = AudioUnitRenderDelegateCallback;
 	rcbs.inputProcRefCon = (__bridge void *)(self);
-	
-	status = AUGraphSetNodeInputCallback(audioProcessingGraph, inputConverterNode, 0, &rcbs);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add render callback", status);
-        return NO;
-    }
+	SP_CA_CHECK(err, @"Couldn't add render callback", AUGraphSetNodeInputCallback(audioProcessingGraph, inputConverterNode, 0, &rcbs));
 	
 	// Finally, set the kAudioUnitProperty_MaximumFramesPerSlice of each unit 
 	// to 4096, to allow playback on iOS when the screen is locked.
 	// Code based on http://developer.apple.com/library/ios/#qa/qa1606/_index.html
 	
 	UInt32 maxFramesPerSlice = 4096;
-	status = AudioUnitSetProperty(inputConverterUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, sizeof(maxFramesPerSlice));
-	if (status != noErr) {
-		fillWithError(err, @"Couldn't set max frames per slice on input converter", status);
-        return NO;
-	}
-	
-	status = AudioUnitSetProperty(mixerUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, sizeof(maxFramesPerSlice));
-	if (status != noErr) {
-		fillWithError(err, @"Couldn't set max frames per slice on mixer", status);
-        return NO;
-	}
+	SP_CA_CHECK(err, @"Couldn't set max frames per slice on input converter", AudioUnitSetProperty(inputConverterUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, sizeof(maxFramesPerSlice)));
+	SP_CA_CHECK(err, @"Couldn't set max frames per slice on mixer", AudioUnitSetProperty(mixerUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, sizeof(maxFramesPerSlice)));
 	
 	// Init Queue
-	status = AUGraphInitialize(audioProcessingGraph);
-	if (status != noErr) {
-		fillWithError(err, @"Couldn't initialize graph", status);
-        return NO;
-	}
-	
-	AUGraphUpdate(audioProcessingGraph, NULL);
+	SP_CA_CHECK(err, @"Couldn't initialize graph", AUGraphInitialize(audioProcessingGraph));
+	SP_CA_CHECK(err, @"Couldn't update graph", AUGraphUpdate(audioProcessingGraph, NULL));
 	
 	// Apply properties and let's get going!
     [self startAudioQueue];
@@ -479,14 +406,7 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 }
 
 -(BOOL)connectOutputBus:(UInt32)sourceOutputBusNumber ofNode:(AUNode)sourceNode toInputBus:(UInt32)destinationInputBusNumber ofNode:(AUNode)destinationNode inGraph:(AUGraph)graph error:(NSError **)error {
-	
-	// Connect converter to mixer
-	OSStatus status = AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, destinationNode, destinationInputBusNumber);
-	if (status != noErr) {
-		fillWithError(error, @"Couldn't connect converter to mixer", status);
-		return NO;
-    }
-	
+	SP_CA_CHECK(error, @"Couldn't connect converter to mixer", AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, destinationNode, destinationInputBusNumber));
 	return YES;
 }
 
@@ -527,23 +447,16 @@ static OSStatus AudioUnitRenderDelegateCallback(void *inRefCon,
 	
 	if (self->framesSinceLastTimeUpdate >= 8820) {
         // Update 5 times per second
-		
-		@autoreleasepool {
-			
-			[self->incrementTrackPositionInvocation setArgument:&self->framesSinceLastTimeUpdate atIndex:2];
-			[self->incrementTrackPositionInvocation performSelectorOnMainThread:@selector(invoke)
-																	 withObject:nil
-																  waitUntilDone:NO];
-			self->framesSinceLastTimeUpdate = 0;
-			
-		}
+
+		UInt32 framesToAppend = self->framesSinceLastTimeUpdate;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSTimeInterval duration = framesToAppend / self.inputAudioDescription.mSampleRate;
+			[self.delegate coreAudioController:self didOutputAudioOfDuration:duration];
+		});
+		self->framesSinceLastTimeUpdate = 0;
 	}
     
     return noErr;
-}
-
--(void)incrementTrackPositionWithFrameCount:(UInt32)framesToAppend {
-	[self.delegate coreAudioController:self didOutputAudioOfDuration:framesToAppend/self.inputAudioDescription.mSampleRate];
 }
 
 #pragma mark - Output devices
@@ -726,26 +639,12 @@ static OSStatus AOPropertyListenerProc(AudioObjectID inObjectID,
 
 -(BOOL)setupAudioOutputFromBus:(UInt32)sourceOutputBusNumber ofNode:(AUNode)sourceNode inGraph:(AUGraph)graph error:(NSError *__autoreleasing *)error {
 
-	// First, remove the output node
-
 	if (outputNode != 0) {
-
-		// Disconnect mixer from output
-		OSStatus status = AUGraphDisconnectNodeInput(graph, outputNode, 0);
-		if (status != noErr) {
-			fillWithError(error, @"Couldn't disconnect old output node", status);
-			return NO;
-		}
-
-		status = AUGraphRemoveNode(graph, outputNode);
-		if (status != noErr) {
-			fillWithError(error, @"Couldn't remove old output node", status);
-			return NO;
-		}
-
-		AUGraphUpdate(graph, NULL);
-
+		SP_CA_CHECK(error, @"Couldn't disconnect old output node", AUGraphDisconnectNodeInput(graph, outputNode, 0));
+		SP_CA_CHECK(error, @"Couldn't remove old output node", AUGraphRemoveNode(graph, outputNode));
+		SP_CA_CHECK(error, @"Couldn't update graph", AUGraphUpdate(graph, NULL));
 		outputUnit = NULL;
+		outputNode = 0;
 	}
 
 	// A description of the output device we're looking for.
@@ -760,34 +659,15 @@ static OSStatus AOPropertyListenerProc(AudioObjectID inObjectID,
     outputDescription.componentFlags = 0;
     outputDescription.componentFlagsMask = 0;
 
-	// Add audio output...
-	OSStatus status = AUGraphAddNode(graph, &outputDescription, &outputNode);
-	if (status != noErr) {
-        fillWithError(error, @"Couldn't add output node", status);
-        return NO;
-    }
-
-	// Get output unit
-	status = AUGraphNodeInfo(graph, outputNode, NULL, &outputUnit);
-	if (status != noErr) {
-        fillWithError(error, @"Couldn't get output unit", status);
-        return NO;
-    }
+	// Add audio output and get unit
+	SP_CA_CHECK(error, @"Couldn't add output node", AUGraphAddNode(graph, &outputDescription, &outputNode));
+	SP_CA_CHECK(error, @"Couldn't get output unit", AUGraphNodeInfo(graph, outputNode, NULL, &outputUnit));
+	UInt32 maxFramesPerSlice = 4096;
+	SP_CA_CHECK(error, @"Couldn't set max frames per slice on output", AudioUnitSetProperty(outputUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, sizeof(maxFramesPerSlice)));
 
 	// Connect mixer to output
-	status = AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, outputNode, 0);
-	if (status != noErr) {
-        fillWithError(error, @"Couldn't connect mixer to output", status);
-        return NO;
-    }
-
-	UInt32 maxFramesPerSlice = 4096;
-	status = AudioUnitSetProperty(outputUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, sizeof(maxFramesPerSlice));
-	if (status != noErr) {
-		fillWithError(error, @"Couldn't set max frames per slice on output", status);
-        return NO;
-	}
-
+	SP_CA_CHECK(error, @"Couldn't connect mixer to output", AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, outputNode, 0));
+	
 	#if !TARGET_OS_IPHONE
 	if (self.currentOutputDevice != nil) {
 		if (![self applyOutputDeviceWithUIDToAudioOutput:self.currentOutputDevice.UID error:error])
@@ -795,8 +675,7 @@ static OSStatus AOPropertyListenerProc(AudioObjectID inObjectID,
 	}
 	#endif
 
-	AUGraphUpdate(graph, NULL);
-
+	SP_CA_CHECK(error, @"Couldn't update graph", AUGraphUpdate(graph, NULL));
 	return YES;
 }
 
@@ -821,17 +700,13 @@ static OSStatus AOPropertyListenerProc(AudioObjectID inObjectID,
 	}
 
 	//set AudioDeviceID of desired device
-	OSStatus status = AudioUnitSetProperty(outputUnit,
-										   kAudioOutputUnitProperty_CurrentDevice,
-										   kAudioUnitScope_Output,
-										   0,
-										   &deviceId,
-										   sizeof(deviceId));
-
-	if (status != noErr) {
-		fillWithError(error, @"Can't apply new output device to audio unit", status);
-        return NO;
-	}
+	SP_CA_CHECK(error, @"Can't apply new output device to audio unit",
+				AudioUnitSetProperty(outputUnit,
+									 kAudioOutputUnitProperty_CurrentDevice,
+									 kAudioUnitScope_Output,
+									 0,
+									 &deviceId,
+									 sizeof(deviceId)));
 
 	return YES;
 }

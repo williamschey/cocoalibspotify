@@ -20,6 +20,29 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #endif
 
+#if !TARGET_OS_IPHONE
+
+@interface SPCoreAudioDevice ()
+
+@property (nonatomic, readwrite, copy) NSString *name;
+@property (nonatomic, readwrite, copy) NSString *UID;
+@property (nonatomic, readwrite, copy) NSString *manufacturer;
+@property (nonatomic, readwrite) AudioDeviceID deviceId;
+
+@end
+
+@implementation SPCoreAudioDevice
+
+-(BOOL)isEqual:(id)object {
+	if (![object isKindOfClass:[self class]])
+		return NO;
+	return [[object UID] isEqualToString:self.UID];
+}
+
+@end
+
+#endif
+
 @interface SPCoreAudioController ()
 
 // Core Audio
@@ -30,6 +53,8 @@
 -(void)applyVolumeToMixerAudioUnit:(double)vol;
 -(void)applyAudioStreamDescriptionToInputUnit:(AudioStreamBasicDescription)newInputDescription;
 
+@property (readwrite, nonatomic, copy) NSArray *availableOutputDevices;
+
 @property (readwrite, nonatomic) AudioStreamBasicDescription inputAudioDescription;
 
 static OSStatus AudioUnitRenderDelegateCallback(void *inRefCon,
@@ -38,6 +63,16 @@ static OSStatus AudioUnitRenderDelegateCallback(void *inRefCon,
 												UInt32 inBusNumber,
 												UInt32 inNumberFrames,
 												AudioBufferList *ioData);
+
+#if !TARGET_OS_IPHONE
+
+-(NSArray *)queryOutputDevices:(NSError **)error;
+
+static OSStatus AOPropertyListenerProc(AudioObjectID inObjectID,
+									   UInt32 inNumberAddresses,
+									   const AudioObjectPropertyAddress inAddresses[],
+									   void * inClientData);
+#endif
 
 @property (readwrite, strong, nonatomic) SPCircularBuffer *audioBuffer;
 
@@ -52,9 +87,9 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 	AudioUnit mixerUnit;
 	AudioUnit inputConverterUnit;
 	
-	AUNode outputNode;
 	AUNode inputConverterNode;
 	AUNode mixerNode;
+	AUNode outputNode;
 	
 	UInt32 framesSinceLastTimeUpdate;
 	
@@ -77,13 +112,35 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 		
 		[self addObserver:self forKeyPath:@"volume" options:0 context:nil];
 		[self addObserver:self forKeyPath:@"audioOutputEnabled" options:0 context:nil];
-		
+
+		#if !TARGET_OS_IPHONE
+		self.availableOutputDevices = [self queryOutputDevices:nil];
+		[self addObserver:self forKeyPath:@"currentOutputDevice" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+
+		// Add observer for audio device changes
+		AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyDevices,
+			kAudioObjectPropertyScopeGlobal,
+			kAudioObjectPropertyElementMaster };
+
+		AudioObjectAddPropertyListener(kAudioObjectSystemObject, &theAddress, AOPropertyListenerProc, (__bridge void *)self);
+		#endif
 	}
 	return self;
 }
 
 -(void)dealloc {
-	
+
+	#if !TARGET_OS_IPHONE
+	// Remove observer for audio device changes
+	AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyDevices,
+		kAudioObjectPropertyScopeGlobal,
+		kAudioObjectPropertyElementMaster };
+
+	AudioObjectRemovePropertyListener(kAudioObjectSystemObject, &theAddress, AOPropertyListenerProc, (__bridge void *)self);
+
+	[self removeObserver:self forKeyPath:@"currentOutputDevice"];
+	#endif
+
 	[self removeObserver:self forKeyPath:@"volume"];
 	[self removeObserver:self forKeyPath:@"audioOutputEnabled"];
 	
@@ -96,7 +153,31 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 
 	if ([keyPath isEqualToString:@"volume"]) {
 		[self applyVolumeToMixerAudioUnit:self.volume];
-		
+
+	#if !TARGET_OS_IPHONE
+	} else if ([keyPath isEqualToString:@"currentOutputDevice"]) {
+
+		if (outputUnit == NULL)
+			return;
+
+		id oldSelection = [change valueForKey:NSKeyValueChangeOldKey];
+		id newSelection = [change valueForKey:NSKeyValueChangeNewKey];
+
+		if ((oldSelection == [NSNull null] && newSelection != [NSNull null]) ||
+			(oldSelection != [NSNull null] && newSelection == [NSNull null])) {
+			// If the device is shifting to/from NULL, we need to change the output unit
+			[self stopAudioQueue];
+			NSError *error = nil;
+			if (![self setupAudioOutputFromBus:0 ofNode:mixerNode inGraph:audioProcessingGraph error:&error])
+				NSLog(@"Couldn't change output audio unit: %@", error);
+			[self startAudioQueue];
+		} else if (self.currentOutputDevice != nil) {
+			NSError *error = nil;
+			if (![self applyOutputDeviceWithUIDToAudioOutput:self.currentOutputDevice.UID error:&error])
+				NSLog(@"Couldn't change output device: %@", error);
+		}
+	#endif
+
 	} else if ([keyPath isEqualToString:@"audioOutputEnabled"]) {
 		if (self.audioOutputEnabled)
 			[self startAudioQueue];
@@ -211,8 +292,6 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 		return;
 	
     AUGraphStart(audioProcessingGraph);
-	if (outputUnit != NULL)
-		AudioOutputUnitStart(outputUnit);
 }
 
 -(void)stopAudioQueue {
@@ -276,18 +355,6 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 	}
 #endif
 	
-    // A description of the output device we're looking for.
-    AudioComponentDescription outputDescription;
-	outputDescription.componentType = kAudioUnitType_Output;
-#if TARGET_OS_IPHONE
-	outputDescription.componentSubType = kAudioUnitSubType_RemoteIO;
-#else
-    outputDescription.componentSubType = kAudioUnitSubType_DefaultOutput;
-#endif
-    outputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
-    outputDescription.componentFlags = 0;
-    outputDescription.componentFlagsMask = 0;
-	
 	// A description of the mixer unit
 	AudioComponentDescription mixerDescription;
 	mixerDescription.componentType = kAudioUnitType_Mixer;
@@ -315,20 +382,6 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 	AUGraphOpen(audioProcessingGraph);
 	if (status != noErr) {
         fillWithError(err, @"Couldn't open graph", status);
-        return NO;
-    }
-	
-	// Add audio output...
-	status = AUGraphAddNode(audioProcessingGraph, &outputDescription, &outputNode);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add output node", status);
-        return NO;
-    }
-	
-	// Get output unit
-	status = AUGraphNodeInfo(audioProcessingGraph, outputNode, NULL, &outputUnit);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't get output unit", status);
         return NO;
     }
 	
@@ -374,12 +427,8 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
         return NO;
     }
 	
-	// Connect mixer to output
-	status = AUGraphConnectNodeInput(audioProcessingGraph, mixerNode, 0, outputNode, 0);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't connect mixer to output", status);
-        return NO;
-    }
+	if (![self setupAudioOutputFromBus:0 ofNode:mixerNode inGraph:audioProcessingGraph error:err])
+		return NO;
 	
 	if (![self connectOutputBus:0 ofNode:inputConverterNode toInputBus:0 ofNode:mixerNode inGraph:audioProcessingGraph error:err])
 		return NO;
@@ -409,12 +458,6 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 	status = AudioUnitSetProperty(mixerUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, sizeof(maxFramesPerSlice));
 	if (status != noErr) {
 		fillWithError(err, @"Couldn't set max frames per slice on mixer", status);
-        return NO;
-	}
-	
-	status = AudioUnitSetProperty(outputUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, sizeof(maxFramesPerSlice));
-	if (status != noErr) {
-		fillWithError(err, @"Couldn't set max frames per slice on output", status);
         return NO;
 	}
 	
@@ -502,5 +545,243 @@ static OSStatus AudioUnitRenderDelegateCallback(void *inRefCon,
 -(void)incrementTrackPositionWithFrameCount:(UInt32)framesToAppend {
 	[self.delegate coreAudioController:self didOutputAudioOfDuration:framesToAppend/self.inputAudioDescription.mSampleRate];
 }
+
+#pragma mark - Output devices
+
+#if !TARGET_OS_IPHONE
+
+static OSStatus AOPropertyListenerProc(AudioObjectID inObjectID,
+									   UInt32 inNumberAddresses,
+									   const AudioObjectPropertyAddress inAddresses[],
+									   void * inClientData) {
+
+	SPCoreAudioController *controller = (__bridge SPCoreAudioController *)inClientData;
+	
+	for (NSUInteger x = 0; x < inNumberAddresses; x++) {
+		if (inAddresses[x].mSelector == kAudioHardwarePropertyDevices) {
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+
+				NSArray *newDevices = [controller queryOutputDevices:nil];
+				controller.availableOutputDevices = newDevices;
+				if (controller.currentOutputDevice != nil &&
+					![controller.availableOutputDevices containsObject:controller.currentOutputDevice])
+					controller.currentOutputDevice = nil;
+			});
+
+		}
+	}
+	return noErr;
+}
+
+-(NSString *)outputDeviceStringPropertyForSelector:(AudioObjectPropertySelector)selector ofDevice:(AudioDeviceID)device {
+	
+	AudioObjectPropertyAddress propertyAddress;
+	propertyAddress.mSelector = selector;
+	propertyAddress.mScope = kAudioObjectPropertyScopeOutput;
+	propertyAddress.mElement = kAudioObjectPropertyElementMaster;
+
+	CFStringRef stringValue = NULL;
+	UInt32 dataSize = sizeof(stringValue);
+	OSStatus status = AudioObjectGetPropertyData(device, &propertyAddress, 0, NULL, &dataSize, &stringValue);
+
+	if (status == kAudioHardwareNoError)
+		return (__bridge_transfer NSString *)stringValue;
+
+	return nil;
+}
+
+-(NSUInteger)numberOfOutputBuffersInDevice:(AudioDeviceID)device {
+
+	NSUInteger numberOfChannels = 0;
+
+	AudioObjectPropertyAddress propertyAddress;
+	propertyAddress.mSelector = kAudioDevicePropertyStreamConfiguration;
+	propertyAddress.mScope = kAudioObjectPropertyScopeOutput;
+	propertyAddress.mElement = kAudioObjectPropertyElementMaster;
+
+	// Determine if the device is an output device (it is an output device if it has output channels)
+	UInt32 dataSize = 0;
+	OSStatus status = AudioObjectGetPropertyDataSize(device, &propertyAddress, 0, NULL, &dataSize);
+	if (status != kAudioHardwareNoError)
+		return numberOfChannels;
+
+	AudioBufferList *bufferList = malloc(dataSize);
+
+	status = AudioObjectGetPropertyData(device, &propertyAddress, 0, NULL, &dataSize, bufferList);
+	if(status == kAudioHardwareNoError)
+		numberOfChannels = bufferList->mNumberBuffers;
+
+	free(bufferList), bufferList = NULL;
+	return numberOfChannels;
+}
+
+-(NSArray *)queryOutputDevices:(NSError **)error {
+
+	AudioObjectPropertyAddress propertyAddress;
+	propertyAddress.mSelector = kAudioHardwarePropertyDevices;
+	propertyAddress.mScope = kAudioObjectPropertyScopeGlobal;
+	propertyAddress.mElement = kAudioObjectPropertyElementMaster;
+
+    UInt32 dataSize = 0;
+    OSStatus status = AudioObjectGetPropertyDataSize(kAudioObjectSystemObject, &propertyAddress, 0, NULL, &dataSize);
+	if (status != kAudioHardwareNoError) {
+        fillWithError(error, @"Couldn't get data size", status);
+        return nil;
+    }
+
+    UInt32 deviceCount = (dataSize / sizeof(AudioDeviceID));
+    AudioDeviceID *audioDevices = malloc(dataSize);
+
+    status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &propertyAddress, 0, NULL, &dataSize, audioDevices);
+	if (status != kAudioHardwareNoError) {
+        fillWithError(error, @"Couldn't get audio device count", status);
+        free(audioDevices), audioDevices = NULL;
+		return nil;
+    }
+
+	NSMutableArray *devices = [NSMutableArray arrayWithCapacity:deviceCount];
+
+    // Iterate through all the devices and determine which are output-capable
+    for(NSUInteger i = 0; i < deviceCount; i++) {
+
+		NSString *deviceUID = [self outputDeviceStringPropertyForSelector:kAudioDevicePropertyDeviceUID ofDevice:audioDevices[i]];
+		NSString *deviceName = [self outputDeviceStringPropertyForSelector:kAudioDevicePropertyDeviceNameCFString ofDevice:audioDevices[i]];
+		NSString *deviceManufacturer = [self outputDeviceStringPropertyForSelector:kAudioDevicePropertyDeviceManufacturerCFString ofDevice:audioDevices[i]];
+
+		if (deviceName == nil || deviceUID == nil || deviceManufacturer == nil)
+			continue;
+
+        if ([self numberOfOutputBuffersInDevice:audioDevices[i]] == 0)
+			continue;
+
+		SPCoreAudioDevice *device = [SPCoreAudioDevice new];
+		device.name = deviceName;
+		device.UID = deviceUID;
+		device.manufacturer = deviceManufacturer;
+		device.deviceId = audioDevices[i];
+
+		[devices addObject:device];
+    }
+
+    free(audioDevices), audioDevices = NULL;
+    return [NSArray arrayWithArray:devices];
+}
+
+#endif
+
+-(BOOL)setupAudioOutputFromBus:(UInt32)sourceOutputBusNumber ofNode:(AUNode)sourceNode inGraph:(AUGraph)graph error:(NSError *__autoreleasing *)error {
+
+	// First, remove the output node
+
+	if (outputNode != 0) {
+
+		// Disconnect mixer from output
+		OSStatus status = AUGraphDisconnectNodeInput(graph, outputNode, 0);
+		if (status != noErr) {
+			fillWithError(error, @"Couldn't disconnect old output node", status);
+			return NO;
+		}
+
+		status = AUGraphRemoveNode(graph, outputNode);
+		if (status != noErr) {
+			fillWithError(error, @"Couldn't remove old output node", status);
+			return NO;
+		}
+
+		AUGraphUpdate(graph, NULL);
+
+		outputUnit = NULL;
+	}
+
+	// A description of the output device we're looking for.
+    AudioComponentDescription outputDescription;
+	outputDescription.componentType = kAudioUnitType_Output;
+#if TARGET_OS_IPHONE
+	outputDescription.componentSubType = kAudioUnitSubType_RemoteIO;
+#else
+    outputDescription.componentSubType = self.currentOutputDevice == nil ? kAudioUnitSubType_DefaultOutput : kAudioUnitSubType_HALOutput;
+#endif
+    outputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+    outputDescription.componentFlags = 0;
+    outputDescription.componentFlagsMask = 0;
+
+	// Add audio output...
+	OSStatus status = AUGraphAddNode(graph, &outputDescription, &outputNode);
+	if (status != noErr) {
+        fillWithError(error, @"Couldn't add output node", status);
+        return NO;
+    }
+
+	// Get output unit
+	status = AUGraphNodeInfo(graph, outputNode, NULL, &outputUnit);
+	if (status != noErr) {
+        fillWithError(error, @"Couldn't get output unit", status);
+        return NO;
+    }
+
+	// Connect mixer to output
+	status = AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, outputNode, 0);
+	if (status != noErr) {
+        fillWithError(error, @"Couldn't connect mixer to output", status);
+        return NO;
+    }
+
+	UInt32 maxFramesPerSlice = 4096;
+	status = AudioUnitSetProperty(outputUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, sizeof(maxFramesPerSlice));
+	if (status != noErr) {
+		fillWithError(error, @"Couldn't set max frames per slice on output", status);
+        return NO;
+	}
+
+	#if !TARGET_OS_IPHONE
+	if (self.currentOutputDevice != nil) {
+		if (![self applyOutputDeviceWithUIDToAudioOutput:self.currentOutputDevice.UID error:error])
+			return NO;
+	}
+	#endif
+
+	AUGraphUpdate(graph, NULL);
+
+	return YES;
+}
+
+#if !TARGET_OS_IPHONE
+
+-(BOOL)applyOutputDeviceWithUIDToAudioOutput:(NSString *)uid error:(NSError **)error {
+
+	if (outputUnit == NULL) {
+		fillWithError(error, @"Can't apply output device to NULL output unit", 0);
+		return NO;
+	}
+
+	AudioDeviceID deviceId = kAudioObjectUnknown;
+
+	for (SPCoreAudioDevice *device in self.availableOutputDevices)
+		if ([device.UID isEqualToString:uid])
+			deviceId = device.deviceId;
+
+	if (deviceId == kAudioObjectUnknown) {
+		fillWithError(error, @"Can't find output device", deviceId);
+        return NO;
+	}
+
+	//set AudioDeviceID of desired device
+	OSStatus status = AudioUnitSetProperty(outputUnit,
+										   kAudioOutputUnitProperty_CurrentDevice,
+										   kAudioUnitScope_Output,
+										   0,
+										   &deviceId,
+										   sizeof(deviceId));
+
+	if (status != noErr) {
+		fillWithError(error, @"Can't apply new output device to audio unit", status);
+        return NO;
+	}
+
+	return YES;
+}
+
+#endif
 
 @end

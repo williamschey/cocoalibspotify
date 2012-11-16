@@ -55,6 +55,28 @@
 
 @end
 
+#if !TARGET_OS_IPHONE
+
+/** Defines an audio output device for SPCoreAudioController. Mac only. */
+
+@interface SPCoreAudioDevice : NSObject
+
+/** Returns the name of the audio device. */
+@property (nonatomic, readonly, copy) NSString *name;
+
+/** Returns the UID of the audio device, suitable for saving which device the user chose. */
+@property (nonatomic, readonly, copy) NSString *UID;
+
+/** Returns the manufacturer of the audio device. */
+@property (nonatomic, readonly, copy) NSString *manufacturer;
+
+/** Returns the Core Audio device ID of the audio device. */
+@property (nonatomic, readonly) AudioDeviceID deviceId;
+
+@end
+
+#endif
+
 /** Provides an audio pipeline from CocoaLibSpotify to the system's audio output. */
 
 @interface SPCoreAudioController : NSObject <SPSessionAudioDeliveryDelegate>
@@ -125,5 +147,15 @@
 
 /** Returns the receiver's delegate. */
 @property (readwrite, nonatomic, assign) __unsafe_unretained id <SPCoreAudioControllerDelegate> delegate;
+
+#if !TARGET_OS_IPHONE
+
+/** Returns the available audio output devices. Mac only. */
+@property (readonly, nonatomic, copy) NSArray *availableOutputDevices;
+
+/** Returns the current output device. Set to `nil` to use the system default. Mac only. */
+@property (readwrite, nonatomic, strong) SPCoreAudioDevice *currentOutputDevice;
+
+#endif
 
 @end

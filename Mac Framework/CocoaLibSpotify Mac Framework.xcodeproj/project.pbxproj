@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3755E24316440C440050348E /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3755E24216440C440050348E /* NSData+Base64.m */; };
+		377622571655176C00CB56C5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 377622561655176C00CB56C5 /* CoreAudio.framework */; };
 		503D631013258041007772CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5028EC8B13092B7C00BF0B22 /* Cocoa.framework */; };
 		503D631B13258062007772CA /* SPErrorExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5028ECBE130947B800BF0B22 /* SPErrorExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		503D631D1325806E007772CA /* SPUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 50AB044C1312D00400357CD2 /* SPUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -134,6 +135,7 @@
 /* Begin PBXFileReference section */
 		3755E24116440C440050348E /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "../../common/Tests/NSData+Base64.h"; sourceTree = "<group>"; };
 		3755E24216440C440050348E /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "../../common/Tests/NSData+Base64.m"; sourceTree = "<group>"; };
+		377622561655176C00CB56C5 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		5028EC8B13092B7C00BF0B22 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5028EC8E13092B7C00BF0B22 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5028EC8F13092B7C00BF0B22 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -231,6 +233,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				377622571655176C00CB56C5 /* CoreAudio.framework in Frameworks */,
 				50BED5A815220712000D0919 /* AudioUnit.framework in Frameworks */,
 				50BED5A615220707000D0919 /* AudioToolbox.framework in Frameworks */,
 				503D631013258041007772CA /* Cocoa.framework in Frameworks */,
@@ -273,6 +276,7 @@
 		5028EC8A13092B7B00BF0B22 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				377622561655176C00CB56C5 /* CoreAudio.framework */,
 				50BED5A715220712000D0919 /* AudioUnit.framework */,
 				50BED5A515220707000D0919 /* AudioToolbox.framework */,
 				504CBECD150F74F800067170 /* libspotify.framework */,

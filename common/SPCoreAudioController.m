@@ -616,6 +616,56 @@ static OSStatus AOPropertyListenerProc(AudioObjectID inObjectID,
 	return numberOfChannels;
 }
 
+-(NSString *)audioSourceNameOfDevice:(AudioDeviceID)device {
+
+	AudioObjectPropertyAddress propertyAddress;
+	propertyAddress.mSelector = kAudioDevicePropertyDataSources;
+	propertyAddress.mScope = kAudioDevicePropertyScopeOutput;
+	propertyAddress.mElement = kAudioObjectPropertyElementMaster;
+
+	UInt32 propsize = 0;
+	OSStatus status = AudioObjectGetPropertyDataSize(device, &propertyAddress, 0, NULL, &propsize);
+	if (status != kAudioHardwareNoError)
+		return nil;
+
+	// list of sourceIds
+	UInt32 *sourceIds = malloc(propsize);
+	status = AudioObjectGetPropertyData(device, &propertyAddress, 0, NULL, &propsize, sourceIds);
+	if (status != kAudioHardwareNoError) {
+		free(sourceIds);
+		return nil;
+	}
+
+	NSUInteger sourceCount = (propsize / sizeof(UInt32));
+	NSString *name = nil;
+
+	if (sourceCount == 1) {
+		// Don't deal with AirPlay or multi-source devices yet
+		AudioObjectPropertyAddress nameAddr;
+		nameAddr.mSelector = kAudioDevicePropertyDataSourceNameForIDCFString;
+		nameAddr.mScope = kAudioObjectPropertyScopeOutput;
+		nameAddr.mElement = kAudioObjectPropertyElementMaster;
+
+		CFStringRef value = NULL;
+		UInt32 sourceId = sourceIds[0];
+
+		AudioValueTranslation audioValueTranslation;
+		audioValueTranslation.mInputDataSize = sizeof(UInt32);
+		audioValueTranslation.mOutputData = (void *) &value;
+		audioValueTranslation.mOutputDataSize = sizeof(CFStringRef);
+		audioValueTranslation.mInputData = (void *) &sourceId;
+
+		UInt32 propsize = sizeof(AudioValueTranslation);
+
+		status = AudioObjectGetPropertyData(device, &nameAddr, 0, NULL, &propsize, &audioValueTranslation);
+		if (status == kAudioHardwareNoError)
+			name = (__bridge_transfer NSString *)value;
+	}
+
+	free(sourceIds);
+	return name;
+}
+
 -(NSArray *)queryOutputDevices:(NSError **)error {
 
 	AudioObjectPropertyAddress propertyAddress;
@@ -643,13 +693,17 @@ static OSStatus AOPropertyListenerProc(AudioObjectID inObjectID,
 	NSMutableArray *devices = [NSMutableArray arrayWithCapacity:deviceCount];
 
     // Iterate through all the devices and determine which are output-capable
-    for(NSUInteger i = 0; i < deviceCount; i++) {
+    for (NSUInteger i = 0; i < deviceCount; i++) {
 
 		NSString *deviceUID = [self outputDeviceStringPropertyForSelector:kAudioDevicePropertyDeviceUID ofDevice:audioDevices[i]];
 		NSString *deviceName = [self outputDeviceStringPropertyForSelector:kAudioDevicePropertyDeviceNameCFString ofDevice:audioDevices[i]];
 		NSString *deviceManufacturer = [self outputDeviceStringPropertyForSelector:kAudioDevicePropertyDeviceManufacturerCFString ofDevice:audioDevices[i]];
+		NSString *sourceName = [self audioSourceNameOfDevice:audioDevices[i]];
+		
+		if (sourceName != nil)
+			deviceName = sourceName;
 
-		if (deviceName == nil || deviceUID == nil || deviceManufacturer == nil)
+		if (deviceName == nil || deviceUID == nil)
 			continue;
 
         if ([self numberOfOutputBuffersInDevice:audioDevices[i]] == 0)

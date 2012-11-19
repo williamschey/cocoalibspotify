@@ -634,8 +634,8 @@ inline void SPDispatchSyncIfNeeded(dispatch_block_t block) {
 
 +(void)dispatchToLibSpotifyThread:(dispatch_block_t)block waitUntilDone:(BOOL)wait {
 
-	NSLock *waitingLock = nil;
-	if (wait) waitingLock = [NSLock new];
+	NSConditionLock	*waitingLock = nil;
+	if (wait) waitingLock = [NSConditionLock new];
 
 	// Make sure we only queue one thing at a time, and only
 	// when the runloop is ready for it.
@@ -644,7 +644,7 @@ inline void SPDispatchSyncIfNeeded(dispatch_block_t block) {
 	CFRunLoopPerformBlock(libspotify_runloop, kCFRunLoopDefaultMode, ^() {
 		[waitingLock lock];
 		if (block) { @autoreleasepool { block(); } }
-		[waitingLock unlock];
+		[waitingLock unlockWithCondition:1];
 	});
 
 	if (CFRunLoopIsWaiting(libspotify_runloop)) {
@@ -654,7 +654,7 @@ inline void SPDispatchSyncIfNeeded(dispatch_block_t block) {
 	
 	[runloopReadyLock unlock];
 	if (wait) {
-		[waitingLock lock];
+		[waitingLock lockWhenCondition:1];
 		[waitingLock unlock];
 	}
 }
@@ -880,9 +880,8 @@ static SPSession *sharedSession;
 		});
 		
 		if (creationError != nil) {
-			if (*error != NULL)
+			if (error != NULL)
 				*error = creationError;
-			
 			return nil;
 		}
 	}

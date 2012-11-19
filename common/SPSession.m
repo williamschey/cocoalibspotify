@@ -717,9 +717,23 @@ static SPSession *sharedSession;
 								   loadingPolicy:(SPAsyncLoadingPolicy)policy
 										   error:(NSError **)error {
 
+	return [self initializeSharedSessionWithApplicationKey:appKey
+												 userAgent:aUserAgent
+											 loadingPolicy:policy
+												properties:nil
+													 error:error];
+}
+
++(BOOL)initializeSharedSessionWithApplicationKey:(NSData *)appKey
+									   userAgent:(NSString *)aUserAgent
+								   loadingPolicy:(SPAsyncLoadingPolicy)policy
+									  properties:(NSDictionary *)properties
+										   error:(NSError **)error {
+
 	sharedSession = [[SPSession alloc] initWithApplicationKey:appKey
 													userAgent:aUserAgent
 												loadingPolicy:policy
+												   properties:properties
 														error:error];
 	if (sharedSession == nil)
 		return NO;
@@ -740,6 +754,19 @@ static SPSession *sharedSession;
 				  userAgent:(NSString *)aUserAgent
 			  loadingPolicy:(SPAsyncLoadingPolicy)policy
 					  error:(NSError **)error {
+
+	return [self initWithApplicationKey:appKey
+							  userAgent:aUserAgent
+						  loadingPolicy:policy
+							 properties:nil
+								  error:error];
+}
+
+-(id)initWithApplicationKey:(NSData *)appKey
+				  userAgent:(NSString *)aUserAgent
+			  loadingPolicy:(SPAsyncLoadingPolicy)policy
+				 properties:(NSDictionary *)properties
+					  error:(NSError *__autoreleasing *)error {
 
 	if ((self = [super init])) {
 
@@ -796,23 +823,25 @@ static SPSession *sharedSession;
 		
 		// Find the caches directory for cache
 		NSString *cacheDirectory = nil;
-		
-		NSArray *potentialCacheDirectories = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,
-																				 NSUserDomainMask,
-																				 YES);
-		
-		if ([potentialCacheDirectories count] > 0) {
-			cacheDirectory = [[potentialCacheDirectories objectAtIndex:0] stringByAppendingPathComponent:aUserAgent];
-		} else {
-			cacheDirectory = [NSTemporaryDirectory() stringByAppendingPathComponent:aUserAgent];
-		}
-		
-		if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory]) {
-			if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory
-										   withIntermediateDirectories:YES
-															attributes:nil
-																 error:error]) {
-				return nil;
+
+		if ([[properties valueForKey:SPSessionNoCachePropertyKey] boolValue] != YES) {
+			NSArray *potentialCacheDirectories = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,
+																					 NSUserDomainMask,
+																					 YES);
+
+			if ([potentialCacheDirectories count] > 0) {
+				cacheDirectory = [[potentialCacheDirectories objectAtIndex:0] stringByAppendingPathComponent:aUserAgent];
+			} else {
+				cacheDirectory = [NSTemporaryDirectory() stringByAppendingPathComponent:aUserAgent];
+			}
+
+			if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory]) {
+				if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory
+											   withIntermediateDirectories:YES
+																attributes:nil
+																	 error:error]) {
+					return nil;
+				}
 			}
 		}
 		

@@ -149,6 +149,28 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 								   loadingPolicy:(SPAsyncLoadingPolicy)policy
 										   error:(NSError **)error;
 
+/** Initializes the shared SPSession object.
+
+ Your application key and user agent must be valid to create an SPSession object.
+
+ @warning The C API that CocoaLibSpotify uses (LibSpotify) doesn't
+ support using multiple sessions in the same process. While you can either create and
+ store your SPSession object using this convenience method or yourself using +[SPSession initWithApplicationKey:userAgent:loadingPolicy:error:],
+ make sure you only have _one_ instance of SPSession active in your process at a time.
+
+ @param appKey Your application key as an NSData.
+ @param userAgent Your application's user agent (for example, com.yourcompany.MyGreatApp).
+ @param policy The loading policy to use.
+ @param properties A dictionary containing any special properties for this `SPSession` instance, otherwise `nil`.
+ @param error An error pointer to be filled with an NSError should a login problem occur.
+ @return `YES` the the shared session was initialized correctly, otherwise `NO`.
+ */
++(BOOL)initializeSharedSessionWithApplicationKey:(NSData *)appKey
+									   userAgent:(NSString *)userAgent
+								   loadingPolicy:(SPAsyncLoadingPolicy)policy
+									  properties:(NSDictionary *)properties
+										   error:(NSError **)error;
+
 /** The "debug" build ID of libspotify.
 
  This could be useful to display somewhere deep down in the user interface in
@@ -164,7 +186,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** Initialize a new SPSession object.
  
- Your application key and user agent must be valid to create an SPSession object. This is SPSession's designated initializer.
+ Your application key and user agent must be valid to create an SPSession object.
 
  @param appKey Your application key as an NSData.
  @param userAgent Your application's user agent (for example, com.yourcompany.MyGreatApp).
@@ -176,6 +198,23 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				  userAgent:(NSString *)userAgent
 			  loadingPolicy:(SPAsyncLoadingPolicy)policy
 					  error:(NSError **)error;
+
+/** Initialize a new SPSession object.
+
+ Your application key and user agent must be valid to create an SPSession object. This is SPSession's designated initializer.
+
+ @param appKey Your application key as an NSData.
+ @param userAgent Your application's user agent (for example, com.yourcompany.MyGreatApp).
+ @param policy The loading policy to use.
+ @param properties A dictionary containing any special properties for this `SPSession` instance, otherwise `nil`.
+ @param error An error pointer to be filled with an NSError should a login problem occur.
+ @return Returns a newly initialised SPSession object.
+ */
+-(id)initWithApplicationKey:(NSData *)appKey
+				  userAgent:(NSString *)userAgent
+			  loadingPolicy:(SPAsyncLoadingPolicy)policy
+				 properties:(NSDictionary *)properties
+					  error:(NSError *__autoreleasing *)error;
 
 /** Attempt to login to the Spotify service.
  
@@ -818,6 +857,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @end
 
+///----------------------------
+/// @name Session Init Property Keys
+///----------------------------
+
+/** @constant If this key is set to `@(YES)`, the `SPSession` instance will not use a cache. */
+static NSString * const SPSessionNoCachePropertyKey = @"SPSessionNoCacheProperty";
 
 ///----------------------------
 /// @name Offline Sync Statistics Keys

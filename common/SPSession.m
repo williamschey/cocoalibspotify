@@ -864,8 +864,8 @@ static SPSession *sharedSession;
 			config.application_key = [appKey bytes];
 			config.application_key_size = [appKey length];
 			config.user_agent = [aUserAgent UTF8String];
-			config.settings_location = [applicationSupportDirectory UTF8String];
-			config.cache_location = [cacheDirectory UTF8String];
+			config.settings_location = applicationSupportDirectory == nil ? "" : [applicationSupportDirectory UTF8String];
+			config.cache_location = cacheDirectory == nil ? "" : [cacheDirectory UTF8String];
 			config.userdata = (__bridge void *)self;
 			config.callbacks = &_callbacks;
 			

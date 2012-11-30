@@ -43,6 +43,9 @@
 /** Returns the name of the audio device. */
 @property (nonatomic, readonly, copy) NSString *name;
 
+/** Returns a name more suited for display in the user interface. */
+@property (nonatomic, readonly, copy) NSString *uiName;
+
 /** Returns the UID of the audio device, suitable for saving which device the user chose. */
 @property (nonatomic, readonly, copy) NSString *UID;
 
@@ -56,7 +59,16 @@
 @property (nonatomic, readonly, copy) NSArray *sources;
 
 /** Returns an array of the audio output sources that are active. */
-@property (nonatomic, readwrite, copy) NSArray *activeSources;
+-(NSArray *)activeSources;
+
+/** Set the active sources of the device. 
+ 
+ The source(s) in the passed array must be present in the `sources` property.
+
+ @warning When setting this property, you need to provide at least one active
+ source. If you pass `nil` or an empty array, no changes will be made.
+ */
+-(void)setActiveSources:(NSArray *)activeSources;
 
 @end
 

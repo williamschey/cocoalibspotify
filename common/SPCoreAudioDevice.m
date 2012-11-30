@@ -50,7 +50,14 @@
 @property (nonatomic, readwrite) UInt32 sourceId;
 @property (nonatomic, readwrite) __unsafe_unretained SPCoreAudioDevice *device;
 
+-(void)updateName;
+
 @end
+
+static OSStatus AOSourceChangedPropertyListenerProc(AudioObjectID inObjectID,
+													UInt32 inNumberAddresses,
+													const AudioObjectPropertyAddress inAddresses[],
+													void * inClientData);
 
 @implementation SPCoreAudioDevice
 
@@ -66,8 +73,39 @@
 		self.name = [self outputDeviceStringPropertyForSelector:kAudioDevicePropertyDeviceNameCFString];
 		self.manufacturer = [self outputDeviceStringPropertyForSelector:kAudioDevicePropertyDeviceManufacturerCFString];
 		self.sources = [self queryAudioSources];
+
+		// Add observer for audio source changes
+		AudioObjectPropertyAddress sourcesPropertyAddress;
+		sourcesPropertyAddress.mSelector = kAudioDevicePropertyDataSources;
+		sourcesPropertyAddress.mScope = kAudioDevicePropertyScopeOutput;
+		sourcesPropertyAddress.mElement = kAudioObjectPropertyElementMaster;
+		AudioObjectAddPropertyListener(self.deviceId, &sourcesPropertyAddress, AOSourceChangedPropertyListenerProc, (__bridge void *)self);
+
+		AudioObjectPropertyAddress namePropertyAddress;
+		namePropertyAddress.mSelector = kAudioDevicePropertyDataSourceNameForIDCFString;
+		namePropertyAddress.mScope = kAudioDevicePropertyScopeOutput;
+		namePropertyAddress.mElement = kAudioObjectPropertyElementMaster;
+		AudioObjectAddPropertyListener(self.deviceId, &namePropertyAddress, AOSourceChangedPropertyListenerProc, (__bridge void *)self);
+
+
+
 	}
 	return self;
+}
+
+-(NSString *)description {
+	return [NSString stringWithFormat:@"%@: Device ID %@, %@", [super description], self.UID, self.name];
+}
+
++(NSSet *)keyPathsForValuesAffectingUiName {
+	return [NSSet setWithObjects:@"sources", @"name", nil];
+}
+
+-(NSString *)uiName {
+	if (self.sources.count == 1)
+		return [[self.sources lastObject] name];
+	else
+		return self.name;
 }
 
 -(NSString *)outputDeviceStringPropertyForSelector:(AudioObjectPropertySelector)selector {
@@ -117,7 +155,6 @@
 			[sources addObject:source];
 	}
 
-
 	free(sourceIds);
 
 	if (sources.count > 0)
@@ -130,6 +167,10 @@
 	if (![object isKindOfClass:[self class]])
 		return NO;
 	return [[object UID] isEqualToString:self.UID];
+}
+
++(NSSet *)keyPathsForValuesAffectingActiveSources {
+	return [NSSet setWithObject:@"sources"];
 }
 
 -(void)setActiveSources:(NSArray *)sources {
@@ -211,6 +252,26 @@
 		return nil;
 }
 
+static OSStatus AOSourceChangedPropertyListenerProc(AudioObjectID inObjectID,
+													UInt32 inNumberAddresses,
+													const AudioObjectPropertyAddress inAddresses[],
+													void * inClientData) {
+
+	SPCoreAudioDevice *device = (__bridge SPCoreAudioDevice *)inClientData;
+
+	for (NSUInteger x = 0; x < inNumberAddresses; x++) {
+		if (inAddresses[x].mSelector == kAudioDevicePropertyDataSources) {
+			device.sources = [device queryAudioSources];
+
+		} else if (inAddresses[x].mSelector == kAudioDevicePropertyDataSourceNameForIDCFString) {
+			for (SPCoreAudioDeviceSource *source in device.sources)
+				[source updateName];
+		}
+	}
+	return noErr;
+}
+
+
 @end
 
 @implementation SPCoreAudioDeviceSource
@@ -232,7 +293,7 @@
 }
 
 -(NSString *)description {
-	return [NSString stringWithFormat:@"Source Id %@: %@", @(self.sourceId), self.name];
+	return [NSString stringWithFormat:@"%@: Source Id %@: %@", [super description], @(self.sourceId), self.name];
 }
 
 -(void)updateName {
@@ -254,8 +315,11 @@
 	UInt32 propsize = sizeof(AudioValueTranslation);
 
 	OSStatus status = AudioObjectGetPropertyData(self.device.deviceId, &nameAddr, 0, NULL, &propsize, &audioValueTranslation);
-	if (status == kAudioHardwareNoError)
-		self.name = (__bridge_transfer NSString *)value;
+	if (status == kAudioHardwareNoError) {
+		NSString *newName = (__bridge_transfer NSString *)value;
+		if (![newName isEqualToString:self.name])
+			self.name = newName;
+	}
 }
 
 @end

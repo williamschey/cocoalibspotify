@@ -2755,15 +2755,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentValues: playbackManager.audioController.availableOutputDevices.name</string>
+						<string key="label">contentValues: playbackManager.audioController.availableOutputDevices.uiName</string>
 						<reference key="source" ref="400415577"/>
 						<reference key="destination" ref="976324537"/>
-						<object class="NSNibBindingConnector" key="connector" id="917022535">
+						<object class="NSNibBindingConnector" key="connector" id="753697464">
 							<reference key="NSSource" ref="400415577"/>
 							<reference key="NSDestination" ref="976324537"/>
-							<string key="NSLabel">contentValues: playbackManager.audioController.availableOutputDevices.name</string>
+							<string key="NSLabel">contentValues: playbackManager.audioController.availableOutputDevices.uiName</string>
 							<string key="NSBinding">contentValues</string>
-							<string key="NSKeyPath">playbackManager.audioController.availableOutputDevices.name</string>
+							<string key="NSKeyPath">playbackManager.audioController.availableOutputDevices.uiName</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSInsertsNullPlaceholder</string>
 								<boolean value="YES" key="NS.object.0"/>
@@ -2772,7 +2772,7 @@
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">641</int>
+					<int key="connectionID">643</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -2785,11 +2785,11 @@
 							<string key="NSLabel">selectedObject: playbackManager.audioController.currentOutputDevice</string>
 							<string key="NSBinding">selectedObject</string>
 							<string key="NSKeyPath">playbackManager.audioController.currentOutputDevice</string>
-							<reference key="NSPreviousConnector" ref="917022535"/>
+							<reference key="NSPreviousConnector" ref="753697464"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">642</int>
+					<int key="connectionID">644</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -4533,7 +4533,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">642</int>
+			<int key="maxID">644</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

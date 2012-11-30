@@ -85,6 +85,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <CocoaLibSpotify/SPUnknownPlaylist.h>
 #import <CocoaLibSpotify/SPCircularBuffer.h>
 #import <CocoaLibSpotify/SPCoreAudioController.h>
+#import <CocoaLibSpotify/SPCoreAudioDevice.h>
 #import <CocoaLibSpotify/SPPlaybackManager.h>
 #import <CocoaLibSpotify/SPAsyncLoading.h>
 

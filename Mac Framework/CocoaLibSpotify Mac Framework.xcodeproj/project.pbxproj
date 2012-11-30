@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3755E24316440C440050348E /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3755E24216440C440050348E /* NSData+Base64.m */; };
 		377622571655176C00CB56C5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 377622561655176C00CB56C5 /* CoreAudio.framework */; };
+		37F4A378166901B40074A6C5 /* SPCoreAudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F4A376166901B40074A6C5 /* SPCoreAudioDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37F4A379166901B40074A6C5 /* SPCoreAudioDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F4A377166901B40074A6C5 /* SPCoreAudioDevice.m */; };
 		503D631013258041007772CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5028EC8B13092B7C00BF0B22 /* Cocoa.framework */; };
 		503D631B13258062007772CA /* SPErrorExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5028ECBE130947B800BF0B22 /* SPErrorExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		503D631D1325806E007772CA /* SPUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 50AB044C1312D00400357CD2 /* SPUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -136,6 +138,8 @@
 		3755E24116440C440050348E /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "../../common/Tests/NSData+Base64.h"; sourceTree = "<group>"; };
 		3755E24216440C440050348E /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "../../common/Tests/NSData+Base64.m"; sourceTree = "<group>"; };
 		377622561655176C00CB56C5 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		37F4A376166901B40074A6C5 /* SPCoreAudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPCoreAudioDevice.h; path = ../common/SPCoreAudioDevice.h; sourceTree = "<group>"; };
+		37F4A377166901B40074A6C5 /* SPCoreAudioDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPCoreAudioDevice.m; path = ../common/SPCoreAudioDevice.m; sourceTree = "<group>"; };
 		5028EC8B13092B7C00BF0B22 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5028EC8E13092B7C00BF0B22 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5028EC8F13092B7C00BF0B22 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -425,6 +429,8 @@
 				50BED59C152202E1000D0919 /* SPCircularBuffer.m */,
 				50BED59D152202E1000D0919 /* SPCoreAudioController.h */,
 				50BED59E152202E1000D0919 /* SPCoreAudioController.m */,
+				37F4A376166901B40074A6C5 /* SPCoreAudioDevice.h */,
+				37F4A377166901B40074A6C5 /* SPCoreAudioDevice.m */,
 				50BED5B3152208E5000D0919 /* SPPlaybackManager.h */,
 				50BED5B4152208E5000D0919 /* SPPlaybackManager.m */,
 			);
@@ -498,6 +504,7 @@
 				50BED5B5152208E5000D0919 /* SPPlaybackManager.h in Headers */,
 				50C3CDF81536FFA800B1F2C3 /* SPAsyncLoading.h in Headers */,
 				50E8ED5F155C093100F14186 /* SPSessionInternal.h in Headers */,
+				37F4A378166901B40074A6C5 /* SPCoreAudioDevice.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -650,6 +657,7 @@
 				50BED5A2152202E1000D0919 /* SPCoreAudioController.m in Sources */,
 				50BED5B6152208E5000D0919 /* SPPlaybackManager.m in Sources */,
 				50C3CDF91536FFA800B1F2C3 /* SPAsyncLoading.m in Sources */,
+				37F4A379166901B40074A6C5 /* SPCoreAudioDevice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

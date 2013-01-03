@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>SPPlaybackManagerDelegate Protocol Reference</title>
+		<title>SPCoreAudioDeviceSource Class Reference</title>
 		<meta id="xcode-display" name="xcode-display" content="render"/>
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
@@ -17,7 +17,7 @@
 			</div>
 			
 			<div id="title" role="banner">
-				<h1 class="hideInXcode">SPPlaybackManagerDelegate Protocol Reference</h1>
+				<h1 class="hideInXcode">SPCoreAudioDeviceSource Class Reference</h1>
 			</div>
 			<ul id="headerButtons" role="toolbar">
 				<li id="toc_button">
@@ -38,15 +38,17 @@
 	
 	
 	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/device">&nbsp;&nbsp;&nbsp;&nbsp;device</option>
+	
+	<option value="//api/name/name">&nbsp;&nbsp;&nbsp;&nbsp;name</option>
+	
+	<option value="//api/name/sourceId">&nbsp;&nbsp;&nbsp;&nbsp;sourceId</option>
 	
 	
 	
 	
-	<option value="instance_methods">Instance Methods</option>
-	
-	<option value="//api/name/playbackManagerIsFinishingPlayback:">&nbsp;&nbsp;&nbsp;&nbsp;- playbackManagerIsFinishingPlayback:</option>
-	
-	<option value="//api/name/playbackManagerWillStartPlayingAudio:">&nbsp;&nbsp;&nbsp;&nbsp;- playbackManagerWillStartPlayingAudio:</option>
 	
 	
 	
@@ -70,24 +72,26 @@
 
 
 
-
-
-
-
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/playbackManagerIsFinishingPlayback:">playbackManagerIsFinishingPlayback:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/device">device</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/playbackManagerWillStartPlayingAudio:">playbackManagerWillStartPlayingAudio:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/name">name</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sourceId">sourceId</a></span></li>
 	
 </ul></li>
+
+
+
+
 
 
 			</ul>
 		</nav>
 		<article>
 			<div id="contents" class="isShowingTOC" role="main">
-				<a title="SPPlaybackManagerDelegate Protocol Reference" name="top"></a>
+				<a title="SPCoreAudioDeviceSource Class Reference" name="top"></a>
 				<div class="main-navigation navigation-top">
 					<ul>
 	<li><a href="../index.html">Index</a></li>
@@ -96,18 +100,18 @@
 				</div>
 				<div id="header">
 					<div class="section-header">
-						<h1 class="title title-header">SPPlaybackManagerDelegate Protocol Reference</h1>
+						<h1 class="title title-header">SPCoreAudioDeviceSource Class Reference</h1>
 					</div>		
 				</div>
 				<div id="container">	
 					
 					<div class="section section-specification"><table cellspacing="0"><tbody>
 						<tr>
-	<td class="specification-title">Conforms to</td>
+	<td class="specification-title">Inherits from</td>
 	<td class="specification-value">NSObject</td>
 </tr><tr>
 	<td class="specification-title">Declared in</td>
-	<td class="specification-value">SPPlaybackManager.h</td>
+	<td class="specification-value">SPCoreAudioDevice.h<br />SPCoreAudioDevice.m</td>
 </tr>
 						</tbody></table></div>
 					
@@ -117,7 +121,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p>Provides delegate callbacks for <a href="../Classes/SPPlaybackManager.html">SPPlaybackManager</a>.</p>
+						<p>Defines an audio output <a href="#//api/name/device">device</a> source for <a href="../Classes/SPCoreAudioDevice.html">SPCoreAudioDevice</a>. Mac only.</p>
 					</div>
 					
 					
@@ -135,18 +139,25 @@
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/playbackManagerWillStartPlayingAudio:">&ndash;&nbsp;playbackManagerWillStartPlayingAudio:</a></code>
-		<span class="tooltip"><p>Called when audio starts playing.</p></span>
+		<code><a href="#//api/name/name">&nbsp;&nbsp;name</a></code>
+		<span class="tooltip"><p>Returns the name of the source.</p></span>
 	</span>
+	<span class="task-item-suffix">property</span>
 	
-	<span class="task-item-suffix">required method</span>
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/playbackManagerIsFinishingPlayback:">&ndash;&nbsp;playbackManagerIsFinishingPlayback:</a></code>
-		<span class="tooltip"><p>Called when the last audio samples for the current track have been buffered.</p></span>
+		<code><a href="#//api/name/sourceId">&nbsp;&nbsp;sourceId</a></code>
+		<span class="tooltip"><p>Returns the id of the source.</p></span>
 	</span>
+	<span class="task-item-suffix">property</span>
 	
-	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/device">&nbsp;&nbsp;device</a></code>
+		<span class="tooltip"><p>Returns the parent audio device of the source.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
 </li>
 						</ul>
 						
@@ -156,37 +167,23 @@
 					
 					
 					
-					
-					
-					
-					
 					<div class="section section-methods">
-						<a title="Instance Methods" name="instance_methods"></a>
-						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/playbackManagerIsFinishingPlayback:" title="playbackManagerIsFinishingPlayback:"></a>
-	<h3 class="subsubtitle method-title">playbackManagerIsFinishingPlayback:</h3>
+	<a name="//api/name/device" title="device"></a>
+	<h3 class="subsubtitle method-title">device</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Called when the last audio samples for the current track have been buffered.</p>
+		<p>Returns the parent audio device of the source.</p>
 	</div>		
 	
 	
-	<div class="method-subsection method-declaration"><code>- (void)playbackManagerIsFinishingPlayback:(SPPlaybackManager *)<em>aPlaybackManager</em></code></div>
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) __unsafe_unretained SPCoreAudioDevice *device</code></div>
 	
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>aPlaybackManager</em></dt>
-			<dd><p>The playback manager that is about to finish playback.</p></dd>
-		</dl>
-		
-	</div>
 	
 	
 	
@@ -202,35 +199,25 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">SPPlaybackManager.h</code><br />
+		<code class="declared-in-ref">SPCoreAudioDevice.h</code><br />
 	</div>				
 	
 	
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/playbackManagerWillStartPlayingAudio:" title="playbackManagerWillStartPlayingAudio:"></a>
-	<h3 class="subsubtitle method-title">playbackManagerWillStartPlayingAudio:</h3>
+	<a name="//api/name/name" title="name"></a>
+	<h3 class="subsubtitle method-title">name</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Called when audio starts playing.</p>
+		<p>Returns the name of the source.</p>
 	</div>		
 	
 	
-	<div class="method-subsection method-declaration"><code>- (void)playbackManagerWillStartPlayingAudio:(SPPlaybackManager *)<em>aPlaybackManager</em></code></div>
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSString *name</code></div>
 	
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>aPlaybackManager</em></dt>
-			<dd><p>The playback manager that started playing.</p></dd>
-		</dl>
-		
-	</div>
 	
 	
 	
@@ -246,13 +233,51 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">SPPlaybackManager.h</code><br />
+		<code class="declared-in-ref">SPCoreAudioDevice.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sourceId" title="sourceId"></a>
+	<h3 class="subsubtitle method-title">sourceId</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the id of the source.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) UInt32 sourceId</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">SPCoreAudioDevice.h</code><br />
 	</div>				
 	
 	
 </div>
 						
 					</div>
+					
+					
+					
+					
 					
 					
 				</div>

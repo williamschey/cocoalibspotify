@@ -49,6 +49,12 @@
  */
 -(void)playbackManagerWillStartPlayingAudio:(SPPlaybackManager *)aPlaybackManager;
 
+/** Called when the last audio samples for the current track have been buffered.
+ 
+ @param aPlaybackManager The playback manager that is about to finish playback.
+ */
+-(void)playbackManagerIsFinishingPlayback:(SPPlaybackManager *)aPlaybackManager;
+
 @end
 
 /**

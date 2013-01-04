@@ -265,6 +265,40 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 -(void)setPreferredBitrate:(sp_bitrate)bitrate;
 
+/** Set the preffered audio bitrate for offline syncing.
+ 
+ @param bitrate The prefered bitrate for offline syncing.
+ @param allowResync Specifies weather already synced tracks should be resynced.
+ */
+- (void)setPreferredOfflineBitrate:(sp_bitrate)bitrate allowResync:(BOOL)allowResync;
+
+/** Set the connection type.
+ 
+ @param type The connection type.
+ 
+ Possible values:
+ 
+ SP_CONNECTION_TYPE_UNKNOWN
+ Connection type unknown (Default).
+ 
+ SP_CONNECTION_TYPE_NONE
+ No connection.
+ 
+ SP_CONNECTION_TYPE_MOBILE
+ Mobile data (EDGE, 3G, etc).
+ 
+ SP_CONNECTION_TYPE_MOBILE_ROAMING
+ Roamed mobile data (EDGE, 3G, etc).
+ 
+ SP_CONNECTION_TYPE_WIFI
+ Wireless connection.
+ 
+ SP_CONNECTION_TYPE_WIRED
+ Ethernet cable, etc.
+ 
+*/
+- (void)setConnectionType:(sp_connection_type)type;
+
 ///----------------------------
 /// @name Properties
 ///----------------------------
@@ -415,6 +449,19 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							  toInboxOfUser:(NSString *)targetUserName
 								withMessage:(NSString *)aFriendlyMessage
 								   callback:(SPErrorableOperationCallback)block;
+
+///----------------------------
+/// @name Connection Rules
+///----------------------------
+
+/** Returns `YES` if session is currently forced in offline mode. */
+@property (nonatomic, readwrite) BOOL forceOfflineMode;
+
+/** Returns `YES` if session allows syncing over Wifi. */
+@property (nonatomic, readwrite) BOOL allowSyncOverWifi;
+
+/** Returns `YES` if session allows syncing over cellular networks. */
+@property (nonatomic, readwrite) BOOL allowSyncOverMobile;
 
 ///----------------------------
 /// @name Accessing Content by URL

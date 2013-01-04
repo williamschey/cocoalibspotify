@@ -349,11 +349,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns a list of albums by this <a href="#//api/name/artist">artist</a>, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *albums</code></div>
-
-    
+	
 	
 	
 	
@@ -385,11 +383,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the browse operation&rsquo;s artist.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPArtist *artist</code></div>
-
-    
+	
 	
 	
 	
@@ -421,11 +417,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the artist&rsquo;s biography, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSString *biography</code></div>
-
-    
+	
 	
 	
 	
@@ -457,11 +451,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the first <a href="#//api/name/artist">artist</a> portrait image, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet or there are no images.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPImage *firstPortrait</code></div>
-
-    
+	
 	
 	
 	
@@ -493,11 +485,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the error that occurred during loading, or <code>nil</code> if no error occurred.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSError *loadError</code></div>
-
-    
+	
 	
 	
 	
@@ -529,11 +519,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns <code>YES</code> if the <a href="#//api/name/artist">artist</a> metadata has finished loading.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isLoaded) BOOL loaded</code></div>
-
-    
+	
 	
 	
 	
@@ -565,11 +553,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the artist&rsquo;s portrait images, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *portraits</code></div>
-
-    
+	
 	
 	
 	
@@ -601,11 +587,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns a list of related artists for this <a href="#//api/name/artist">artist</a>, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *relatedArtists</code></div>
-
-    
+	
 	
 	
 	
@@ -637,11 +621,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the session the artist&rsquo;s metadata is <a href="#//api/name/loaded">loaded</a> in.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPSession *session</code></div>
-
-    
+	
 	
 	
 	
@@ -673,11 +655,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns a list of &ldquo;top hit&rdquo; <a href="#//api/name/tracks">tracks</a> by this <a href="#//api/name/artist">artist</a>, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *topTracks</code></div>
-
-    
+	
 	
 	
 	
@@ -710,11 +690,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 @deprecated</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *tracks</code></div>
-
-    
+	
 	
 	
 	
@@ -759,11 +737,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Creates an SPArtistBrowse from the given <a href="../Classes/SPArtist.html">SPArtist</a>.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>+ (SPArtistBrowse *)browseArtist:(SPArtist *)<em>anArtist</em> inSession:(SPSession *)<em>aSession</em> type:(sp_artistbrowse_type)<em>browseMode</em></code></div>
-
-    
+	
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -831,11 +807,9 @@ starting <code>spotify:artist:</code>, this method will return <code>nil</code>.
 		<p>Creates an SPArtistBrowse from the given <a href="#//api/name/artist">artist</a> URL.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>+ (void)browseArtistAtURL:(NSURL *)<em>artistURL</em> inSession:(SPSession *)<em>aSession</em> type:(sp_artistbrowse_type)<em>browseMode</em> callback:(void ( ^ ) ( SPArtistBrowse *artistBrowse ))<em>block</em></code></div>
-
-    
+	
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -911,11 +885,9 @@ starting <code>spotify:artist:</code>, this method will return <code>nil</code>.
 		<p>Initializes a new SPArtistBrowse from the given <a href="../Classes/SPArtist.html">SPArtist</a>.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>- (id)initWithArtist:(SPArtist *)<em>anArtist</em> inSession:(SPSession *)<em>aSession</em> type:(sp_artistbrowse_type)<em>browseMode</em></code></div>
-
-    
+	
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -985,7 +957,7 @@ starting <code>spotify:artist:</code>, this method will return <code>nil</code>.
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 Spotify AB. All rights reserved. (Last updated: 2013-01-04)</span><br />
+						<p><span class="copyright">&copy; 2012 Spotify AB. All rights reserved. (Last updated: 2012-11-14)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

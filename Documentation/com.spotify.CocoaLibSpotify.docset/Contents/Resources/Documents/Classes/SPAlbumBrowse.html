@@ -314,11 +314,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the browse operation&rsquo;s album.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPAlbum *album</code></div>
-
-    
+	
 	
 	
 	
@@ -350,11 +348,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the album&rsquo;s artist, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPArtist *artist</code></div>
-
-    
+	
 	
 	
 	
@@ -386,11 +382,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the album&rsquo;s copyrights as an array of NSString, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *copyrights</code></div>
-
-    
+	
 	
 	
 	
@@ -422,11 +416,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the error that occurred during loading, or <code>nil</code> if no error occurred.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSError *loadError</code></div>
-
-    
+	
 	
 	
 	
@@ -458,11 +450,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns <code>YES</code> if the <a href="#//api/name/album">album</a> metadata has finished loading.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isLoaded) BOOL loaded</code></div>
-
-    
+	
 	
 	
 	
@@ -494,11 +484,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the album&rsquo;s review, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSString *review</code></div>
-
-    
+	
 	
 	
 	
@@ -530,11 +518,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the session the album&rsquo;s metadata is <a href="#//api/name/loaded">loaded</a> in.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPSession *session</code></div>
-
-    
+	
 	
 	
 	
@@ -566,11 +552,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Returns the album&rsquo;s tracks, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *tracks</code></div>
-
-    
+	
 	
 	
 	
@@ -610,11 +594,9 @@ see the <a href="../Classes/SPTrack.html">SPTrack</a> documentation for details.
 		<p>Creates an SPAlbumBrowse from the given <a href="../Classes/SPAlbum.html">SPAlbum</a>.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>+ (SPAlbumBrowse *)browseAlbum:(SPAlbum *)<em>anAlbum</em> inSession:(SPSession *)<em>aSession</em></code></div>
-
-    
+	
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -672,11 +654,9 @@ object. No caching is performed.</p>
 		<p>Creates an SPAlbumBrowse from the given <a href="#//api/name/album">album</a> URL.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>+ (void)browseAlbumAtURL:(NSURL *)<em>albumURL</em> inSession:(SPSession *)<em>aSession</em> callback:(void ( ^ ) ( SPAlbumBrowse *albumBrowse ))<em>block</em></code></div>
-
-    
+	
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -743,11 +723,9 @@ starting <code>spotify:album:</code>, this method will return <code>nil</code>.<
 		<p>Initializes a new SPAlbumBrowse from the given <a href="../Classes/SPAlbum.html">SPAlbum</a>.</p>
 	</div>		
 	
-    
-
+	
 	<div class="method-subsection method-declaration"><code>- (id)initWithAlbum:(SPAlbum *)<em>anAlbum</em> inSession:(SPSession *)<em>aSession</em></code></div>
-
-    
+	
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -802,7 +780,7 @@ starting <code>spotify:album:</code>, this method will return <code>nil</code>.<
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 Spotify AB. All rights reserved. (Last updated: 2013-01-04)</span><br />
+						<p><span class="copyright">&copy; 2012 Spotify AB. All rights reserved. (Last updated: 2012-11-14)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

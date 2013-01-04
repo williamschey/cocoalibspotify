@@ -376,9 +376,11 @@
 		<p>Returns the opaque structure used by the C LibSpotify API.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) sp_album *album</code></div>
-	
+
+    
 	
 	
 	
@@ -418,9 +420,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the album&rsquo;s artist, or <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPArtist *artist</code></div>
-	
+
+    
 	
 	
 	
@@ -452,9 +456,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns <code>YES</code> if the <a href="#//api/name/album">album</a> is available in the logged-in user&rsquo;s region.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isAvailable) BOOL available</code></div>
-	
+
+    
 	
 	
 	
@@ -486,9 +492,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the album&rsquo;s cover image. Returns <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet, or if the <a href="#//api/name/album">album</a> doesn&rsquo;t have a cover image.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPImage *cover</code></div>
-	
+
+    
 	
 	
 	
@@ -520,9 +528,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns a large version of the album&rsquo;s <a href="#//api/name/cover">cover</a> image. Returns <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet, or if the <a href="#//api/name/album">album</a> doesn&rsquo;t have a <a href="#//api/name/cover">cover</a> image.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPImage *largeCover</code></div>
-	
+
+    
 	
 	
 	
@@ -554,9 +564,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns a largest <a href="#//api/name/available">available</a> version of the album&rsquo;s <a href="#//api/name/cover">cover</a> image. Returns <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet, or if the <a href="#//api/name/album">album</a> doesn&rsquo;t have a <a href="#//api/name/cover">cover</a> image.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPImage *largestAvailableCover</code></div>
-	
+
+    
 	
 	
 	
@@ -588,9 +600,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns <code>YES</code> if the <a href="#//api/name/album">album</a> metadata has finished loading.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isLoaded) BOOL loaded</code></div>
-	
+
+    
 	
 	
 	
@@ -622,9 +636,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the name of the <a href="#//api/name/album">album</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSString *name</code></div>
-	
+
+    
 	
 	
 	
@@ -656,9 +672,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the session the album&rsquo;s metadata is <a href="#//api/name/loaded">loaded</a> in.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPSession *session</code></div>
-	
+
+    
 	
 	
 	
@@ -690,9 +708,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns a thumbnail version of the album&rsquo;s <a href="#//api/name/cover">cover</a> image. Returns <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet, or if the <a href="#//api/name/album">album</a> doesn&rsquo;t have a <a href="#//api/name/cover">cover</a> image.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPImage *smallCover</code></div>
-	
+
+    
 	
 	
 	
@@ -724,9 +744,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns a smallest <a href="#//api/name/available">available</a> version of the album&rsquo;s <a href="#//api/name/cover">cover</a> image. Returns <code>nil</code> if the metadata isn&rsquo;t <a href="#//api/name/loaded">loaded</a> yet, or if the <a href="#//api/name/album">album</a> doesn&rsquo;t have a <a href="#//api/name/cover">cover</a> image.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPImage *smallestAvailableCover</code></div>
-	
+
+    
 	
 	
 	
@@ -758,9 +780,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the Spotify URI of the track, for example: <code>spotify:album:43p5dnBeVx4H2bzy0W1cGL</code></p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSURL *spotifyURL</code></div>
-	
+
+    
 	
 	
 	
@@ -792,9 +816,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the <a href="#//api/name/album">album</a> type.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) sp_albumtype type</code></div>
-	
+
+    
 	
 	
 	
@@ -843,9 +869,11 @@ Unknown type.</p>
 		<p>Returns the release year of the <a href="#//api/name/album">album</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSUInteger year</code></div>
-	
+
+    
 	
 	
 	
@@ -885,9 +913,11 @@ Unknown type.</p>
 		<p>Creates an SPAlbum from the given opaque sp_<a href="#//api/name/album">album</a> struct.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPAlbum *)albumWithAlbumStruct:(sp_album *)<em>anAlbum</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -946,9 +976,11 @@ returns a cached SPAlbum if one already exists for the given struct.</p><div cla
 		<p>Creates an SPAlbum from the given Spotify <a href="#//api/name/album">album</a> URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (void)albumWithAlbumURL:(NSURL *)<em>aURL</em> inSession:(SPSession *)<em>aSession</em> callback:(void ( ^ ) ( SPAlbum *album ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1015,9 +1047,11 @@ starting <code>spotify:album:</code>, this method will return <code>nil</code>.<
 		<p>Initializes a new SPAlbum from the given opaque sp_<a href="#//api/name/album">album</a> struct.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithAlbumStruct:(sp_album *)<em>anAlbum</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1080,7 +1114,7 @@ you create SPAlbum objects using <a href="#//api/name/albumWithAlbumStruct:inSes
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Spotify AB. All rights reserved. (Last updated: 2012-11-14)</span><br />
+						<p><span class="copyright">&copy; 2013 Spotify AB. All rights reserved. (Last updated: 2013-01-04)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

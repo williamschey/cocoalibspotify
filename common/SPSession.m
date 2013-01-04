@@ -1478,10 +1478,6 @@ static SPSession *sharedSession;
     SPDispatchAsync(^() { if (self.session) sp_session_set_cache_size(self.session, maximumCacheSizeMB); });
 }
 
--(void)setConnectionType:(sp_connection_type)type {
-    SPDispatchAsync(^() { if (self.session) sp_session_set_connection_type(self.session, type); });
-}
-
 -(void)fetchOfflineKeyTimeRemaining:(void (^)(NSTimeInterval remainingTime))block {
 	SPDispatchAsync(^() {
 		NSTimeInterval interval = 0.0;
@@ -1507,7 +1503,7 @@ static SPSession *sharedSession;
 @synthesize allowSyncOverWifi = _allowSyncOverWifi;
 @synthesize allowSyncOverMobile = _allowSyncOverMobile;
 
-- (void)setForceOfflineMode:(BOOL)forceOfflineMode {
+-(void)setForceOfflineMode:(BOOL)forceOfflineMode {
     
     [self willChangeValueForKey:@"forceOfflineMode"];
     
@@ -1518,7 +1514,7 @@ static SPSession *sharedSession;
     
 }
 
-- (void)setAllowSyncOverWifi:(BOOL)allowSyncOverWifi {
+-(void)setAllowSyncOverWifi:(BOOL)allowSyncOverWifi {
     
     [self willChangeValueForKey:@"allowSyncOverWifi"];
     
@@ -1529,7 +1525,7 @@ static SPSession *sharedSession;
     
 }
 
-- (void)setAllowSyncOverMobile:(BOOL)allowSyncOverMobile {
+-(void)setAllowSyncOverMobile:(BOOL)allowSyncOverMobile {
     
     [self willChangeValueForKey:@"allowSyncOverMobile"];
     
@@ -1537,6 +1533,31 @@ static SPSession *sharedSession;
     [self updateConnectionRules];
     
     [self didChangeValueForKey:@"allowSyncOverMobile"];
+    
+}
+
+-(sp_connection_type)connectionType {
+    
+    sp_connection_type type = SP_CONNECTION_TYPE_UNKNOWN;
+    SCNetworkReachabilityFlags flags;
+    SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags);
+    
+    if ((flags & kSCNetworkReachabilityFlagsReachable) != 0) {
+
+#if TARGET_OS_IPHONE
+        type = SP_CONNECTION_TYPE_WIFI;
+#else
+        if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0 && (flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0)
+            type = SP_CONNECTION_TYPE_WIFI;
+#endif
+        
+        if ((flags & kSCNetworkReachabilityFlagsIsWWAN) != 0)
+            type = SP_CONNECTION_TYPE_MOBILE;
+        
+    } else
+        type = SP_CONNECTION_TYPE_NONE;
+    
+    return type;
     
 }
 
@@ -1622,17 +1643,7 @@ static SPSession *sharedSession;
 
 -(void)updateConnectionType {
     
-    sp_connection_type type = SP_CONNECTION_TYPE_UNKNOWN;
-    SCNetworkReachabilityFlags flags;
-    SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags);
-    
-    if ((flags & kSCNetworkReachabilityFlagsReachable) != 0) {
-        type = SP_CONNECTION_TYPE_WIFI;
-        if ((flags & kSCNetworkReachabilityFlagsIsWWAN) != 0)
-            type = SP_CONNECTION_TYPE_MOBILE;
-    } else
-        type = SP_CONNECTION_TYPE_NONE;
-    
+    sp_connection_type type = self.connectionType;
     SPDispatchAsync(^() { if (self.session) sp_session_set_connection_type(self.session, type); });
     
 }

@@ -516,9 +516,11 @@
 		<p>Returns the album results of the search, or <code>nil</code> if the search has not <a href="#//api/name/loaded">loaded</a> or there are no album results.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *albums</code></div>
-	
+
+    
 	
 	
 	
@@ -550,9 +552,11 @@
 		<p>Returns the artist results of the search, or <code>nil</code> if the search has not <a href="#//api/name/loaded">loaded</a> or there are no artist results.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *artists</code></div>
-	
+
+    
 	
 	
 	
@@ -584,9 +588,11 @@
 		<p>Returns <code>YES</code> if the search service has indicated there are no more album results to find.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) BOOL hasExhaustedAlbumResults</code></div>
-	
+
+    
 	
 	
 	
@@ -618,9 +624,11 @@
 		<p>Returns <code>YES</code> if the search service has indicated there are no more artist results to find.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) BOOL hasExhaustedArtistResults</code></div>
-	
+
+    
 	
 	
 	
@@ -652,9 +660,11 @@
 		<p>Returns <code>YES</code> if the search service has indicated there are no more playlist results to find.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) BOOL hasExhaustedPlaylistResults</code></div>
-	
+
+    
 	
 	
 	
@@ -686,9 +696,11 @@
 		<p>Returns <code>YES</code> if the search service has indicated there are no more track results to find.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) BOOL hasExhaustedTrackResults</code></div>
-	
+
+    
 	
 	
 	
@@ -720,9 +732,11 @@
 		<p>Returns <code>NO</code> if a search is currently in progress, or <code>YES</code> if the search is complete (or has failed).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isLoaded) BOOL loaded</code></div>
-	
+
+    
 	
 	
 	
@@ -754,9 +768,11 @@
 		<p>Returns the playlist results of the search, or <code>nil</code> if the search has not <a href="#//api/name/loaded">loaded</a> or there are no playlist results.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *playlists</code></div>
-	
+
+    
 	
 	
 	
@@ -788,9 +804,11 @@
 		<p>Returns an NSError indicating the search failure reason, or <code>nil</code> if there was no error.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSError *searchError</code></div>
-	
+
+    
 	
 	
 	
@@ -822,9 +840,11 @@
 		<p>Returns the search query for this search.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSString *searchQuery</code></div>
-	
+
+    
 	
 	
 	
@@ -856,9 +876,11 @@
 		<p>Returns the type of search, either <code>SP_SEARCH_STANDARD</code> or <code>SP_SEARCH_SUGGEST</code>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) sp_search_type searchType</code></div>
-	
+
+    
 	
 	
 	
@@ -890,9 +912,11 @@
 		<p>Returns the session the search is being performed in.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPSession *session</code></div>
-	
+
+    
 	
 	
 	
@@ -924,9 +948,11 @@
 		<p>Returns the Spotify URI of the search, for example: <code>spotify:search:rick+astley</code></p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSURL *spotifyURL</code></div>
-	
+
+    
 	
 	
 	
@@ -958,9 +984,11 @@
 		<p>Returns a &ldquo;suggested&rdquo; search query provided by the search service, or <code>nil</code> if the search has not <a href="#//api/name/loaded">loaded</a> or there is no suggested query.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSString *suggestedSearchQuery</code></div>
-	
+
+    
 	
 	
 	
@@ -997,9 +1025,11 @@
 		<p>Returns the track results of the search, or <code>nil</code> if the search has not <a href="#//api/name/loaded">loaded</a> or there are no track results.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *tracks</code></div>
-	
+
+    
 	
 	
 	
@@ -1039,9 +1069,11 @@
 		<p>Creates a new &ldquo;live search&rdquo; SPSearch with the default page size for the given query.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPSearch *)liveSearchWithSearchQuery:(NSString *)<em>searchQuery</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1101,9 +1133,11 @@ immediately. Be sure you want to perform the search before creating the object!<
 		<p>Creates a new SPSearch with the default page size for the given query.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPSearch *)searchWithSearchQuery:(NSString *)<em>searchQuery</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1162,9 +1196,11 @@ immediately. Be sure you want to perform the search before creating the object!<
 		<p>Creates a new SPSearch with the default page size from the given Spotify search URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPSearch *)searchWithURL:(NSURL *)<em>searchURL</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1232,9 +1268,11 @@ immediately. Be sure you want to perform the search before creating the object!<
 		<p>Request an extra page of <a href="#//api/name/albums">albums</a> from the Spotify search service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)addAlbumPage</code></div>
-	
+
+    
 	
 	
 	
@@ -1278,9 +1316,11 @@ or if a search is already in progress.</p>
 		<p>Request an extra page of <a href="#//api/name/artists">artists</a> from the Spotify search service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)addArtistPage</code></div>
-	
+
+    
 	
 	
 	
@@ -1324,9 +1364,11 @@ or if a search is already in progress.</p>
 		<p>Request an extra page of <a href="#//api/name/tracks">tracks</a>, <a href="#//api/name/albums">albums</a>, <a href="#//api/name/tracks">tracks</a> and <a href="#//api/name/playlists">playlists</a> from the Spotify search service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)addPageForArtists:(BOOL)<em>searchArtist</em> albums:(BOOL)<em>searchAlbum</em> tracks:(BOOL)<em>searchTrack</em> playlists:(BOOL)<em>searchPlaylist</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1394,9 +1436,11 @@ or if a search is already in progress.</p>
 		<p>Request an extra page of <a href="#//api/name/playlists">playlists</a> from the Spotify search service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)addPlaylistPage</code></div>
-	
+
+    
 	
 	
 	
@@ -1440,9 +1484,11 @@ or if a search is already in progress.</p>
 		<p>Request an extra page of <a href="#//api/name/tracks">tracks</a> from the Spotify search service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)addTrackPage</code></div>
-	
+
+    
 	
 	
 	
@@ -1486,9 +1532,11 @@ or if a search is already in progress.</p>
 		<p>Initializes a new SPSearch with the default page size for the given query.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithSearchQuery:(NSString *)<em>searchString</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1546,9 +1594,11 @@ immediately. Be sure you want to perform the search before creating the object!<
 		<p>Initializes a new SPSearch with the default page size for the given query and type.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithSearchQuery:(NSString *)<em>searchString</em> inSession:(SPSession *)<em>aSession</em> type:(sp_search_type)<em>type</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1613,9 +1663,11 @@ immediately. Be sure you want to perform the search before creating the object!<
 		<p>Initializes a new SPSearch for the given query.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithSearchQuery:(NSString *)<em>searchString</em> pageSize:(NSInteger)<em>size</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1678,9 +1730,11 @@ immediately. Be sure you want to perform the search before creating the object!<
 		<p>Initializes a new SPSearch for the given query.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithSearchQuery:(NSString *)<em>searchString</em> pageSize:(NSInteger)<em>size</em> inSession:(SPSession *)<em>aSession</em> type:(sp_search_type)<em>type</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1750,9 +1804,11 @@ immediately. Be sure you want to perform the search before creating the object!<
 		<p>Initializes a new SPSearch with the default page size from the given Spotify search URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithURL:(NSURL *)<em>searchURL</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1810,9 +1866,11 @@ starting <code>spotify:search:</code>, this method will return <code>nil</code>.
 		<p>Initializes a new SPSearch from the given Spotify search URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithURL:(NSURL *)<em>searchURL</em> pageSize:(NSInteger)<em>size</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1879,7 +1937,7 @@ immediately. Be sure you want to perform the search before creating the object!<
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Spotify AB. All rights reserved. (Last updated: 2012-11-14)</span><br />
+						<p><span class="copyright">&copy; 2013 Spotify AB. All rights reserved. (Last updated: 2013-01-04)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

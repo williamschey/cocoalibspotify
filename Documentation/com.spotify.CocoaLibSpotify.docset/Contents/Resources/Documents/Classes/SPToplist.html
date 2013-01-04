@@ -336,9 +336,11 @@ be seen as a popularity chart for that region.</p>
 		<p>Returns the albums in the toplist in descending order of popularity.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *albums</code></div>
-	
+
+    
 	
 	
 	
@@ -370,9 +372,11 @@ be seen as a popularity chart for that region.</p>
 		<p>Returns the artists in the toplist in descending order of popularity.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *artists</code></div>
-	
+
+    
 	
 	
 	
@@ -404,9 +408,11 @@ be seen as a popularity chart for that region.</p>
 		<p>Returns the error that occurred during loading, or <code>nil</code> if no error occurred.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSError *loadError</code></div>
-	
+
+    
 	
 	
 	
@@ -438,9 +444,11 @@ be seen as a popularity chart for that region.</p>
 		<p>Returns <code>YES</code> if the toplist has finished loading.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isLoaded) BOOL loaded</code></div>
-	
+
+    
 	
 	
 	
@@ -472,9 +480,11 @@ be seen as a popularity chart for that region.</p>
 		<p>Returns the locale of the toplist, if the toplist is a locale toplist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSLocale *locale</code></div>
-	
+
+    
 	
 	
 	
@@ -506,9 +516,11 @@ be seen as a popularity chart for that region.</p>
 		<p>Returns the session the toplist is <a href="#//api/name/loaded">loaded</a> in.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPSession *session</code></div>
-	
+
+    
 	
 	
 	
@@ -540,9 +552,11 @@ be seen as a popularity chart for that region.</p>
 		<p>Returns the tracks in the toplist in descending order of popularity.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *tracks</code></div>
-	
+
+    
 	
 	
 	
@@ -574,9 +588,11 @@ be seen as a popularity chart for that region.</p>
 		<p>Returns the username of the toplist, if the toplist is a user toplist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSString *username</code></div>
-	
+
+    
 	
 	
 	
@@ -616,9 +632,11 @@ be seen as a popularity chart for that region.</p>
 		<p>Create a global toplist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPToplist *)globalToplistInSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -671,9 +689,11 @@ object. No caching is performed.</p>
 		<p>Create toplist for the currently logged in user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPToplist *)toplistForCurrentUserInSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -726,9 +746,11 @@ object. No caching is performed.</p>
 		<p>Create a regional toplist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPToplist *)toplistForLocale:(NSLocale *)<em>toplistLocale</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -786,9 +808,11 @@ object. No caching is performed.</p>
 		<p>Create a user toplist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPToplist *)toplistForUserWithName:(NSString *)<em>user</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -854,9 +878,11 @@ object. No caching is performed.</p>
 		<p>Initialize a <a href="#//api/name/locale">locale</a> toplist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initLocaleToplistWithLocale:(NSLocale *)<em>toplistLocale</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -908,9 +934,11 @@ object. No caching is performed.</p>
 		<p>Initialize a user toplist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initUserToplistWithUsername:(NSString *)<em>user</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -965,7 +993,7 @@ object. No caching is performed.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Spotify AB. All rights reserved. (Last updated: 2012-11-14)</span><br />
+						<p><span class="copyright">&copy; 2013 Spotify AB. All rights reserved. (Last updated: 2013-01-04)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

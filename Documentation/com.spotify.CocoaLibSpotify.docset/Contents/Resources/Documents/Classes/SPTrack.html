@@ -409,9 +409,11 @@
 		<p>Returns the album of the <a href="#//api/name/track">track</a>. If no metadata is available for the <a href="#//api/name/track">track</a> yet, returns <code>nil</code>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPAlbum *album</code></div>
-	
+
+    
 	
 	
 	
@@ -443,9 +445,11 @@
 		<p>Returns the artist(s) of the <a href="#//api/name/track">track</a>. If no metadata is available for the <a href="#//api/name/track">track</a> yet, returns <code>nil</code>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *artists</code></div>
-	
+
+    
 	
 	
 	
@@ -477,9 +481,11 @@
 		<p>Returns availability for this  <a href="#//api/name/track">track</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) sp_track_availability availability</code></div>
-	
+
+    
 	
 	
 	
@@ -528,9 +534,11 @@ Track not available on artist&rsquo;s reqeust</p>
 		<p>Returns a string represention of the artist(s) of the <a href="#//api/name/track">track</a>. If no metadata is available for the <a href="#//api/name/track">track</a> yet, returns <code>nil</code>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSString *consolidatedArtists</code></div>
-	
+
+    
 	
 	
 	
@@ -568,9 +576,11 @@ separated with a comma (,).</p>
 		<p>Returns the disc index of the <a href="#//api/name/track">track</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSUInteger discNumber</code></div>
-	
+
+    
 	
 	
 	
@@ -620,9 +630,11 @@ result (otherwise returns 0).</p>
 		<p>Returns the duration of the <a href="#//api/name/track">track</a>. If no metadata is available for the <a href="#//api/name/track">track</a> yet, returns 0.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSTimeInterval duration</code></div>
-	
+
+    
 	
 	
 	
@@ -654,9 +666,11 @@ result (otherwise returns 0).</p>
 		<p>Returns <code>YES</code> if the <a href="#//api/name/track">track</a> has finished loading and all data is available.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isLoaded) BOOL loaded</code></div>
-	
+
+    
 	
 	
 	
@@ -688,9 +702,11 @@ result (otherwise returns 0).</p>
 		<p>Returns <code>YES</code> if the <a href="#//api/name/track">track</a> is a local file and requires separate playback.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isLocal) BOOL local</code></div>
-	
+
+    
 	
 	
 	
@@ -722,9 +738,11 @@ result (otherwise returns 0).</p>
 		<p>Returns the name of the <a href="#//api/name/track">track</a>.  If no metadata is available for the <a href="#//api/name/track">track</a> yet, returns an empty string.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSString *name</code></div>
-	
+
+    
 	
 	
 	
@@ -756,9 +774,11 @@ result (otherwise returns 0).</p>
 		<p>Returns an <code>sp_track_offline_status</code> containing the offline status of the <a href="#//api/name/track">track</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) sp_track_offline_status offlineStatus</code></div>
-	
+
+    
 	
 	
 	
@@ -804,9 +824,11 @@ result (otherwise returns 0).</p>
 		<p>Returns the popularity of the <a href="#//api/name/track">track</a> in range 0 to 100. If no metadata is available for the <a href="#//api/name/track">track</a> yet, returns 0.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSUInteger popularity</code></div>
-	
+
+    
 	
 	
 	
@@ -838,9 +860,11 @@ result (otherwise returns 0).</p>
 		<p>Returns the Spotify session the <a href="#//api/name/track">track</a> is associated with.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, assign) __unsafe_unretained SPSession *session</code></div>
-	
+
+    
 	
 	
 	
@@ -872,9 +896,11 @@ result (otherwise returns 0).</p>
 		<p>Returns the Spotify URI of the <a href="#//api/name/track">track</a>, for example: <code>spotify:track:6JEK0CvvjDjjMUBFoXShNZ</code></p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSURL *spotifyURL</code></div>
-	
+
+    
 	
 	
 	
@@ -906,9 +932,11 @@ result (otherwise returns 0).</p>
 		<p>Returns <code>YES</code> if the <a href="#//api/name/track">track</a> is in the logged-in user&rsquo;s starred list.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite) BOOL starred</code></div>
-	
+
+    
 	
 	
 	
@@ -940,9 +968,11 @@ result (otherwise returns 0).</p>
 		<p>Returns the opaque structure used by the C LibSpotify API.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) sp_track *track</code></div>
-	
+
+    
 	
 	
 	
@@ -982,9 +1012,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the <a href="#//api/name/track">track</a> position on a disc.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSUInteger trackNumber</code></div>
-	
+
+    
 	
 	
 	
@@ -1042,9 +1074,11 @@ only for tracks appearing in a browse artist or browse <a href="#//api/name/albu
 		<p>Creates an SPTrack from the given opaque sp_<a href="#//api/name/track">track</a> struct.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPTrack *)trackForTrackStruct:(sp_track *)<em>spTrack</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1103,9 +1137,11 @@ returns a cached SPTrack if one already exists for the given struct.</p><div cla
 		<p>Creates an SPTrack from the given Spotify <a href="#//api/name/track">track</a> URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (void)trackForTrackURL:(NSURL *)<em>trackURL</em> inSession:(SPSession *)<em>aSession</em> callback:(void ( ^ ) ( SPTrack *track ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1172,9 +1208,11 @@ starting <code>spotify:track:</code>, this method will return <code>nil</code>.<
 		<p>Initializes a new SPTrack from the given opaque sp_<a href="#//api/name/track">track</a> struct.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithTrackStruct:(sp_track *)<em>tr</em> inSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1234,9 +1272,11 @@ you create SPTrack objects using <a href="#//api/name/trackForTrackStruct:inSess
 		<p>Gets the <a href="#//api/name/track">track</a> that would be played if the receiver is a &ldquo;linked&rdquo; <a href="#//api/name/track">track</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (SPTrack *)playableTrack</code></div>
-	
+
+    
 	
 	
 	
@@ -1279,7 +1319,7 @@ is here for completeness.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Spotify AB. All rights reserved. (Last updated: 2012-11-14)</span><br />
+						<p><span class="copyright">&copy; 2013 Spotify AB. All rights reserved. (Last updated: 2013-01-04)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

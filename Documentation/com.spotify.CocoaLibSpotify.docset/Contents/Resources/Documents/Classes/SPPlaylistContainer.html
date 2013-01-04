@@ -311,9 +311,11 @@ list and can&rsquo;t be created manually.</p>
 		<p>Returns the opaque structure used by the C LibSpotify API.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, assign) sp_playlistcontainer *container</code></div>
-	
+
+    
 	
 	
 	
@@ -353,9 +355,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns <code>YES</code> if the reciever has loaded its metadata, otherwise <code>NO</code>. Must be KVO-compliant.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isLoaded) BOOL loaded</code></div>
-	
+
+    
 	
 	
 	
@@ -387,9 +391,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the owner of the playlist list.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPUser *owner</code></div>
-	
+
+    
 	
 	
 	
@@ -421,9 +427,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns an array of <a href="../Classes/SPPlaylist.html">SPPlaylist</a> and/or SPPlaylistFolders representing the owner&rsquo;s playlist list.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSArray *playlists</code></div>
-	
+
+    
 	
 	
 	
@@ -455,9 +463,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the session the list is <a href="#//api/name/loaded">loaded</a> in.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, assign) __unsafe_unretained SPSession *session</code></div>
-	
+
+    
 	
 	
 	
@@ -499,9 +509,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Create a new, empty folder.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)createFolderWithName:(NSString *)<em>name</em> callback:(void ( ^ ) ( SPPlaylistFolder *createdFolder , NSError *error ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -548,9 +560,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Create a new, empty playlist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)createPlaylistWithName:(NSString *)<em>name</em> callback:(void ( ^ ) ( SPPlaylist *createdPlaylist ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -597,9 +611,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns a flattened array of the <a href="../Classes/SPPlaylist.html"><code>SPPlaylist</code></a> objects in the <a href="#//api/name/playlists">playlists</a> tree, without folders.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSArray *)flattenedPlaylists</code></div>
-	
+
+    
 	
 	
 	
@@ -636,9 +652,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Move a playlist or folder to another location in the list.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)moveItem:(id)<em>playlistOrFolder</em> toIndex:(NSUInteger)<em>newIndex</em> ofNewParent:(SPPlaylistFolder *)<em>aParentFolderOrNil</em> callback:(SPErrorableOperationCallback)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -701,9 +719,11 @@ a folder into itself. Please make sure you check the result in the completion ca
 		<p>Remove the given playlist or folder.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)removeItem:(id)<em>playlistOrFolder</em> callback:(SPErrorableOperationCallback)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -750,9 +770,11 @@ a folder into itself. Please make sure you check the result in the completion ca
 		<p>Starts the loading process. Has no effect if the loading process has already been started.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)startLoading</code></div>
-	
+
+    
 	
 	
 	
@@ -784,9 +806,11 @@ a folder into itself. Please make sure you check the result in the completion ca
 		<p>Subscribe to the given playlist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)subscribeToPlaylist:(SPPlaylist *)<em>playlist</em> callback:(SPErrorableOperationCallback)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -843,7 +867,7 @@ user <a href="#//api/name/removeItem:callback:"><code>[SPPlaylistContainer remov
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Spotify AB. All rights reserved. (Last updated: 2012-11-14)</span><br />
+						<p><span class="copyright">&copy; 2013 Spotify AB. All rights reserved. (Last updated: 2013-01-04)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

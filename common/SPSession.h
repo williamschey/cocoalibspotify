@@ -265,16 +265,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 -(void)setPreferredBitrate:(sp_bitrate)bitrate;
 
-/** Set the preffered audio bitrate for offline syncing.
- 
- @param bitrate The prefered bitrate for offline syncing.
- @param allowResync Specifies weather already synced tracks should be resynced.
- */
-- (void)setPreferredOfflineBitrate:(sp_bitrate)bitrate allowResync:(BOOL)allowResync;
+/** Returns `YES` if session is currently forced in offline mode. */
+@property (nonatomic, readwrite) BOOL forceOfflineMode;
 
-/** Set the connection type.
- 
- @param type The connection type.
+/** Returns the current connection type.
  
  Possible values:
  
@@ -295,9 +289,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
  SP_CONNECTION_TYPE_WIRED
  Ethernet cable, etc.
- 
-*/
-- (void)setConnectionType:(sp_connection_type)type;
+ */
+@property (nonatomic, readonly) sp_connection_type connectionType;
 
 ///----------------------------
 /// @name Properties
@@ -403,6 +396,19 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 @property (nonatomic, readonly, getter=isLoaded) BOOL loaded;
 
+/** Returns `YES` if session allows syncing over Wifi. */
+@property (nonatomic, readwrite) BOOL allowSyncOverWifi;
+
+/** Returns `YES` if session allows syncing over cellular networks. */
+@property (nonatomic, readwrite) BOOL allowSyncOverMobile;
+
+/** Set the preffered audio bitrate for offline syncing.
+ 
+ @param bitrate The prefered bitrate for offline syncing.
+ @param allowResync Specifies weather already synced tracks should be resynced.
+ */
+- (void)setPreferredOfflineBitrate:(sp_bitrate)bitrate allowResync:(BOOL)allowResync;
+
 ///----------------------------
 /// @name User Content
 ///----------------------------
@@ -449,19 +455,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							  toInboxOfUser:(NSString *)targetUserName
 								withMessage:(NSString *)aFriendlyMessage
 								   callback:(SPErrorableOperationCallback)block;
-
-///----------------------------
-/// @name Connection Rules
-///----------------------------
-
-/** Returns `YES` if session is currently forced in offline mode. */
-@property (nonatomic, readwrite) BOOL forceOfflineMode;
-
-/** Returns `YES` if session allows syncing over Wifi. */
-@property (nonatomic, readwrite) BOOL allowSyncOverWifi;
-
-/** Returns `YES` if session allows syncing over cellular networks. */
-@property (nonatomic, readwrite) BOOL allowSyncOverMobile;
 
 ///----------------------------
 /// @name Accessing Content by URL

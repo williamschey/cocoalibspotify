@@ -320,9 +320,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Returns the currently playing track, or <code>nil</code> if nothing is playing.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPTrack *currentTrack</code></div>
-	
+
+    
 	
 	
 	
@@ -354,9 +356,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Returns the manager&rsquo;s delegate.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite, assign) __unsafe_unretained id&lt;SPPlaybackManagerDelegate&gt; delegate</code></div>
-	
+
+    
 	
 	
 	
@@ -388,9 +392,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Returns <code>YES</code> if the track is currently playing, <code>NO</code> if not.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (readwrite) BOOL isPlaying</code></div>
-	
+
+    
 	
 	
 	
@@ -427,9 +433,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Returns the session that is performing decoding and playback.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPSession *playbackSession</code></div>
-	
+
+    
 	
 	
 	
@@ -461,9 +469,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Returns the playback position of the current track, in the range 0.0 to the current track&rsquo;s duration.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (readonly) NSTimeInterval trackPosition</code></div>
-	
+
+    
 	
 	
 	
@@ -495,9 +505,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Returns the current playback volume, in the range 0.0 to 1.0.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (readwrite) double volume</code></div>
-	
+
+    
 	
 	
 	
@@ -539,9 +551,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Called repeatedly during audio playback when audio is pushed to the system&rsquo;s audio output.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)coreAudioController:(SPCoreAudioController *)<em>controller</em> didOutputAudioOfDuration:(NSTimeInterval)<em>audioDuration</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -588,9 +602,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Initialize a new SPPlaybackManager object with a custom audio controller.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithAudioController:(SPCoreAudioController *)<em>aController</em> playbackSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -642,9 +658,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Initialize a new SPPlaybackManager object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithPlaybackSession:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -691,9 +709,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Plays the given track.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)playTrack:(SPTrack *)<em>aTrack</em> callback:(SPErrorableOperationCallback)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -740,9 +760,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Seek the current playback position to the given time.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)seekToTrackPosition:(NSTimeInterval)<em>newPosition</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -784,9 +806,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Called when playback stopped naturally at the end of a track.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)sessionDidEndPlayback:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -828,9 +852,11 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 		<p>Called when playback was paused because the Spotify account was used elsewhere.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)sessionDidLosePlayToken:(SPSession *)<em>aSession</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -875,7 +901,7 @@ either subclass this class or implement your own using <a href="../Classes/SPCor
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Spotify AB. All rights reserved. (Last updated: 2012-11-14)</span><br />
+						<p><span class="copyright">&copy; 2013 Spotify AB. All rights reserved. (Last updated: 2013-01-04)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

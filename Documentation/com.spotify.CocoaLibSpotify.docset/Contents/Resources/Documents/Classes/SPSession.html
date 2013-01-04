@@ -40,11 +40,19 @@
 	
 	<option value="properties">Properties</option>
 	
+	<option value="//api/name/allowSyncOverMobile">&nbsp;&nbsp;&nbsp;&nbsp;allowSyncOverMobile</option>
+	
+	<option value="//api/name/allowSyncOverWifi">&nbsp;&nbsp;&nbsp;&nbsp;allowSyncOverWifi</option>
+	
 	<option value="//api/name/audioDeliveryDelegate">&nbsp;&nbsp;&nbsp;&nbsp;audioDeliveryDelegate</option>
 	
 	<option value="//api/name/connectionState">&nbsp;&nbsp;&nbsp;&nbsp;connectionState</option>
 	
+	<option value="//api/name/connectionType">&nbsp;&nbsp;&nbsp;&nbsp;connectionType</option>
+	
 	<option value="//api/name/delegate">&nbsp;&nbsp;&nbsp;&nbsp;delegate</option>
+	
+	<option value="//api/name/forceOfflineMode">&nbsp;&nbsp;&nbsp;&nbsp;forceOfflineMode</option>
 	
 	<option value="//api/name/inboxPlaylist">&nbsp;&nbsp;&nbsp;&nbsp;inboxPlaylist</option>
 	
@@ -156,6 +164,8 @@
 	
 	<option value="//api/name/setPreferredBitrate:">&nbsp;&nbsp;&nbsp;&nbsp;- setPreferredBitrate:</option>
 	
+	<option value="//api/name/setPreferredOfflineBitrate:allowResync:">&nbsp;&nbsp;&nbsp;&nbsp;- setPreferredOfflineBitrate:allowResync:</option>
+	
 	<option value="//api/name/setScrobblingState:forService:callback:">&nbsp;&nbsp;&nbsp;&nbsp;- setScrobblingState:forService:callback:</option>
 	
 	<option value="//api/name/setScrobblingUserName:password:forService:callback:">&nbsp;&nbsp;&nbsp;&nbsp;- setScrobblingUserName:password:forService:callback:</option>
@@ -212,11 +222,19 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/allowSyncOverMobile">allowSyncOverMobile</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/allowSyncOverWifi">allowSyncOverWifi</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/audioDeliveryDelegate">audioDeliveryDelegate</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connectionState">connectionState</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connectionType">connectionType</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/delegate">delegate</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/forceOfflineMode">forceOfflineMode</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/inboxPlaylist">inboxPlaylist</a></span></li>
 	
@@ -329,6 +347,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setMaximumCacheSizeMB:">setMaximumCacheSizeMB:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setPreferredBitrate:">setPreferredBitrate:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setPreferredOfflineBitrate:allowResync:">setPreferredOfflineBitrate:allowResync:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setScrobblingState:forService:callback:">setScrobblingState:forService:callback:</a></span></li>
 	
@@ -544,6 +564,20 @@ as you see fit. See the SimplePlayback sample project for an example of how to d
 	</span>
 	
 	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/forceOfflineMode">&nbsp;&nbsp;forceOfflineMode</a></code>
+		<span class="tooltip"><p>Returns <code>YES</code> if <a href="#//api/name/session">session</a> is currently forced in offline mode.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connectionType">&nbsp;&nbsp;connectionType</a></code>
+		<span class="tooltip"><p>Returns the current connection type.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
 </li>
 						</ul>
 						
@@ -680,6 +714,27 @@ social services is temporarily disabled.</p></span>
 		<span class="tooltip"><p>Returns <code>YES</code> if the <a href="#//api/name/session">session</a> has finished loading.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/allowSyncOverWifi">&nbsp;&nbsp;allowSyncOverWifi</a></code>
+		<span class="tooltip"><p>Returns <code>YES</code> if <a href="#//api/name/session">session</a> allows syncing over Wifi.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/allowSyncOverMobile">&nbsp;&nbsp;allowSyncOverMobile</a></code>
+		<span class="tooltip"><p>Returns <code>YES</code> if <a href="#//api/name/session">session</a> allows syncing over cellular networks.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setPreferredOfflineBitrate:allowResync:">&ndash;&nbsp;setPreferredOfflineBitrate:allowResync:</a></code>
+		<span class="tooltip"><p>Set the preffered audio bitrate for offline syncing.</p></span>
+	</span>
+	
 	
 </li>
 						</ul>
@@ -924,6 +979,78 @@ sound level of each track the same), otherwise <code>NO</code>.</p></span>
 						<h2 class="subtitle subtitle-methods">Properties</h2>
 						
 						<div class="section-method">
+	<a name="//api/name/allowSyncOverMobile" title="allowSyncOverMobile"></a>
+	<h3 class="subsubtitle method-title">allowSyncOverMobile</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns <code>YES</code> if <a href="#//api/name/session">session</a> allows syncing over cellular networks.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite) BOOL allowSyncOverMobile</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">SPSession.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/allowSyncOverWifi" title="allowSyncOverWifi"></a>
+	<h3 class="subsubtitle method-title">allowSyncOverWifi</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns <code>YES</code> if <a href="#//api/name/session">session</a> allows syncing over Wifi.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite) BOOL allowSyncOverWifi</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">SPSession.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/audioDeliveryDelegate" title="audioDeliveryDelegate"></a>
 	<h3 class="subsubtitle method-title">audioDeliveryDelegate</h3>
 	
@@ -933,9 +1060,11 @@ sound level of each track the same), otherwise <code>NO</code>.</p></span>
 		<p>Returns the session&rsquo;s audio delivery <a href="#//api/name/delegate">delegate</a> object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite, assign) __unsafe_unretained id&lt;SPSessionAudioDeliveryDelegate&gt; audioDeliveryDelegate</code></div>
-	
+
+    
 	
 	
 	
@@ -973,9 +1102,11 @@ to the system&rsquo;s audio output. See the SimplePlayback sample project for an
 		<p>Returns the current connection state.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) sp_connectionstate connectionState</code></div>
-	
+
+    
 	
 	
 	
@@ -1018,6 +1149,65 @@ The connection state is undefined.</p>
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/connectionType" title="connectionType"></a>
+	<h3 class="subsubtitle method-title">connectionType</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the current connection type.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) sp_connection_type connectionType</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Possible values:</p>
+
+<p>SP_CONNECTION_TYPE_UNKNOWN
+Connection type unknown (Default).</p>
+
+<p>SP_CONNECTION_TYPE_NONE
+No connection.</p>
+
+<p>SP_CONNECTION_TYPE_MOBILE
+Mobile data (EDGE, 3G, etc).</p>
+
+<p>SP_CONNECTION_TYPE_MOBILE_ROAMING
+Roamed mobile data (EDGE, 3G, etc).</p>
+
+<p>SP_CONNECTION_TYPE_WIFI
+Wireless connection.</p>
+
+<p>SP_CONNECTION_TYPE_WIRED
+Ethernet cable, etc.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">SPSession.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/delegate" title="delegate"></a>
 	<h3 class="subsubtitle method-title">delegate</h3>
 	
@@ -1027,9 +1217,47 @@ The connection state is undefined.</p>
 		<p>Returns the current delegate object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite, assign) __unsafe_unretained id&lt;SPSessionDelegate&gt; delegate</code></div>
+
+    
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">SPSession.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/forceOfflineMode" title="forceOfflineMode"></a>
+	<h3 class="subsubtitle method-title">forceOfflineMode</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns <code>YES</code> if <a href="#//api/name/session">session</a> is currently forced in offline mode.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite) BOOL forceOfflineMode</code></div>
+
+    
 	
 	
 	
@@ -1061,9 +1289,11 @@ The connection state is undefined.</p>
 		<p>Returns the logged in user&rsquo;s inbox playlist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPPlaylist *inboxPlaylist</code></div>
-	
+
+    
 	
 	
 	
@@ -1101,9 +1331,11 @@ updated as new tracks are sent to the <a href="#//api/name/user">user</a>.</p>
 		<p>Returns <code>YES</code> if the <a href="#//api/name/session">session</a> has finished loading.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isLoaded) BOOL loaded</code></div>
-	
+
+    
 	
 	
 	
@@ -1141,9 +1373,11 @@ updated as new tracks are sent to the <a href="#//api/name/user">user</a>.</p>
 		<p>Returns the loading policy of the <a href="#//api/name/session">session</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) SPAsyncLoadingPolicy loadingPolicy</code></div>
-	
+
+    
 	
 	
 	
@@ -1175,9 +1409,11 @@ updated as new tracks are sent to the <a href="#//api/name/user">user</a>.</p>
 		<p>Returns the locale of the logged-in <a href="#//api/name/user">user</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSLocale *locale</code></div>
-	
+
+    
 	
 	
 	
@@ -1209,9 +1445,11 @@ updated as new tracks are sent to the <a href="#//api/name/user">user</a>.</p>
 		<p>Returns the number of playlists still waiting to be down<a href="#//api/name/loaded">loaded</a> for offline playback.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSUInteger offlinePlaylistsRemaining</code></div>
-	
+
+    
 	
 	
 	
@@ -1243,9 +1481,11 @@ updated as new tracks are sent to the <a href="#//api/name/user">user</a>.</p>
 		<p>Returns a dictionary containing information about any offline sync activity. See Contants for keys.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, copy) NSDictionary *offlineStatistics</code></div>
-	
+
+    
 	
 	
 	
@@ -1277,9 +1517,11 @@ updated as new tracks are sent to the <a href="#//api/name/user">user</a>.</p>
 		<p>Returns the last error encountered during offline syncing, or <code>nil</code> if there is no problem.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) NSError *offlineSyncError</code></div>
-	
+
+    
 	
 	
 	
@@ -1311,9 +1553,11 @@ updated as new tracks are sent to the <a href="#//api/name/user">user</a>.</p>
 		<p>Returns <code>YES</code> if tracks are currently being down<a href="#//api/name/loaded">loaded</a> for offline playback, otherwise <code>NO</code>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, getter=isOfflineSyncing) BOOL offlineSyncing</code></div>
-	
+
+    
 	
 	
 	
@@ -1345,9 +1589,11 @@ updated as new tracks are sent to the <a href="#//api/name/user">user</a>.</p>
 		<p>Returns the number of tracks still waiting to be down<a href="#//api/name/loaded">loaded</a> for offline playback.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSUInteger offlineTracksRemaining</code></div>
-	
+
+    
 	
 	
 	
@@ -1379,9 +1625,11 @@ updated as new tracks are sent to the <a href="#//api/name/user">user</a>.</p>
 		<p>Returns the session&rsquo;s playback <a href="#//api/name/delegate">delegate</a> object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite, assign) __unsafe_unretained id&lt;SPSessionPlaybackDelegate&gt; playbackDelegate</code></div>
-	
+
+    
 	
 	
 	
@@ -1419,9 +1667,11 @@ playback ending or being paused because the account is being used for playback e
 		<p>Returns <code>YES</code> if the <a href="#//api/name/session">session</a> is currently playing a track, otherwise <code>NO</code>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite, getter=isPlaying) BOOL playing</code></div>
-	
+
+    
 	
 	
 	
@@ -1454,9 +1704,11 @@ playback ending or being paused because the account is being used for playback e
 social services is temporarily disabled.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite, getter=isPrivateSession) BOOL privateSession</code></div>
-	
+
+    
 	
 	
 	
@@ -1493,9 +1745,11 @@ social services is temporarily disabled.</p>
 		<p>Returns the opaque structure used by the C LibSpotify API.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) sp_session *session</code></div>
-	
+
+    
 	
 	
 	
@@ -1535,9 +1789,11 @@ API directly on items that have CocoaLibSpotify objects associated with them.</p
 		<p>Returns the logged in user&rsquo;s starred playlist.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPPlaylist *starredPlaylist</code></div>
-	
+
+    
 	
 	
 	
@@ -1575,9 +1831,11 @@ starred or unstarred.</p>
 		<p>Returns the current logged in user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPUser *user</code></div>
-	
+
+    
 	
 	
 	
@@ -1609,9 +1867,11 @@ starred or unstarred.</p>
 		<p>Returns the <a href="#//api/name/user">user</a> agent value the <a href="#//api/name/session">session</a> was initialized with.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, copy, readonly) NSString *userAgent</code></div>
-	
+
+    
 	
 	
 	
@@ -1643,9 +1903,11 @@ starred or unstarred.</p>
 		<p>Returns an <a href="../Classes/SPPlaylistContainer.html">SPPlaylistContainer</a> object that contains the user&rsquo;s playlists.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, strong) SPPlaylistContainer *userPlaylists</code></div>
-	
+
+    
 	
 	
 	
@@ -1687,9 +1949,11 @@ starred or unstarred.</p>
 sound level of each track the same), otherwise <code>NO</code>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readwrite, getter=isUsingVolumeNormalization) BOOL usingVolumeNormalization</code></div>
-	
+
+    
 	
 	
 	
@@ -1734,9 +1998,11 @@ sound level of each track the same), otherwise <code>NO</code>.</p>
 		<p>Executes the given block on the libspotify thread.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (void)dispatchToLibSpotifyThread:(dispatch_block_t)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1791,9 +2057,11 @@ you&rsquo;re likely to trigger an apparently random crash in the future since th
 		<p>Executes the given block on the libspotify thread.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (void)dispatchToLibSpotifyThread:(dispatch_block_t)<em>block</em> waitUntilDone:(BOOL)<em>wait</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1853,9 +2121,11 @@ you&rsquo;re likely to trigger an apparently random crash in the future since th
 		<p>Initializes the shared SPSession object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (BOOL)initializeSharedSessionWithApplicationKey:(NSData *)<em>appKey</em> userAgent:(NSString *)<em>userAgent</em> loadingPolicy:(SPAsyncLoadingPolicy)<em>policy</em> error:(NSError **)<em>error</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1925,9 +2195,11 @@ make sure you only have <em>one</em> instance of SPSession active in your proces
 		<p>Attempts to launch the Spotify client. Returns <code>YES</code> if successful.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (BOOL)launchSpotifyClientIfInstalled</code></div>
-	
+
+    
 	
 	
 	
@@ -1959,9 +2231,11 @@ make sure you only have <em>one</em> instance of SPSession active in your proces
 		<p>The &ldquo;debug&rdquo; build ID of libspotify.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (NSString *)libSpotifyBuildId</code></div>
-	
+
+    
 	
 	
 	
@@ -2004,9 +2278,11 @@ case you (or Spotify) would like to know the exact version running.</p>
 		<p>Returns the runloop that is running libspotify.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (CFRunLoopRef)libSpotifyRunloop</code></div>
-	
+
+    
 	
 	
 	
@@ -2058,9 +2334,11 @@ runloop. See <a href="#//api/name/dispatchToLibSpotifyThread:">[SPSession dispat
 		<p>Returns a shared SPSession object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (SPSession *)sharedSession</code></div>
-	
+
+    
 	
 	
 	
@@ -2101,9 +2379,11 @@ successfully called.</p></div>
 		<p>Returns <code>YES</code> if the Spotify client is installed on the current device/machine.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (BOOL)spotifyClientInstalled</code></div>
-	
+
+    
 	
 	
 	
@@ -2143,9 +2423,11 @@ successfully called.</p></div>
 		<p>Get an <a href="../Classes/SPAlbum.html">SPAlbum</a> object representing the given URL, or <code>nil</code> if the URL is not a valid album URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)albumForURL:(NSURL *)<em>url</em> callback:(void ( ^ ) ( SPAlbum *album ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2192,9 +2474,11 @@ successfully called.</p></div>
 		<p>Get an <a href="../Classes/SPArtist.html">SPArtist</a> object representing the given URL, or <code>nil</code> if the URL is not a valid artist URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)artistForURL:(NSURL *)<em>url</em> callback:(void ( ^ ) ( SPArtist *artist ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2241,9 +2525,11 @@ successfully called.</p></div>
 		<p>Attempt to login to the Spotify service using an existing login credentials blob.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)attemptLoginWithUserName:(NSString *)<em>userName</em> existingCredential:(NSString *)<em>credential</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2296,9 +2582,11 @@ most other API methods.</p></div>
 		<p>Attempt to login to the Spotify service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)attemptLoginWithUserName:(NSString *)<em>userName</em> password:(NSString *)<em>password</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2351,9 +2639,11 @@ most other API methods.</p></div>
 		<p>The username used to log in to this <a href="#//api/name/session">session</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)fetchLoginUserName:(void ( ^ ) ( NSString *loginUserName ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2396,9 +2686,11 @@ most other API methods.</p></div>
 		<p>Get the time until the <a href="#//api/name/user">user</a> needs to reconnect to Spotify to renew offline syncing keys.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)fetchOfflineKeyTimeRemaining:(void ( ^ ) ( NSTimeInterval remainingTime ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2440,9 +2732,11 @@ most other API methods.</p></div>
 		<p>Gets whether scrobbling is allowed for the given service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)fetchScrobblingAllowedForService:(sp_social_provider)<em>service</em> callback:(void ( ^ ) ( BOOL scrobblingAllowed , NSError *error ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2495,9 +2789,11 @@ for the service should either be disabled or hidden in this case.</p>
 		<p>Gets the scrobbling status for the given social service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)fetchScrobblingStateForService:(sp_social_provider)<em>service</em> callback:(void ( ^ ) ( sp_scrobbling_state state , NSError *error ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2544,9 +2840,11 @@ for the service should either be disabled or hidden in this case.</p>
 		<p>Manually flush libSpotify&rsquo;s caches.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)flushCaches:(void ( ^ ) ( ))<em>completionBlock</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2594,9 +2892,11 @@ this when your application is put into the background to ensure correct operatio
 		<p>Returns an <a href="../Classes/SPImage.html">SPImage</a> object representing the given URL, or <code>nil</code> if the URL is not a valid image URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)imageForURL:(NSURL *)<em>url</em> callback:(void ( ^ ) ( SPImage *image ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2643,9 +2943,11 @@ this when your application is put into the background to ensure correct operatio
 		<p>Initialize a new SPSession object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithApplicationKey:(NSData *)<em>appKey</em> userAgent:(NSString *)<em>userAgent</em> loadingPolicy:(SPAsyncLoadingPolicy)<em>policy</em> error:(NSError **)<em>error</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2712,9 +3014,11 @@ this when your application is put into the background to ensure correct operatio
 		<p>Log out from the Spotify service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)logout:(void ( ^ ) ( ))<em>completionBlock</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2762,9 +3066,11 @@ Called automatically when the instance is deallocated.</p>
 		<p>Returns an object representation of the given Spotify URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)objectRepresentationForSpotifyURL:(NSURL *)<em>aSpotifyUrlOfSomeKind</em> callback:(void ( ^ ) ( sp_linktype linkType , id objectRepresentation ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2817,9 +3123,11 @@ what the given URL represents and returns that for you.</p>
 		<p>Returns an object representation of the given Spotify URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)objectRepresentationForSpotifyURL:(NSURL *)<em>aSpotifyUrlOfSomeKind</em> linkType:(sp_linktype *)<em>linkType</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2877,9 +3185,11 @@ what the given URL represents and returns that for you.</p>
 		<p>Start <a href="#//api/name/playing">playing</a> the given track.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)playTrack:(SPTrack *)<em>aTrack</em> callback:(SPErrorableOperationCallback)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2926,9 +3236,11 @@ what the given URL represents and returns that for you.</p>
 		<p>Create and cache an <a href="../Classes/SPPlaylistFolder.html">SPPlaylistFolder</a> for the given folder ID from the C LibSpotify API.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (SPPlaylistFolder *)playlistFolderForFolderId:(sp_uint64)<em>playlistId</em> inContainer:(SPPlaylistContainer *)<em>aContainer</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2986,9 +3298,11 @@ what the given URL represents and returns that for you.</p>
 		<p>Create and cache an <a href="../Classes/SPPlaylist.html">SPPlaylist</a> for the given sp_playlist struct from the C LibSpotify API.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (SPPlaylist *)playlistForPlaylistStruct:(sp_playlist *)<em>playlist</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3042,9 +3356,11 @@ convenience methods use.</p><div class="warning"><p><strong>Warning:</strong> Th
 		<p>Returns an <a href="../Classes/SPPlaylist.html">SPPlaylist</a> object representing the given URL, or <code>nil</code> if the URL is not a valid playlist URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)playlistForURL:(NSURL *)<em>url</em> callback:(void ( ^ ) ( SPPlaylist *playlist ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3091,9 +3407,11 @@ convenience methods use.</p><div class="warning"><p><strong>Warning:</strong> Th
 		<p>Send tracks to another Spotify <a href="#//api/name/user">user</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (SPPostTracksToInboxOperation *)postTracks:(NSArray *)<em>tracks</em> toInboxOfUser:(NSString *)<em>targetUserName</em> withMessage:(NSString *)<em>aFriendlyMessage</em> callback:(SPErrorableOperationCallback)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3170,9 +3488,11 @@ method is called. Be sure you want to post the tracks before doing so!</p></div>
 		<p>Preloads playback assets for the given track.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)preloadTrackForPlayback:(SPTrack *)<em>aTrack</em> callback:(SPErrorableOperationCallback)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3226,9 +3546,11 @@ to the next track during normal playback.</p>
 		<p>Returns an <a href="../Classes/SPSearch.html">SPSearch</a> object representing the given URL, or <code>nil</code> if the URL is not a valid search URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)searchForURL:(NSURL *)<em>url</em> callback:(void ( ^ ) ( SPSearch *search ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3275,9 +3597,11 @@ to the next track during normal playback.</p>
 		<p>Seek the current playback position to the given time.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)seekPlaybackToOffset:(NSTimeInterval)<em>offset</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3319,9 +3643,11 @@ to the next track during normal playback.</p>
 		<p>Set the maximum cache size, in megabytes.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)setMaximumCacheSizeMB:(size_t)<em>maximumCacheSizeMB</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3368,9 +3694,11 @@ to the next track during normal playback.</p>
 		<p>Set the preferred audio bitrate for playback.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)setPreferredBitrate:(sp_bitrate)<em>bitrate</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3408,6 +3736,57 @@ to the next track during normal playback.</p>
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/setPreferredOfflineBitrate:allowResync:" title="setPreferredOfflineBitrate:allowResync:"></a>
+	<h3 class="subsubtitle method-title">setPreferredOfflineBitrate:allowResync:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set the preffered audio bitrate for offline syncing.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)setPreferredOfflineBitrate:(sp_bitrate)<em>bitrate</em> allowResync:(BOOL)<em>allowResync</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>bitrate</em></dt>
+			<dd><p>The prefered bitrate for offline syncing.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>allowResync</em></dt>
+			<dd><p>Specifies weather already synced tracks should be resynced.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">SPSession.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/setScrobblingState:forService:callback:" title="setScrobblingState:forService:callback:"></a>
 	<h3 class="subsubtitle method-title">setScrobblingState:forService:callback:</h3>
 	
@@ -3417,9 +3796,11 @@ to the next track during normal playback.</p>
 		<p>Sets the scrobbling status for the given social service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)setScrobblingState:(sp_scrobbling_state)<em>state</em> forService:(sp_social_provider)<em>service</em> callback:(SPErrorableOperationCallback)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3471,9 +3852,11 @@ to the next track during normal playback.</p>
 		<p>Sets the scrobbling credientials for the given social service.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)setScrobblingUserName:(NSString *)<em>userName</em> password:(NSString *)<em>password</em> forService:(sp_social_provider)<em>service</em> callback:(SPErrorableOperationCallback)<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3536,9 +3919,11 @@ are invalid, the <code>session:didEncounterScrobblingError:</code> method on you
 		<p>Create and cache an <a href="../Classes/SPTrack.html">SPTrack</a> for the given sp_track struct from the C LibSpotify API.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (SPTrack *)trackForTrackStruct:(sp_track *)<em>track</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3592,9 +3977,11 @@ convenience methods use.</p><div class="warning"><p><strong>Warning:</strong> Th
 		<p>Returns an <a href="../Classes/SPTrack.html">SPTrack</a> object representing the given URL, or <code>nil</code> if the URL is not a valid track URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)trackForURL:(NSURL *)<em>url</em> callback:(void ( ^ ) ( SPTrack *track ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3641,9 +4028,11 @@ convenience methods use.</p><div class="warning"><p><strong>Warning:</strong> Th
 		<p>Create and cache an SPUnknownPlaylist (subclass of <a href="../Classes/SPPlaylist.html">SPPlaylist</a>) for the given sp_playlist struct from the C LibSpotify API.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (SPUnknownPlaylist *)unknownPlaylistForPlaylistStruct:(sp_playlist *)<em>playlist</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3696,9 +4085,11 @@ convenience methods use.</p>
 		<p>Unload playback resources from memory.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)unloadPlayback</code></div>
-	
+
+    
 	
 	
 	
@@ -3736,9 +4127,11 @@ instance deallocation.</p>
 		<p>Returns an <a href="../Classes/SPUser.html">SPUser</a> object representing the given URL, or <code>nil</code> if the URL is not a valid <a href="#//api/name/user">user</a> URL.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)userForURL:(NSURL *)<em>url</em> callback:(void ( ^ ) ( SPUser *user ))<em>block</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3785,9 +4178,11 @@ instance deallocation.</p>
 		<p>Create and cache an <a href="../Classes/SPUser.html">SPUser</a> for the given sp_<a href="#//api/name/user">user</a> struct from the C LibSpotify API.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (SPUser *)userForUserStruct:(sp_user *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3844,7 +4239,7 @@ convenience methods use.</p><div class="warning"><p><strong>Warning:</strong> Th
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Spotify AB. All rights reserved. (Last updated: 2012-11-14)</span><br />
+						<p><span class="copyright">&copy; 2013 Spotify AB. All rights reserved. (Last updated: 2013-01-04)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

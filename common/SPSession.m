@@ -86,7 +86,8 @@
 
 @property (readwrite, strong) NSTimer *prodTimeoutTimer;
 
-@property (readwrite, readwrite) SCNetworkReachabilityRef reachabilityRef;
+@property (nonatomic, readwrite) SCNetworkReachabilityRef reachabilityRef;
+@property (nonatomic, readwrite) sp_connection_type connectionType;
 
 @property (nonatomic, readwrite, copy) void (^logoutCompletionBlock) ();
 
@@ -1536,31 +1537,6 @@ static SPSession *sharedSession;
     
 }
 
--(sp_connection_type)connectionType {
-    
-    sp_connection_type type = SP_CONNECTION_TYPE_UNKNOWN;
-    SCNetworkReachabilityFlags flags;
-    SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags);
-    
-    if ((flags & kSCNetworkReachabilityFlagsReachable) != 0) {
-
-#if TARGET_OS_IPHONE
-        type = SP_CONNECTION_TYPE_WIFI;
-#else
-        if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0 && (flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0)
-            type = SP_CONNECTION_TYPE_WIFI;
-#endif
-        
-        if ((flags & kSCNetworkReachabilityFlagsIsWWAN) != 0)
-            type = SP_CONNECTION_TYPE_MOBILE;
-        
-    } else
-        type = SP_CONNECTION_TYPE_NONE;
-    
-    return type;
-    
-}
-
 -(sp_session *)session {
 	
 #if DEBUG 
@@ -1643,7 +1619,27 @@ static SPSession *sharedSession;
 
 -(void)updateConnectionType {
     
-    sp_connection_type type = self.connectionType;
+    SCNetworkReachabilityFlags flags;
+    SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags);
+    sp_connection_type type = SP_CONNECTION_TYPE_UNKNOWN;
+    
+    if ((flags & kSCNetworkReachabilityFlagsReachable) != 0) {
+        
+#if TARGET_OS_IPHONE
+        type = SP_CONNECTION_TYPE_WIFI;
+#else
+        if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0 && (flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0)
+            type = SP_CONNECTION_TYPE_WIFI;
+#endif
+        
+        if ((flags & kSCNetworkReachabilityFlagsIsWWAN) != 0)
+            type = SP_CONNECTION_TYPE_MOBILE;
+        
+    } else
+        type = SP_CONNECTION_TYPE_NONE;
+    
+    self.connectionType = type;
+    
     SPDispatchAsync(^() { if (self.session) sp_session_set_connection_type(self.session, type); });
     
 }

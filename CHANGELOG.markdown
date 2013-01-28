@@ -1,3 +1,8 @@
+CocoaLibSpotify 2.4.1 for libspotify 12, released January 28th 2012
+===================================================================
+
+* Adds a build script that corrects a problem in libspotify 12 preventing submission of CocoaLibSpotify applications to the Mac App Store (GitHub issue #136).
+
 CocoaLibSpotify 2.4.0 for libspotify 12, released November 14th 2012
 ====================================================================
 

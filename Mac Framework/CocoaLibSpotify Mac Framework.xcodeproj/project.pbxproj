@@ -511,6 +511,7 @@
 				503D630B13258041007772CA /* Frameworks */,
 				503D63311325811E007772CA /* CopyFiles */,
 				50E65EC31325915100E66AFA /* Run Script (Set up symbolic links) */,
+				374BBB1216B6A647003E858D /* Run Script (Fix libspotify Info.plist) */,
 			);
 			buildRules = (
 			);
@@ -590,6 +591,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		374BBB1216B6A647003E858D /* Run Script (Fix libspotify Info.plist) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script (Fix libspotify Info.plist)";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /usr/bin/perl;
+			shellScript = "my $infoplist_path = \"$ENV{BUILT_PRODUCTS_DIR}/$ENV{FRAMEWORKS_FOLDER_PATH}/libspotify.framework/Resources/Info.plist\";\n\n#open the info plist\nopen(my $input,  \"<\",  $infoplist_path)  or die \"Can't open Info.plist: $!\";\nmy $outputstring = \"\";\n\n#loop through each line until we find CFBundleExecutable, then substitute the next line\nwhile (+<$input>) {\n    $outputstring .= \"$_\";\n    if (/[\\t ]+<key>CFBundleExecutable<\\/key>\\n/) {\n        my $line = +<$input>;\n        $line =~ s/([\\t ]+<string>)(.*?)(<\\/string>)/$1.(libspotify).$3/eg;\n        $outputstring .= $line;\n    }\n}\n\n#write back out to Info.plist\nopen(my $output,  \">\",  $infoplist_path)  or die \"Can't open Info.plist: $!\";\nprint $output $outputstring;\n";
+		};
 		50D9158C1382E8D5008FF7C1 /* Run Script (Download libspotify if needed) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

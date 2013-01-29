@@ -1655,45 +1655,39 @@ static SPSession *sharedSession;
 #pragma mark Connection Handling
 
 -(void)updateConnectionType {
-    
-    SCNetworkReachabilityFlags flags;
-    SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags);
-    sp_connection_type type = SP_CONNECTION_TYPE_UNKNOWN;
-    
-    if ((flags & kSCNetworkReachabilityFlagsReachable) != 0) {
-        
+	SCNetworkReachabilityFlags flags;
+	SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags);
+	sp_connection_type type = SP_CONNECTION_TYPE_UNKNOWN;
+
+	if ((flags & kSCNetworkReachabilityFlagsReachable) != 0) {
 #if TARGET_OS_IPHONE
-        type = SP_CONNECTION_TYPE_WIFI;
+		type = SP_CONNECTION_TYPE_WIFI;
+		if ((flags & kSCNetworkReachabilityFlagsIsWWAN) != 0)
+			type = SP_CONNECTION_TYPE_MOBILE;
 #else
-        if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0 && (flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0)
-            type = SP_CONNECTION_TYPE_WIFI;
+		if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0 && (flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0)
+			type = SP_CONNECTION_TYPE_WIFI;
 #endif
-        
-        if ((flags & kSCNetworkReachabilityFlagsIsWWAN) != 0)
-            type = SP_CONNECTION_TYPE_MOBILE;
-        
-    } else
-        type = SP_CONNECTION_TYPE_NONE;
-    
-    self.connectionType = type;
-    
-    SPDispatchAsync(^() { if (self.session) sp_session_set_connection_type(self.session, type); });
-    
+	} else {
+		type = SP_CONNECTION_TYPE_NONE;
+	}
+
+	self.connectionType = type;
+	SPDispatchAsync(^() { if (self.session) sp_session_set_connection_type(self.session, type); });
 }
 
-- (void)updateConnectionRules {
-    
-    sp_connection_rules rules = 0;
-    
-    if (!self.forceOfflineMode)
-        rules |= SP_CONNECTION_RULE_NETWORK | SP_CONNECTION_RULE_NETWORK_IF_ROAMING;
-    if (self.allowSyncOverWifi)
-        rules |= SP_CONNECTION_RULE_ALLOW_SYNC_OVER_WIFI;
-    if (self.allowSyncOverMobile)
-        rules |= SP_CONNECTION_RULE_ALLOW_SYNC_OVER_MOBILE;
-    
-    SPDispatchAsync(^() { if (self.session) sp_session_set_connection_rules(self.session, rules); });
-    
+-(void)updateConnectionRules {
+
+	sp_connection_rules rules = 0;
+
+	if (!self.forceOfflineMode)
+		rules |= SP_CONNECTION_RULE_NETWORK | SP_CONNECTION_RULE_NETWORK_IF_ROAMING;
+	if (self.allowSyncOverWifi)
+		rules |= SP_CONNECTION_RULE_ALLOW_SYNC_OVER_WIFI;
+	if (self.allowSyncOverMobile)
+		rules |= SP_CONNECTION_RULE_ALLOW_SYNC_OVER_MOBILE;
+
+	SPDispatchAsync(^() { if (self.session) sp_session_set_connection_rules(self.session, rules); });
 }
 
 #pragma mark libSpotify Run Loop

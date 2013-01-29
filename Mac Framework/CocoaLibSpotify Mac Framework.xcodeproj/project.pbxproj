@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3755E24316440C440050348E /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3755E24216440C440050348E /* NSData+Base64.m */; };
 		377622571655176C00CB56C5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 377622561655176C00CB56C5 /* CoreAudio.framework */; };
+		37F0582116B7D489008DC38B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0582016B7D489008DC38B /* SystemConfiguration.framework */; };
 		37F4A378166901B40074A6C5 /* SPCoreAudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F4A376166901B40074A6C5 /* SPCoreAudioDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F4A379166901B40074A6C5 /* SPCoreAudioDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F4A377166901B40074A6C5 /* SPCoreAudioDevice.m */; };
 		503D631013258041007772CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5028EC8B13092B7C00BF0B22 /* Cocoa.framework */; };
@@ -138,6 +139,7 @@
 		3755E24116440C440050348E /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "../../common/Tests/NSData+Base64.h"; sourceTree = "<group>"; };
 		3755E24216440C440050348E /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "../../common/Tests/NSData+Base64.m"; sourceTree = "<group>"; };
 		377622561655176C00CB56C5 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		37F0582016B7D489008DC38B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		37F4A376166901B40074A6C5 /* SPCoreAudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPCoreAudioDevice.h; path = ../common/SPCoreAudioDevice.h; sourceTree = "<group>"; };
 		37F4A377166901B40074A6C5 /* SPCoreAudioDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPCoreAudioDevice.m; path = ../common/SPCoreAudioDevice.m; sourceTree = "<group>"; };
 		5028EC8B13092B7C00BF0B22 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -237,6 +239,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37F0582116B7D489008DC38B /* SystemConfiguration.framework in Frameworks */,
 				377622571655176C00CB56C5 /* CoreAudio.framework in Frameworks */,
 				50BED5A815220712000D0919 /* AudioUnit.framework in Frameworks */,
 				50BED5A615220707000D0919 /* AudioToolbox.framework in Frameworks */,
@@ -280,6 +283,7 @@
 		5028EC8A13092B7B00BF0B22 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37F0582016B7D489008DC38B /* SystemConfiguration.framework */,
 				377622561655176C00CB56C5 /* CoreAudio.framework */,
 				50BED5A715220712000D0919 /* AudioUnit.framework */,
 				50BED5A515220707000D0919 /* AudioToolbox.framework */,

@@ -1,3 +1,8 @@
+CocoaLibSpotify 2.4.2 for libspotify 12, released January 29th 2012
+===================================================================
+
+* Fixes build on Xcode 4.6.
+
 CocoaLibSpotify 2.4.1 for libspotify 12, released January 28th 2012
 ===================================================================
 

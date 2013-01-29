@@ -48,7 +48,7 @@
 
 @property (nonatomic, readwrite, copy) NSString *name;
 @property (nonatomic, readwrite) UInt32 sourceId;
-@property (nonatomic, readwrite) __unsafe_unretained SPCoreAudioDevice *device;
+@property (nonatomic, readwrite, assign) __unsafe_unretained SPCoreAudioDevice *device;
 
 -(void)updateName;
 

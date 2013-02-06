@@ -32,9 +32,13 @@
 
 #import <Foundation/Foundation.h>
 #import "TestRunner.h"
+#import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 int main(int argc, char *argv[])
 {
+
+	printf("Unit tests starting with libspotify version %s.\n", [[SPSession libSpotifyBuildId] UTF8String]);
+
 	TestRunner *runner = [[TestRunner alloc] init];
 	@autoreleasepool {
 		NSRunLoop *runLoop = [NSRunLoop currentRunLoop];

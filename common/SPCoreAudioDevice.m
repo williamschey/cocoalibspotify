@@ -86,11 +86,23 @@ static OSStatus AOSourceChangedPropertyListenerProc(AudioObjectID inObjectID,
 		namePropertyAddress.mScope = kAudioDevicePropertyScopeOutput;
 		namePropertyAddress.mElement = kAudioObjectPropertyElementMaster;
 		AudioObjectAddPropertyListener(self.deviceId, &namePropertyAddress, AOSourceChangedPropertyListenerProc, (__bridge void *)self);
-
-
-
 	}
 	return self;
+}
+
+-(void)dealloc {
+    // Remove observer for audio source changes
+    AudioObjectPropertyAddress sourcesPropertyAddress;
+    sourcesPropertyAddress.mSelector = kAudioDevicePropertyDataSources;
+    sourcesPropertyAddress.mScope = kAudioDevicePropertyScopeOutput;
+    sourcesPropertyAddress.mElement = kAudioObjectPropertyElementMaster;
+    AudioObjectRemovePropertyListener(self.deviceId, &sourcesPropertyAddress, AOSourceChangedPropertyListenerProc, (__bridge void *)self);
+
+    AudioObjectPropertyAddress namePropertyAddress;
+    namePropertyAddress.mSelector = kAudioDevicePropertyDataSourceNameForIDCFString;
+    namePropertyAddress.mScope = kAudioDevicePropertyScopeOutput;
+    namePropertyAddress.mElement = kAudioObjectPropertyElementMaster;
+    AudioObjectRemovePropertyListener(self.deviceId, &namePropertyAddress, AOSourceChangedPropertyListenerProc, (__bridge void *)self);
 }
 
 -(NSString *)description {

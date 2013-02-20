@@ -148,12 +148,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** Returns a list of related artists for this artist, or `nil` if the metadata isn't loaded yet. */
 @property (nonatomic, readonly, strong) NSArray *relatedArtists;
 
-/** Returns a list of tracks by this artist, or `nil` if the metadata isn't loaded yet. 
- @deprecated 
- @warning This property is deprecated.
- */
-@property (nonatomic, readonly, strong) NSArray *tracks;
-
 /** Returns a list of "top hit" tracks by this artist, or `nil` if the metadata isn't loaded yet. */
 @property (nonatomic, readonly, strong) NSArray *topTracks;
 

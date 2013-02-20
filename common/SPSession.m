@@ -324,15 +324,6 @@ static int music_delivery(sp_session *session, const sp_audioformat *format, con
 												   streamDescription:libSpotifyAudioDescription];
 			return framesConsumed;
 		}
-		
-		id <SPSessionPlaybackDelegate> playbackDelegate = sess.playbackDelegate;
-		if ([playbackDelegate respondsToSelector:@selector(session:shouldDeliverAudioFrames:ofCount:format:)]) {
-			int framesConsumed = (int)[playbackDelegate session:sess
-									   shouldDeliverAudioFrames:frames
-														ofCount:num_frames
-														 format:format]; 
-			return framesConsumed;
-		}
     }
 	
 	return num_frames;

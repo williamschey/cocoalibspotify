@@ -50,7 +50,6 @@
 
 @property (nonatomic, readwrite, strong) NSArray *portraits;
 
-@property (nonatomic, readwrite, strong) NSArray *tracks;
 @property (nonatomic, readwrite, strong) NSArray *topTracks;
 @property (nonatomic, readwrite, strong) NSArray *albums;
 @property (nonatomic, readwrite, strong) NSArray *relatedArtists;
@@ -75,7 +74,6 @@ void artistbrowse_complete(sp_artistbrowse *result, void *userdata) {
 		NSError *error = errorCode == SP_ERROR_OK ? nil : [NSError spotifyErrorWithCode:errorCode];
 		
 		NSString *newBio = nil;
-		NSArray *newTracks = nil;
 		NSArray *newTopTracks = nil;
 		NSArray *newRelatedArtists = nil;
 		NSArray *newAlbums = nil;
@@ -84,18 +82,7 @@ void artistbrowse_complete(sp_artistbrowse *result, void *userdata) {
 		if (isLoaded) {
 			
 			newBio = [NSString stringWithUTF8String:sp_artistbrowse_biography(result)];
-			
-			int trackCount = sp_artistbrowse_num_tracks(result);
-			NSMutableArray *tracks = [NSMutableArray arrayWithCapacity:trackCount];
-			for (int currentTrack =  0; currentTrack < trackCount; currentTrack++) {
-				sp_track *track = sp_artistbrowse_track(result, currentTrack);
-				if (track != NULL) {
-					[tracks addObject:[SPTrack trackForTrackStruct:track inSession:artistBrowse.session]];
-				}
-			}
-			
-			newTracks = [NSArray arrayWithArray:tracks];
-			
+
 			int topTrackCount = sp_artistbrowse_num_tophit_tracks(result);
 			NSMutableArray *topTracks = [NSMutableArray arrayWithCapacity:topTrackCount];
 			for (int currentTopTrack =  0; currentTopTrack < topTrackCount; currentTopTrack++) {
@@ -145,7 +132,6 @@ void artistbrowse_complete(sp_artistbrowse *result, void *userdata) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			artistBrowse.loadError = error;
 			artistBrowse.biography = newBio;
-			artistBrowse.tracks = newTracks;
 			artistBrowse.relatedArtists = newRelatedArtists;
 			artistBrowse.albums = newAlbums;
 			artistBrowse.portraits = newPortraits;
@@ -201,7 +187,6 @@ void artistbrowse_complete(sp_artistbrowse *result, void *userdata) {
 @synthesize artist;
 @synthesize session;
 @synthesize portraits;
-@synthesize tracks;
 @synthesize topTracks;
 @synthesize albums;
 @synthesize relatedArtists;

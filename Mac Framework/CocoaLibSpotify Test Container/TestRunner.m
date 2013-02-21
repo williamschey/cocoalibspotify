@@ -162,7 +162,10 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 	__block NSUInteger totalFailCount = 0;
 	__block NSUInteger currentTestIndex = 0;
 
-	__block void (^runNextTest)(void) = ^ {
+	// Shenanigans to allow a block to reference itself without circular references.
+	dispatch_block_t runNextTestBlock;
+    __block __weak dispatch_block_t runNextTest;
+	runNextTest = runNextTestBlock = [^{
 
 		if (currentTestIndex >= tests.count) {
 			[self completeTestsWithPassCount:totalPassCount failCount:totalFailCount];
@@ -184,7 +187,7 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 			currentTestIndex++;
 			runNextTest();
 		}];
-	};
+	} copy];
 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kLogForTeamCityUserDefaultsKey])
 		printf("##teamcity[testSuiteStarted name='CocoaLibSpotify']\n");

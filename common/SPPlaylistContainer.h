@@ -74,7 +74,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -(NSArray *)flattenedPlaylists;
 
 /** Returns the session the list is loaded in. */
-@property (nonatomic, readonly, assign) __unsafe_unretained SPSession *session;
+@property (nonatomic, readonly, weak) SPSession *session;
 
 ///----------------------------
 /// @name Working with Playlists and Folders

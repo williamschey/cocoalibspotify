@@ -37,7 +37,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @interface SPImageCallbackProxy : NSObject
 // SPImageCallbackProxy is here to bridge the gap between -dealloc and the 
 // playlist callbacks being unregistered, since that's done async.
-@property (nonatomic, readwrite, assign) __unsafe_unretained SPImage *image;
+@property (nonatomic, readwrite, weak) SPImage *image;
 @end
 
 @implementation SPImageCallbackProxy
@@ -52,7 +52,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @property (nonatomic, readwrite, strong) SPPlatformNativeImage *image;
 @property (nonatomic, readwrite) sp_image *spImage;
 @property (nonatomic, readwrite, getter=isLoaded) BOOL loaded;
-@property (nonatomic, readwrite, assign) __unsafe_unretained SPSession *session;
+@property (nonatomic, readwrite, weak) SPSession *session;
 @property (nonatomic, readwrite, copy) NSURL *spotifyURL;
 @property (nonatomic, readwrite, strong) SPImageCallbackProxy *callbackProxy;
 

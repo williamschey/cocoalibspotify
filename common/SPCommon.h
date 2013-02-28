@@ -67,8 +67,8 @@ extern inline void SPDispatchAsync(dispatch_block_t block);
 @protocol SPSessionPlaybackProvider <NSObject>
 
 @property (nonatomic, readwrite, getter=isPlaying) BOOL playing;
-@property (nonatomic, readwrite, assign) __unsafe_unretained id <SPSessionPlaybackDelegate> playbackDelegate;
-@property (nonatomic, readwrite, assign) __unsafe_unretained id <SPSessionAudioDeliveryDelegate> audioDeliveryDelegate;
+@property (nonatomic, readwrite, weak) id <SPSessionPlaybackDelegate> playbackDelegate;
+@property (nonatomic, readwrite, weak) id <SPSessionAudioDeliveryDelegate> audioDeliveryDelegate;
 
 -(void)preloadTrackForPlayback:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block;
 -(void)playTrack:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block;

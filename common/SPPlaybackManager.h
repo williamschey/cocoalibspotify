@@ -83,7 +83,7 @@
 @property (nonatomic, readonly, strong) SPTrack *currentTrack;
 
 /** Returns the manager's delegate. */
-@property (nonatomic, readwrite, assign) __unsafe_unretained id <SPPlaybackManagerDelegate> delegate;
+@property (nonatomic, readwrite, weak) id <SPPlaybackManagerDelegate> delegate;
 
 /** Returns the session that is performing decoding and playback. */
 @property (nonatomic, readonly, strong) SPSession *playbackSession;

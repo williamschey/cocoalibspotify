@@ -83,6 +83,6 @@
 @property (nonatomic, readonly) UInt32 sourceId;
 
 /** Returns the parent audio device of the source. */
-@property (nonatomic, readonly) __unsafe_unretained SPCoreAudioDevice *device;
+@property (nonatomic, readonly, weak) SPCoreAudioDevice *device;
 
 @end

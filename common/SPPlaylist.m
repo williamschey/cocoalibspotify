@@ -45,7 +45,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @interface SPPlaylistCallbackProxy : NSObject
 // SPPlaylistCallbackProxy is here to bridge the gap between -dealloc and the 
 // playlist callbacks being unregistered, since that's done async.
-@property (nonatomic, readwrite, assign) __unsafe_unretained SPPlaylist *playlist;
+@property (nonatomic, readwrite, weak) SPPlaylist *playlist;
 @end
 
 @implementation SPPlaylistCallbackProxy
@@ -65,7 +65,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @property (nonatomic, readwrite) float offlineDownloadProgress;
 @property (nonatomic, readwrite) sp_playlist_offline_status offlineStatus;
 @property (nonatomic, readwrite) sp_playlist *playlist;
-@property (nonatomic, readwrite, assign) __unsafe_unretained SPSession *session;
+@property (nonatomic, readwrite, weak) SPSession *session;
 @property (nonatomic, readwrite, strong) SPPlaylistCallbackProxy *callbackProxy;
 @property (atomic, readwrite, copy) NSArray *items;
 

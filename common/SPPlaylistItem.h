@@ -42,7 +42,7 @@
 ///----------------------------
 
 /** Returns the `Class` of the item this object represents. */
-@property (nonatomic, unsafe_unretained, readonly) Class itemClass;
+@property (nonatomic, readonly) Class itemClass;
 
 /** Returns the Spotify URI of the item this object represents. */
 @property (nonatomic, readonly) NSURL *itemURL;

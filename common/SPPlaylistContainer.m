@@ -42,7 +42,7 @@
 @interface SPPlaylistContainerCallbackProxy : NSObject
 // SPPlaylistContainerCallbackProxy is here to bridge the gap between -dealloc and the 
 // playlist callbacks being unregistered, since that's done async.
-@property (nonatomic, readwrite, assign) __unsafe_unretained SPPlaylistContainer *container;
+@property (nonatomic, readwrite, weak) SPPlaylistContainer *container;
 @end
 
 @implementation SPPlaylistContainerCallbackProxy
@@ -55,7 +55,7 @@
 -(NSArray *)createPlaylistTree;
 
 @property (nonatomic, readwrite, strong) SPUser *owner;
-@property (nonatomic, readwrite, assign) __unsafe_unretained SPSession *session;
+@property (nonatomic, readwrite, weak) SPSession *session;
 @property (nonatomic, readwrite, getter=isLoaded) BOOL loaded;
 @property (nonatomic, readwrite, strong) NSArray *playlists;
 @property (nonatomic, readwrite, strong) NSMutableDictionary *folderCache;

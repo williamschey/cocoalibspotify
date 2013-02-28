@@ -42,7 +42,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -(void)addObject:(id)playlistOrFolder;
 -(void)clearAllItems;
 
-@property (nonatomic, readwrite, assign) __unsafe_unretained SPPlaylistFolder *parentFolder;
+@property (nonatomic, readwrite, weak) SPPlaylistFolder *parentFolder;
 @property (readwrite, nonatomic, copy) NSString *name;
 
 @end

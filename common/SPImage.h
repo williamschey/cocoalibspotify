@@ -108,7 +108,7 @@ static NSUInteger const SPImageIdLength = 20;
 @property (nonatomic, readonly, getter=isLoaded) BOOL loaded;
 
 /** Returns the session the image was loaded in. */
-@property (nonatomic, readonly) __unsafe_unretained SPSession *session;
+@property (nonatomic, readonly, weak) SPSession *session;
 
 /** Returns the opaque structure used by the C LibSpotify API, or NULL if the image has yet to be loaded.
  

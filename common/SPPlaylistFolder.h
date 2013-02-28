@@ -59,10 +59,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @property (nonatomic, readonly, copy) NSString *name;
 
 /** Returns the folder's containing SPPlaylistContainer. */
-@property (nonatomic, readonly, assign) __unsafe_unretained SPPlaylistContainer *parentContainer;
+@property (nonatomic, readonly, weak) SPPlaylistContainer *parentContainer;
 
 /* Returns the folder's parent folder, or `nil` if the folder is at the top level of its container. */
-@property (nonatomic, readonly, assign) __unsafe_unretained SPPlaylistFolder *parentFolder;
+@property (nonatomic, readonly, weak) SPPlaylistFolder *parentFolder;
 
 /* Returns the folder's parent folder stack, or `nil` if the folder is at the top level of its container. */
 -(NSArray *)parentFolders;
@@ -77,6 +77,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @property (nonatomic, readonly, strong) NSArray *playlists;
 
 /** Returns the session the folder is loaded in. */
-@property (nonatomic, readonly, assign) __unsafe_unretained SPSession *session;
+@property (nonatomic, readonly, weak) SPSession *session;
 
 @end

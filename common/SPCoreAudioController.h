@@ -125,7 +125,7 @@
 @property (readwrite, nonatomic) BOOL audioOutputEnabled;
 
 /** Returns the receiver's delegate. */
-@property (readwrite, nonatomic, assign) __unsafe_unretained id <SPCoreAudioControllerDelegate> delegate;
+@property (readwrite, nonatomic, weak) id <SPCoreAudioControllerDelegate> delegate;
 
 #if !TARGET_OS_IPHONE
 

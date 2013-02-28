@@ -260,10 +260,12 @@ static NSMutableDictionary *imageCache;
 	SPImageCallbackProxy *outgoingProxy = self.callbackProxy;
 	self.callbackProxy.image = nil;
 	self.callbackProxy = nil;
-    
+
+	if (outgoing_image == NULL) return;
+
     SPDispatchAsync(^() {
-		if (outgoing_image) sp_image_remove_load_callback(outgoing_image, &image_loaded, (__bridge void *)outgoingProxy);
-		if (outgoing_image) sp_image_release(outgoing_image);
+		sp_image_remove_load_callback(outgoing_image, &image_loaded, (__bridge void *)outgoingProxy);
+		sp_image_release(outgoing_image);
 	});
 }
 

@@ -214,7 +214,7 @@ void artistbrowse_complete(sp_artistbrowse *result, void *userdata) {
 - (void)dealloc {
 	sp_artistbrowse *outgoing_browse = _artistBrowse;
 	_artistBrowse = NULL;
-	SPDispatchAsync(^() { if (outgoing_browse) sp_artistbrowse_release(outgoing_browse); });
+	if (outgoing_browse) SPDispatchAsync(^() { sp_artistbrowse_release(outgoing_browse); });
 }
 
 @end

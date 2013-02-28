@@ -427,7 +427,6 @@ static void offline_status_updated(sp_session *session) {
 		}
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
-			
 			sess.offlineTracksRemaining = offlineTracksRemaining;
 			sess.offlinePlaylistsRemaining = offlinePlaylistsRemaining;
 			sess.offlineSyncing = syncing;
@@ -947,16 +946,14 @@ static SPSession *sharedSession;
 		const char *user_name = sp_session_user_name(self.session);
 		NSString *loginUserName = user_name == NULL ? nil : [NSString stringWithUTF8String:user_name];
 		if (loginUserName.length == 0) loginUserName = nil;
-		dispatch_async(dispatch_get_main_queue(), ^{ if (block) block(loginUserName); });
+		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block(loginUserName); });
 	});
 }
 
 -(void)flushCaches:(void (^)())completionBlock {
 	SPDispatchAsync(^() {
 		if (self.session) sp_session_flush_caches(self.session); 
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (completionBlock) completionBlock();
-		});
+		if (completionBlock) dispatch_async(dispatch_get_main_queue(), ^{ completionBlock(); });
 	});
 }
 
@@ -1089,10 +1086,12 @@ static SPSession *sharedSession;
 		sp_connectionstate state = sp_session_connectionstate(outgoing_session);
 		
 		if (state == SP_CONNECTION_STATE_LOGGED_OUT || state == SP_CONNECTION_STATE_UNDEFINED) {
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.logoutCompletionBlock = nil;
-				if (completionBlock) completionBlock();
-			});
+			if (completionBlock) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.logoutCompletionBlock = nil;
+					completionBlock();
+				});
+			}
 			return;
 		}
 
@@ -1156,7 +1155,7 @@ static SPSession *sharedSession;
 		if (errorCode != SP_ERROR_OK)
 			error = [NSError spotifyErrorWithCode:errorCode];
 		
-		dispatch_async(dispatch_get_main_queue(), ^{ if (block) block(error); });
+		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block(error); });
 	});
 }
 
@@ -1169,7 +1168,7 @@ static SPSession *sharedSession;
 	
 	SPDispatchAsync(^{
 		sp_session_set_social_credentials(self.session, service, userName.UTF8String, password.UTF8String);
-		dispatch_async(dispatch_get_main_queue(), ^{ if (block) block(nil); });
+		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block(nil); });
 	});
 }
 
@@ -1184,7 +1183,7 @@ static SPSession *sharedSession;
 		if (errorCode != SP_ERROR_OK)
 			error = [NSError spotifyErrorWithCode:errorCode];
 		
-		dispatch_async(dispatch_get_main_queue(), ^{ if (block) block(out_state, error); });
+		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block(out_state, error); });
 	});
 }
 
@@ -1199,7 +1198,7 @@ static SPSession *sharedSession;
 		if (errorCode != SP_ERROR_OK)
 			error = [NSError spotifyErrorWithCode:errorCode];
 		
-		dispatch_async(dispatch_get_main_queue(), ^{ if (block) block(out_state, error); });
+		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block(out_state, error); });
 	});
 }
 
@@ -1469,11 +1468,8 @@ static SPSession *sharedSession;
 															callback:block];	
 }
 
--(void)addLoadingObject:(id)object;
-{
-	SPDispatchAsync(^{
-		[self.loadingObjects addObject:object];
-	});
+-(void)addLoadingObject:(id)object {
+	SPDispatchAsync(^{ [self.loadingObjects addObject:object]; });
 }
 
 -(void)checkLoadingObjects{
@@ -1496,25 +1492,22 @@ static SPSession *sharedSession;
 #pragma mark Properties
 
 -(void)setPreferredBitrate:(sp_bitrate)bitrate {
-    SPDispatchAsync(^() { if (self.session) sp_session_preferred_bitrate(self.session, bitrate); });
+    if (self.session) SPDispatchAsync(^() { sp_session_preferred_bitrate(self.session, bitrate); });
 }
 
 -(void)setPreferredOfflineBitrate:(sp_bitrate)bitrate allowResync:(BOOL)allowResync {
-    SPDispatchAsync(^() { if (self.session) sp_session_preferred_offline_bitrate(self.session, bitrate, allowResync); });
+    if (self.session) SPDispatchAsync(^() { sp_session_preferred_offline_bitrate(self.session, bitrate, allowResync); });
 }
 
 -(void)setMaximumCacheSizeMB:(size_t)maximumCacheSizeMB {
-    SPDispatchAsync(^() { if (self.session) sp_session_set_cache_size(self.session, maximumCacheSizeMB); });
+    if (self.session) SPDispatchAsync(^() { sp_session_set_cache_size(self.session, maximumCacheSizeMB); });
 }
 
 -(void)fetchOfflineKeyTimeRemaining:(void (^)(NSTimeInterval remainingTime))block {
 	SPDispatchAsync(^() {
 		NSTimeInterval interval = 0.0;
 		if (self.session) interval = sp_offline_time_left(self.session);
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (block) block(interval);
-		});
+		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block(interval); });
 	});
 }
 
@@ -1588,7 +1581,7 @@ static SPSession *sharedSession;
 		if (errorCode != SP_ERROR_OK)
 			error = [NSError spotifyErrorWithCode:errorCode];
 			
-		dispatch_async(dispatch_get_main_queue(), ^{ if (block) block(error); });
+		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block(error); });
 	});
 }
 
@@ -1608,16 +1601,16 @@ static SPSession *sharedSession;
 			error = [NSError spotifyErrorWithCode:errorCode];
 		}
 		
-		dispatch_async(dispatch_get_main_queue(), ^{ if (block) block(error); });
+		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block(error); });
 	});
 }
 
 -(void)seekPlaybackToOffset:(NSTimeInterval)offset {
-	SPDispatchAsync(^() { if (self.session != NULL) sp_session_player_seek(self.session, (int)offset * 1000); });
+	if (self.session) SPDispatchAsync(^() { sp_session_player_seek(self.session, (int)offset * 1000); });
 }
 
 -(void)setPlaying:(BOOL)nowPlaying {
-	SPDispatchAsync(^() { if (self.session) sp_session_player_play(self.session, nowPlaying); });
+	if (self.session) SPDispatchAsync(^() { sp_session_player_play(self.session, nowPlaying); });
 	_playing = nowPlaying;
 }
 
@@ -1640,7 +1633,7 @@ static SPSession *sharedSession;
 
 -(void)unloadPlayback {
 	self.playing = NO;
-	SPDispatchAsync(^() { if (self.session) sp_session_player_unload(self.session); });
+	if (self.session) SPDispatchAsync(^() { sp_session_player_unload(self.session); });
 }
 
 #pragma mark Connection Handling
@@ -1664,7 +1657,7 @@ static SPSession *sharedSession;
 	}
 
 	self.connectionType = type;
-	SPDispatchAsync(^() { if (self.session) sp_session_set_connection_type(self.session, type); });
+	if (self.session) SPDispatchAsync(^() { sp_session_set_connection_type(self.session, type); });
 }
 
 -(void)updateConnectionRules {
@@ -1678,7 +1671,7 @@ static SPSession *sharedSession;
 	if (self.allowSyncOverMobile)
 		rules |= SP_CONNECTION_RULE_ALLOW_SYNC_OVER_MOBILE;
 
-	SPDispatchAsync(^() { if (self.session) sp_session_set_connection_rules(self.session, rules); });
+	if (self.session) SPDispatchAsync(^() { sp_session_set_connection_rules(self.session, rules); });
 }
 
 #pragma mark libSpotify Run Loop
@@ -1728,11 +1721,12 @@ static SPSession *sharedSession;
 	self.prodTimeoutTimer = nil;
 
 	sp_session *outgoing_session = _session;
+	if (!outgoing_session) return;
 	
 	SPDispatchAsync(^{
-		if (!outgoing_session) return;
 		sp_session_player_unload(outgoing_session);
 		sp_session_logout(outgoing_session);
+		sp_session_release(outgoing_session);
 	});
     
     SCNetworkReachabilityRef reachabilityRef = self.reachabilityRef;

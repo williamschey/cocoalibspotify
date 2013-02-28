@@ -252,7 +252,7 @@ static NSMutableDictionary *albumCache;
 -(void)dealloc {
 	sp_album *outgoing_album = _album;
 	_album = NULL;
-	SPDispatchAsync(^() { if (outgoing_album) sp_album_release(outgoing_album); });
+	if (outgoing_album) SPDispatchAsync(^() { sp_album_release(outgoing_album); });
 }
 
 @end

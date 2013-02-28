@@ -183,7 +183,7 @@ void albumbrowse_complete (sp_albumbrowse *result, void *userdata) {
 - (void)dealloc {
 	sp_albumbrowse *outgoing_browse = _albumBrowse;
 	_albumBrowse = NULL;
-	SPDispatchAsync(^() { if (outgoing_browse) sp_albumbrowse_release(outgoing_browse); });
+	if (outgoing_browse) SPDispatchAsync(^() { sp_albumbrowse_release(outgoing_browse); });
 }
 
 @end

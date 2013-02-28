@@ -372,12 +372,11 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 		
 		if ([[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0 ||
 			[name length] > 255) {
-			dispatch_async(dispatch_get_main_queue(), ^() { if (block) block(nil); });
+			if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(nil); });
 			return;
 		}
 		
-		if (block)
-			[self.playlistAddCallbackStack addObject:block];
+		if (block) [self.playlistAddCallbackStack addObject:block];
 			
 		sp_playlist *newPlaylist = sp_playlistcontainer_add_new_playlist(self.container, [name UTF8String]);
 		if (newPlaylist == NULL && block) {
@@ -396,14 +395,15 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 		NSError *error = nil;
 		SPPlaylistFolder *folder = nil;
 		
-		if (errorCode == SP_ERROR_OK)
+		if (errorCode == SP_ERROR_OK) {
 			folder = [[SPPlaylistFolder alloc] initWithPlaylistFolderId:sp_playlistcontainer_playlist_folder_id(self.container, 0)
 															  container:self
 															  inSession:self.session];
-		else if (error != NULL)
+		} else if (error != NULL) {
 			error = [NSError spotifyErrorWithCode:errorCode];
-		
-		dispatch_async(dispatch_get_main_queue(), ^() { if (block) block(folder, error); });
+		}
+
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(folder, error); });
 		
 	});
 }
@@ -428,8 +428,7 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 		
 		NSUInteger playlistCount = sp_playlistcontainer_num_playlists(self.container);
 		
-		if (block)
-			[self.playlistRemoveCallbackStack addObject:block];
+		if (block) [self.playlistRemoveCallbackStack addObject:block];
 		
 		NSError *error = [NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA];
 		
@@ -445,7 +444,7 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 			}
 		}
 		
-		if (error) {
+		if (error && block) {
 			[self.playlistRemoveCallbackStack removeObject:block];
 			dispatch_async(dispatch_get_main_queue(), ^{ block(error); });
 		}
@@ -508,23 +507,24 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 			}
 			
 			if (sourceIndex == NSNotFound) {
-				dispatch_async(dispatch_get_main_queue(), ^{ if (block) block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]); });
+				if (block) dispatch_async(dispatch_get_main_queue(), ^{ block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]); });
 				return;
 			}
 			
 			NSInteger destinationIndex = [self indexInFlattenedListForIndex:newIndex inFolder:aParentFolderOrNil];
 			
 			if (destinationIndex == NSNotFound) {
-				dispatch_async(dispatch_get_main_queue(), ^{ if (block) block([NSError spotifyErrorWithCode:SP_ERROR_INDEX_OUT_OF_RANGE]); });
+				if (block) dispatch_async(dispatch_get_main_queue(), ^{ block([NSError spotifyErrorWithCode:SP_ERROR_INDEX_OUT_OF_RANGE]); });
 				return;
 			}
 			
 			sp_error errorCode = sp_playlistcontainer_move_playlist(self.container, (int)sourceIndex, (int)destinationIndex, false);
 			
-			if (errorCode != SP_ERROR_OK)
-				dispatch_async(dispatch_get_main_queue(), ^{ if (block) block([NSError spotifyErrorWithCode:errorCode]); });
-			else if (block)
+			if (errorCode != SP_ERROR_OK) {
+				if (block) dispatch_async(dispatch_get_main_queue(), ^{ block([NSError spotifyErrorWithCode:errorCode]); });
+			} else if (block) {
 				dispatch_async(dispatch_get_main_queue(), ^{ block(nil); });
+			}
 		});
 		
 		
@@ -543,14 +543,14 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 			sourceIndex = folderRange.location;
 			
 			if (sourceIndex == NSNotFound) {
-				dispatch_async(dispatch_get_main_queue(), ^{ if (block) block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]); });
+				if (block) dispatch_async(dispatch_get_main_queue(), ^{ block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]); });
 				return;
 			}
 			
 			NSInteger destinationIndex = [self indexInFlattenedListForIndex:newIndex inFolder:aParentFolderOrNil];
 			
 			if (destinationIndex == NSNotFound) {
-				dispatch_async(dispatch_get_main_queue(), ^{ if (block) block([NSError spotifyErrorWithCode:SP_ERROR_INDEX_OUT_OF_RANGE]); });
+				if (block) dispatch_async(dispatch_get_main_queue(), ^{ block([NSError spotifyErrorWithCode:SP_ERROR_INDEX_OUT_OF_RANGE]); });
 				return;
 			}
 			
@@ -560,7 +560,7 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 				NSError *error = errorCode == SP_ERROR_OK ? nil : [NSError spotifyErrorWithCode:errorCode];
 				
 				if (error) {
-					dispatch_async(dispatch_get_main_queue(), ^() { if (block) block(error); });
+					if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(error); });
 					return;
 				}
 				
@@ -576,7 +576,7 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 			if (sp_playlistcontainer_is_loaded(self.container))
 				container_loaded(self.container, (__bridge void *)(self.callbackProxy));
 			
-			dispatch_async(dispatch_get_main_queue(), ^() { if (block) block(nil); });
+			if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(nil); });
 			
 		});
 		
@@ -621,10 +621,12 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 	SPPlaylistContainerCallbackProxy *outgoingProxy = self.callbackProxy;
 	self.callbackProxy.container = nil;
 	self.callbackProxy = nil;
-	
+
+	if (outgoing_container == NULL) return;
+
     SPDispatchAsync(^() {
-		if (outgoing_container) sp_playlistcontainer_remove_callbacks(outgoing_container, &playlistcontainer_callbacks, (__bridge void *)outgoingProxy);
-		if (outgoing_container) sp_playlistcontainer_release(outgoing_container);
+		sp_playlistcontainer_remove_callbacks(outgoing_container, &playlistcontainer_callbacks, (__bridge void *)outgoingProxy);
+		sp_playlistcontainer_release(outgoing_container);
     });
 }
 

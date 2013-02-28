@@ -62,11 +62,13 @@ void inboxpost_complete(sp_inbox *result, void *userdata) {
 		NSError *error = nil;
 		if (errorCode != SP_ERROR_OK)
 			error = [NSError spotifyErrorWithCode:errorCode];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (operation.completionBlock) operation.completionBlock(error);
-			operation.completionBlock = nil;
-		});
+
+		if (operation.completionBlock) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				operation.completionBlock(error);
+				operation.completionBlock = nil;
+			});
+		}
 	}
 }
 

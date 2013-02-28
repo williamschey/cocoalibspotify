@@ -291,7 +291,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	sp_track *outgoing_track = _track;
 	_track = NULL;
-    SPDispatchAsync(^() { if (outgoing_track) sp_track_release(outgoing_track); });
+    if (outgoing_track) SPDispatchAsync(^() { sp_track_release(outgoing_track); });
     session = nil;
 }
 

@@ -497,7 +497,7 @@ void search_complete(sp_search *result, void *userdata) {
 -(void)dealloc {
 	sp_search *outgoing_search = _activeSearch;
 	_activeSearch = NULL;
-	SPDispatchAsync(^() { if (outgoing_search) sp_search_release(outgoing_search); });
+	if (outgoing_search) SPDispatchAsync(^() { sp_search_release(outgoing_search); });
 }
 
 @end

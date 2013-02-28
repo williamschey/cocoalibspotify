@@ -332,11 +332,7 @@ static void	playlist_state_changed(sp_playlist *pl, void *userdata) {
 	[playlist offlineSyncStatusMayHaveChanged];
 	
 	BOOL isLoaded = sp_playlist_is_loaded(pl);
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if (isLoaded)
-			[playlist loadPlaylistData];
-	});
+	if (isLoaded) dispatch_async(dispatch_get_main_queue(), ^{ [playlist loadPlaylistData]; });
 }
 
 // Called when a playlist is updating or is done updating
@@ -345,11 +341,9 @@ static void	playlist_update_in_progress(sp_playlist *pl, bool done, void *userda
 	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
 	SPPlaylist *playlist = proxy.playlist;
 	if (!playlist) return;
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if (playlist.isUpdating == done)
-			playlist.updating = !done;
-	});
+
+	if (playlist.updating == done)
+		dispatch_async(dispatch_get_main_queue(), ^{ playlist.updating = !done; });
 }
 
 // Called when metadata for one or more tracks in a playlist has been updated.
@@ -431,7 +425,6 @@ static void	image_changed(sp_playlist *pl, const byte *image, void *userdata) {
 	if (!playlist) return;
 	
 	SPImage *spImage = [SPImage imageWithImageId:image inSession:playlist.session];
-	
 	dispatch_async(dispatch_get_main_queue(), ^{ playlist.image = spImage; });
 }
 
@@ -680,11 +673,7 @@ static NSString * const kSPPlaylistKVOContext = @"kSPPlaylistKVOContext";
 
 				sp_playlist_set_in_ram(self.session.session, self.playlist, true);
 				BOOL isLoaded = sp_playlist_is_loaded(self.playlist);
-
-				dispatch_async(dispatch_get_main_queue(), ^() {
-					if (isLoaded)
-						[self loadPlaylistData];
-				});
+				if (isLoaded) dispatch_async(dispatch_get_main_queue(), ^() { [self loadPlaylistData]; });
 			});
 		});
 	});
@@ -918,12 +907,12 @@ static NSString * const kSPPlaylistKVOContext = @"kSPPlaylistKVOContext";
 	
 	SPPlaylistCallbackProxy *outgoingProxy = self.callbackProxy;
 	self.callbackProxy = nil;
-    
+
+	if (outgoing_playlist != NULL) return;
+
 	SPDispatchAsync(^() {
-		if (outgoing_playlist != NULL) {
-			sp_playlist_remove_callbacks(outgoing_playlist, &_playlistCallbacks, (__bridge void *)outgoingProxy);
-			sp_playlist_release(outgoing_playlist);
-		}
+		sp_playlist_remove_callbacks(outgoing_playlist, &_playlistCallbacks, (__bridge void *)outgoingProxy);
+		sp_playlist_release(outgoing_playlist);
 	});
 }
 

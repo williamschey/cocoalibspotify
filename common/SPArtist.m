@@ -170,7 +170,7 @@ static NSMutableDictionary *artistCache;
 -(void)dealloc {
 	sp_artist *outgoing_artist = _artist;
 	_artist = NULL;
-	SPDispatchAsync(^() { if (outgoing_artist) sp_artist_release(outgoing_artist); });
+	if (outgoing_artist) SPDispatchAsync(^() { sp_artist_release(outgoing_artist); });
 }
 
 @end

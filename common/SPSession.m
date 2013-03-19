@@ -1492,15 +1492,15 @@ static SPSession *sharedSession;
 #pragma mark Properties
 
 -(void)setPreferredBitrate:(sp_bitrate)bitrate {
-    if (self.session) SPDispatchAsync(^() { sp_session_preferred_bitrate(self.session, bitrate); });
+    SPDispatchAsync(^() { if (self.session) sp_session_preferred_bitrate(self.session, bitrate); });
 }
 
 -(void)setPreferredOfflineBitrate:(sp_bitrate)bitrate allowResync:(BOOL)allowResync {
-    if (self.session) SPDispatchAsync(^() { sp_session_preferred_offline_bitrate(self.session, bitrate, allowResync); });
+    SPDispatchAsync(^() { if (self.session) sp_session_preferred_offline_bitrate(self.session, bitrate, allowResync); });
 }
 
 -(void)setMaximumCacheSizeMB:(size_t)maximumCacheSizeMB {
-    if (self.session) SPDispatchAsync(^() { sp_session_set_cache_size(self.session, maximumCacheSizeMB); });
+    SPDispatchAsync(^() { if (self.session) sp_session_set_cache_size(self.session, maximumCacheSizeMB); });
 }
 
 -(void)fetchOfflineKeyTimeRemaining:(void (^)(NSTimeInterval remainingTime))block {
@@ -1606,11 +1606,11 @@ static SPSession *sharedSession;
 }
 
 -(void)seekPlaybackToOffset:(NSTimeInterval)offset {
-	if (self.session) SPDispatchAsync(^() { sp_session_player_seek(self.session, (int)offset * 1000); });
+	SPDispatchAsync(^() { if (self.session) sp_session_player_seek(self.session, (int)offset * 1000); });
 }
 
 -(void)setPlaying:(BOOL)nowPlaying {
-	if (self.session) SPDispatchAsync(^() { sp_session_player_play(self.session, nowPlaying); });
+	SPDispatchAsync(^() { if (self.session) sp_session_player_play(self.session, nowPlaying); });
 	_playing = nowPlaying;
 }
 
@@ -1633,7 +1633,7 @@ static SPSession *sharedSession;
 
 -(void)unloadPlayback {
 	self.playing = NO;
-	if (self.session) SPDispatchAsync(^() { sp_session_player_unload(self.session); });
+	SPDispatchAsync(^() { if (self.session) sp_session_player_unload(self.session); });
 }
 
 #pragma mark Connection Handling
@@ -1657,7 +1657,7 @@ static SPSession *sharedSession;
 	}
 
 	self.connectionType = type;
-	if (self.session) SPDispatchAsync(^() { sp_session_set_connection_type(self.session, type); });
+	SPDispatchAsync(^() { if (self.session) sp_session_set_connection_type(self.session, type); });
 }
 
 -(void)updateConnectionRules {
@@ -1671,7 +1671,7 @@ static SPSession *sharedSession;
 	if (self.allowSyncOverMobile)
 		rules |= SP_CONNECTION_RULE_ALLOW_SYNC_OVER_MOBILE;
 
-	if (self.session) SPDispatchAsync(^() { sp_session_set_connection_rules(self.session, rules); });
+	SPDispatchAsync(^() { if (self.session) sp_session_set_connection_rules(self.session, rules); });
 }
 
 #pragma mark libSpotify Run Loop

@@ -36,21 +36,33 @@ static void * const kSPAsyncLoadingObserverKVOContext = @"SPAsyncLoadingObserver
 static NSMutableArray *observerCache;
 
 @interface SPAsyncLoading ()
-
--(id)initWithItems:(NSArray *)items loadedBlock:(void (^)(NSArray *))block;
--(id)initWithItems:(NSArray *)items timeout:(NSTimeInterval)timeout loadedBlock:(void (^)(NSArray *loadedItems, NSArray *notLoadedItems))block;
-
 @property (nonatomic, readwrite, copy) NSArray *observedItems;
-@property (nonatomic, readwrite, copy) void (^loadedHandler) (NSArray *);
 @property (nonatomic, readwrite, copy) void (^loadedWithTimeoutHandler) (NSArray *, NSArray *);
+@end
+
+@interface SPAsyncLoading (SPAsyncLoadingNested)
++(void)loadKeyPath:(NSString *)keyPath ofLoadedItems:(NSArray *)rootItems timeout:(NSTimeInterval)timeout callback:(dispatch_block_t)doneBlock;
++(void)loadKeyPaths:(NSArray *)keyPaths ofItems:(NSArray *)rootItems timeout:(NSTimeInterval)timeout callback:(void (^)(NSArray *completelyLoadedItems, NSArray *notLoadedItems))block;
 @end
 
 @implementation SPAsyncLoading
 
-+(void)waitUntilLoaded:(id)itemOrItems timeout:(NSTimeInterval)timeout then:(void (^)(NSArray *, NSArray *))block {
++(void)waitUntilLoaded:(id)itemOrItems withKeyPaths:(NSArray *)keyPathsToLoad timeout:(NSTimeInterval)timeout then:(void (^)(NSArray *completelyLoadedItems, NSArray *notLoadedItems))block {
+	
+	if (keyPathsToLoad == nil) {
+		[self waitUntilLoaded:itemOrItems timeout:timeout then:block];
+		return;
+	}
 	
 	NSArray *itemArray = [itemOrItems isKindOfClass:[NSArray class]] ? itemOrItems : [NSArray arrayWithObject:itemOrItems];
-	
+	[self loadKeyPaths:keyPathsToLoad ofItems:itemArray timeout:timeout callback:block];
+}
+
+
++(void)waitUntilLoaded:(id)itemOrItems timeout:(NSTimeInterval)timeout then:(void (^)(NSArray *, NSArray *))block {
+
+	NSArray *itemArray = [itemOrItems isKindOfClass:[NSArray class]] ? itemOrItems : [NSArray arrayWithObject:itemOrItems];
+
 	SPAsyncLoading *observer = [[SPAsyncLoading alloc] initWithItems:itemArray
 															 timeout:timeout
 														 loadedBlock:block];
@@ -62,17 +74,16 @@ static NSMutableArray *observerCache;
 			[observerCache addObject:observer];
 		}
 	}
-	
 }
-
--(id)initWithItems:(NSArray *)items loadedBlock:(void (^)(NSArray *))block {
+	
+-(id)initWithItems:(NSArray *)items timeout:(NSTimeInterval)timeout loadedBlock:(void (^)(NSArray *, NSArray *))block {
 	
 	BOOL allLoaded = YES;
 	for (id <SPAsyncLoading> item in items)
 		allLoaded &= item.isLoaded;
 	
 	if (allLoaded) {
-		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(items); });
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(items, nil); });
 		return nil;
 	}
 	
@@ -80,7 +91,8 @@ static NSMutableArray *observerCache;
 	
 	if (self) {
 		self.observedItems = items;
-		self.loadedHandler = block;
+		self.loadedWithTimeoutHandler = block;
+
 		for (id <SPAsyncLoading> item in self.observedItems) {
 			[(id)item addObserver:self
 					   forKeyPath:@"loaded"
@@ -96,23 +108,7 @@ static NSMutableArray *observerCache;
 							ofObject:self.observedItems.lastObject
 							  change:nil
 							 context:kSPAsyncLoadingObserverKVOContext];
-	}
-	
-	return self;
-}
 
--(id)initWithItems:(NSArray *)items timeout:(NSTimeInterval)timeout loadedBlock:(void (^)(NSArray *, NSArray *))block {
-	
-	self = [self initWithItems:items loadedBlock:nil];
-	
-	if (self == nil) {
-		// All were loaded already.
-		if (block) block(items, nil);
-		return nil;
-	}
-	
-	if (self) {
-		self.loadedWithTimeoutHandler = block;
 		[self performSelector:@selector(triggerTimeout)
 				   withObject:nil
 				   afterDelay:timeout];
@@ -122,18 +118,17 @@ static NSMutableArray *observerCache;
 }
 
 -(void)dealloc {
-	
-	// Cancel previous delayed calls to this 
-    [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                             selector:@selector(triggerTimeout)
-                                               object:nil];
-	
+
+	// Cancel previous delayed calls to this
+	[NSObject cancelPreviousPerformRequestsWithTarget:self
+											 selector:@selector(triggerTimeout)
+											   object:nil];
+
 	for (id <SPAsyncLoading> item in self.observedItems)
 		[(id)item removeObserver:self forKeyPath:@"loaded"];
 }
 
 @synthesize observedItems;
-@synthesize loadedHandler;
 @synthesize loadedWithTimeoutHandler;
 
 -(void)triggerTimeout {
@@ -142,16 +137,15 @@ static NSMutableArray *observerCache;
 	NSMutableArray *notLoadedItems = [NSMutableArray arrayWithCapacity:self.observedItems.count];
 	
 	for (id <SPAsyncLoading> item in self.observedItems) {
-		if (item.isLoaded)
+		if (item.isLoaded) {
 			[loadedItems addObject:item];
-		else {
+		} else {
 			[notLoadedItems addObject:item];
 		}
 	}
 	
 	if (self.loadedWithTimeoutHandler) dispatch_async(dispatch_get_main_queue(), ^() {
 		self.loadedWithTimeoutHandler([NSArray arrayWithArray:loadedItems], [NSArray arrayWithArray:notLoadedItems]);
-		self.loadedHandler = nil;
 		self.loadedWithTimeoutHandler = nil;
 		@synchronized(observerCache) {
 			[observerCache removeObject:self];
@@ -161,8 +155,8 @@ static NSMutableArray *observerCache;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (context == kSPAsyncLoadingObserverKVOContext) {
-        
+	if (context == kSPAsyncLoadingObserverKVOContext) {
+
 		BOOL allLoaded = YES;
 		for (id <SPAsyncLoading> item in self.observedItems)
 			allLoaded &= item.isLoaded;
@@ -172,24 +166,171 @@ static NSMutableArray *observerCache;
 			[NSObject cancelPreviousPerformRequestsWithTarget:self
 													 selector:@selector(triggerTimeout)
 													   object:nil];
-			
-			if (self.loadedHandler || self.loadedWithTimeoutHandler) dispatch_async(dispatch_get_main_queue(), ^() {
-				if (self.loadedHandler)
-					self.loadedHandler(self.observedItems);
-				else if (self.loadedWithTimeoutHandler)
+
+			if (self.loadedWithTimeoutHandler) dispatch_async(dispatch_get_main_queue(), ^() {
+
+				if (self.loadedWithTimeoutHandler)
 					self.loadedWithTimeoutHandler(self.observedItems, nil);
-				
-				self.loadedHandler = nil;
+
 				self.loadedWithTimeoutHandler = nil;
 				@synchronized(observerCache) {
 					[observerCache removeObject:self];
 				}
 			});
 		}
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
+	} else {
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
+@end
+
+#pragma mark - With Key Paths
+
+@implementation SPAsyncLoading (SPAsyncLoadingNested)
+
++(void)loadKeyPaths:(NSArray *)keyPaths ofItems:(NSArray *)rootItems timeout:(NSTimeInterval)timeout callback:(void (^)(NSArray *completelyLoadedItems, NSArray *notLoadedItems))block {
+
+	[SPAsyncLoading waitUntilLoaded:rootItems timeout:timeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+
+		NSMutableArray *waitingKeyPaths = [keyPaths mutableCopy];
+		NSMutableArray *doneKeyPaths = [NSMutableArray arrayWithCapacity:waitingKeyPaths.count];
+
+		// Shenanigans to allow a block to reference itself without circular references.
+		dispatch_block_t loadNextPathBlock;
+		__block dispatch_block_t loadNextPath;
+		loadNextPath = loadNextPathBlock = [^{
+
+			NSString *keyPath = [waitingKeyPaths objectAtIndex:0];
+			[waitingKeyPaths removeObjectAtIndex:0];
+			[doneKeyPaths addObject:keyPath];
+
+			[self loadKeyPath:keyPath ofLoadedItems:rootItems timeout:timeout callback:^{
+
+				if (waitingKeyPaths.count > 0) {
+					loadNextPath();
+				} else {
+
+					NSMutableArray *notLoadedRootItems = [NSMutableArray arrayWithCapacity:rootItems.count];
+
+					for (NSString *keyPath in keyPaths) {
+
+						NSMutableArray *potentialLoadedItems = [rootItems mutableCopy];
+						[potentialLoadedItems removeObjectsInArray:notLoadedRootItems];
+
+						NSArray *keyPathComponents = [keyPath componentsSeparatedByString:@"."];
+
+						for (id rootObject in potentialLoadedItems) {
+
+							if (![rootObject isLoaded]) {
+								[notLoadedRootItems addObject:rootObject];
+								continue;
+							}
+
+							for (NSUInteger pathIndex = 0; pathIndex < keyPathComponents.count; pathIndex++) {
+
+								NSString *thisLevelOfKeyPath = [[keyPathComponents subarrayWithRange:NSMakeRange(0, pathIndex + 1)] componentsJoinedByString:@"."];
+								id child = [rootObject valueForKeyPath:thisLevelOfKeyPath];
+
+								if ([child conformsToProtocol:@protocol(SPAsyncLoading)] && ![child isLoaded]) {
+									[notLoadedRootItems addObject:rootObject];
+									continue;
+								} else if ([child isKindOfClass:[NSArray class]]) {
+									NSArray *childArray = child;
+									if (childArray.count == 0)
+										continue;
+
+									NSMutableArray *itemsToCheck = [NSMutableArray array];
+
+									if ([childArray[0] conformsToProtocol:@protocol(SPAsyncLoading)]) {
+										[itemsToCheck addObjectsFromArray:childArray];
+									} else if ([childArray[0] isKindOfClass:[NSArray class]]) {
+										for (NSArray *containedArray in childArray) {
+											[itemsToCheck addObjectsFromArray:containedArray];
+										}
+									} else if (childArray[0] == [NSNull null]) {
+										[notLoadedRootItems addObject:rootObject];
+										continue;
+									}
+
+									for (id item in itemsToCheck) {
+										if (![item isLoaded]) {
+											[notLoadedRootItems addObject:rootObject];
+											continue;
+										}
+									}
+								} else if (child == [NSNull null]) {
+									[notLoadedRootItems addObject:rootObject];
+									continue;
+								}
+							}
+						}
+					}
+
+					NSMutableArray *completelyLoadedItems = [rootItems mutableCopy];
+					[completelyLoadedItems removeObjectsInArray:notLoadedRootItems];
+
+					if (block) block([NSArray arrayWithArray:completelyLoadedItems], [NSArray arrayWithArray:notLoadedRootItems]);
+					return;
+				}
+			}];
+
+		} copy];
+		
+		loadNextPath();
+
+	}];
+}
+
++(void)loadKeyPath:(NSString *)keyPath ofLoadedItems:(NSArray *)rootItems timeout:(NSTimeInterval)timeout callback:(dispatch_block_t)doneBlock {
+
+	if (rootItems.count == 0) {
+		if (doneBlock) doneBlock();
+		return;
+	}
+
+	__block NSMutableArray *waitingKeyPathComponents = [[keyPath componentsSeparatedByString:@"."] mutableCopy];
+	__block NSMutableArray *completedKeyPathComponents = [NSMutableArray arrayWithCapacity:waitingKeyPathComponents.count];
+
+	// Shenanigans to allow a block to reference itself without circular references.
+	dispatch_block_t loadNextLevelBlock;
+	__block dispatch_block_t loadNextLevel;
+	loadNextLevel = loadNextLevelBlock = [^{
+
+		if (waitingKeyPathComponents.count == 0) {
+			if (doneBlock) doneBlock();
+			return;
+		}
+
+		NSString *key = [waitingKeyPathComponents objectAtIndex:0];
+		[waitingKeyPathComponents removeObjectAtIndex:0];
+		[completedKeyPathComponents addObject:key];
+
+		// Part of the key path might be an array!
+		NSArray *items = rootItems;
+		for (NSString *keyPathComponent in completedKeyPathComponents) {
+			NSArray *item = [items valueForKey:keyPathComponent];
+			if (item.count > 0 && [item[0] isKindOfClass:[NSArray class]]) {
+				NSMutableArray *extractedItems = [NSMutableArray array];
+				for (NSArray *childArray in item)
+					[extractedItems addObjectsFromArray:childArray];
+				items = extractedItems;
+			} else {
+				items = item;
+			}
+		}
+
+		NSMutableArray *finalItems = [items mutableCopy];
+		[finalItems removeObject:[NSNull null]];
+
+		[SPAsyncLoading waitUntilLoaded:finalItems timeout:timeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+			loadNextLevel();
+		}];
+
+	} copy];
+
+	loadNextLevel();
+}
 
 @end
+

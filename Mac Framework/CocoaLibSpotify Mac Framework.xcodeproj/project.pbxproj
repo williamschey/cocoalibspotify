@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3755E24316440C440050348E /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3755E24216440C440050348E /* NSData+Base64.m */; };
+		37738CF416F89BF70080530D /* SPAsyncLoadingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37738CF316F89BF70080530D /* SPAsyncLoadingTests.m */; };
+		37738CF516F89C000080530D /* AsyncLoadingMockObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 37738CEF16F896050080530D /* AsyncLoadingMockObjects.m */; };
 		377622571655176C00CB56C5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 377622561655176C00CB56C5 /* CoreAudio.framework */; };
 		37F0582116B7D489008DC38B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0582016B7D489008DC38B /* SystemConfiguration.framework */; };
 		37F4A378166901B40074A6C5 /* SPCoreAudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F4A376166901B40074A6C5 /* SPCoreAudioDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -138,6 +140,10 @@
 /* Begin PBXFileReference section */
 		3755E24116440C440050348E /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "../../common/Tests/NSData+Base64.h"; sourceTree = "<group>"; };
 		3755E24216440C440050348E /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "../../common/Tests/NSData+Base64.m"; sourceTree = "<group>"; };
+		37738CEE16F896050080530D /* AsyncLoadingMockObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AsyncLoadingMockObjects.h; path = "../../common/Tests/Mock Objects/AsyncLoadingMockObjects.h"; sourceTree = "<group>"; };
+		37738CEF16F896050080530D /* AsyncLoadingMockObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AsyncLoadingMockObjects.m; path = "../../common/Tests/Mock Objects/AsyncLoadingMockObjects.m"; sourceTree = "<group>"; };
+		37738CF216F89BF70080530D /* SPAsyncLoadingTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPAsyncLoadingTests.h; path = ../../common/Tests/SPAsyncLoadingTests.h; sourceTree = "<group>"; };
+		37738CF316F89BF70080530D /* SPAsyncLoadingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPAsyncLoadingTests.m; path = ../../common/Tests/SPAsyncLoadingTests.m; sourceTree = "<group>"; };
 		377622561655176C00CB56C5 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		37F0582016B7D489008DC38B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		37F4A376166901B40074A6C5 /* SPCoreAudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPCoreAudioDevice.h; path = ../common/SPCoreAudioDevice.h; sourceTree = "<group>"; };
@@ -262,6 +268,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37738CED16F895C40080530D /* Mock Objects */ = {
+			isa = PBXGroup;
+			children = (
+				37738CEE16F896050080530D /* AsyncLoadingMockObjects.h */,
+				37738CEF16F896050080530D /* AsyncLoadingMockObjects.m */,
+			);
+			name = "Mock Objects";
+			sourceTree = "<group>";
+		};
 		5028EC7C13092B7B00BF0B22 = {
 			isa = PBXGroup;
 			children = (
@@ -380,6 +395,7 @@
 				50A9F400161B2D5F0009ECA2 /* TestConstants.h */,
 				504E4943155AA85500E1C0F7 /* TestRunner.h */,
 				504E4944155AA85500E1C0F7 /* TestRunner.m */,
+				37738CED16F895C40080530D /* Mock Objects */,
 				504E4954155AB26C00E1C0F7 /* Tests */,
 				504E4938155AA85500E1C0F7 /* Supporting Files */,
 			);
@@ -406,6 +422,8 @@
 				3755E24216440C440050348E /* NSData+Base64.m */,
 				50E8ED49155BB55900F14186 /* SPTests.h */,
 				50E8ED4A155BB55900F14186 /* SPTests.m */,
+				37738CF216F89BF70080530D /* SPAsyncLoadingTests.h */,
+				37738CF316F89BF70080530D /* SPAsyncLoadingTests.m */,
 				5063553B156CD93400E1C8D1 /* SPConcurrencyTests.h */,
 				5063553C156CD93400E1C8D1 /* SPConcurrencyTests.m */,
 				504E4955155AB29100E1C0F7 /* SPSessionTests.h */,
@@ -696,6 +714,8 @@
 				50DB843B155D296E00608BFB /* SPPlaylistTests.m in Sources */,
 				5063553D156CD93400E1C8D1 /* SPConcurrencyTests.m in Sources */,
 				3755E24316440C440050348E /* NSData+Base64.m in Sources */,
+				37738CF416F89BF70080530D /* SPAsyncLoadingTests.m in Sources */,
+				37738CF516F89C000080530D /* AsyncLoadingMockObjects.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

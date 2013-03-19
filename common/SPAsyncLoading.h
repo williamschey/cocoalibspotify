@@ -75,4 +75,19 @@ typedef enum SPAsyncLoadingPolicy {
  */
 +(void)waitUntilLoaded:(id)itemOrItems timeout:(NSTimeInterval)timeout then:(void (^)(NSArray *loadedItems, NSArray *notLoadedItems))block;
 
+/** Call the provided callback block when all passed items and properties at the given key
+ paths are loaded or the given timeout is reached.
+
+ This will trigger a load if the item's session's loading policy is `SPAsyncLoadingManual`.
+
+ The callback block will be triggered immediately if no items are provided
+ or all provided items are already loaded.
+
+ @param itemOrItems A single item of an array of items conforming to the `SPAsyncLoading` protocol.
+ @param keyPathsToLoad An array of key paths to also load. The items under these paths must also conform to `SPAsyncLoading`.
+ @param timeout Time to allow before timing out. This should be the maximum reasonable time your application can wait, or `kSPAsyncLoadingDefaultTimeout`.
+ @param block The block to call when all given items are loaded or the timeout is reached.
+ */
++(void)waitUntilLoaded:(id)itemOrItems withKeyPaths:(NSArray *)keyPathsToLoad timeout:(NSTimeInterval)timeout then:(void (^)(NSArray *completelyLoadedItems, NSArray *notLoadedItems))block;
+
 @end

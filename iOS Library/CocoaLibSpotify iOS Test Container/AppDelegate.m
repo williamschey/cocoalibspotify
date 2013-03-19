@@ -41,6 +41,7 @@
 #import "SPSessionTeardownTests.h"
 #import "SPPlaylistTests.h"
 #import "SPConcurrencyTests.h"
+#import "SPAsyncLoadingTests.h"
 #import "TestConstants.h"
 
 static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
@@ -54,6 +55,7 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 @property (nonatomic, strong) SPTests *teardownTests;
 @property (nonatomic, strong) SPTests *playlistTests;
 @property (nonatomic, strong) SPTests *concurrencyTests;
+@property (nonatomic, strong) SPTests *asyncTests;
 @end
 
 @implementation AppDelegate
@@ -182,8 +184,9 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 	self.inboxTests = [SPPostTracksToInboxTests new];
 	self.metadataTests = [SPMetadataTests new];
 	self.teardownTests = [SPSessionTeardownTests new];
+	self.asyncTests = [SPAsyncLoadingTests new];
 
-	NSArray *tests = @[self.sessionTests, self.concurrencyTests, self.playlistTests, self.audioTests, self.searchTests,
+	NSArray *tests = @[self.asyncTests, self.sessionTests, self.concurrencyTests, self.playlistTests, self.audioTests, self.searchTests,
 		self.inboxTests, self.metadataTests, self.teardownTests];
 
 	self.viewController.tests = tests;

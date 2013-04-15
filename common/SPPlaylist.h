@@ -170,8 +170,22 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /// @name Working with Items
 ///----------------------------
 
-/** Returns an array of SPPlaylistItem objects representing playlist's item order. */
-@property (atomic, readonly, copy) NSArray *items;
+/* Returns the number of items in the playlist. */
+@property (nonatomic, readonly) NSUInteger itemCount;
+
+/** Fetch the playlist's items in the given range.
+ 
+ @note It's generally not a good idea to blindly request all the items in a
+ playlist without good reason as playlists can get *very* large and memory
+ usage is a concern on mobile devices. If you're implementing a table view, 
+ for instance, it's a better idea to only request the visible items plus a screen
+ or so of rows each way. See the `Playlist TableViews` example project to see
+ this in action.
+ 
+ @param range The range of items to retreive. Must be in the range [0..itemCount].
+ @param block Callback to be called with the requested items, or an error if one occurred.
+ */
+-(void)fetchItemsInRange:(NSRange)range callback:(void (^)(NSError *error, NSArray *items))block;
 
 /** Move item(s) to another location in the list. 
  
@@ -237,77 +251,41 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /// @name Item Removal
 ///----------------------------
 
-/** Called before one or more items in the playlist will be removed from the playlist. 
- 
- @param aPlaylist The playlist in which items will be removed.
- @param items The items that will be removed.
- @param outgoingIndexes The indexes of the itemss.
- */
--(void)playlist:(SPPlaylist *)aPlaylist willRemoveItems:(NSArray *)items atIndexes:(NSIndexSet *)outgoingIndexes;
-
 /** Called after one or more items in the playlist were removed from the playlist. 
  
- @warning The index set passed to this method is not valid for the given items.
+ @warning The index set passed to this method is not valid for the given items since they've been removed.
  
  @param aPlaylist The playlist in which items were removed.
- @param items The items that were be removed.
  @param theseIndexesArentValidAnymore The (now invalid) indexes of the items.
  */
--(void)playlist:(SPPlaylist *)aPlaylist didRemoveItems:(NSArray *)items atIndexes:(NSIndexSet *)theseIndexesArentValidAnymore;
+-(void)playlist:(SPPlaylist *)aPlaylist didRemoveItemsAtIndexes:(NSIndexSet *)theseIndexesArentValidAnymore;
 
 ///----------------------------
 /// @name Item Addition
 ///----------------------------
 
-/** Called before one or more items are added to the playlist. 
- 
- @warning The index set passed to this method is not valid for the given items.
- 
- @param aPlaylist The playlist to which items will be added.
- @param items The items that will be added.
- @param theseIndexesArentYetValid The (invalid, for now) destination indexes of the items.
- */
--(void)playlist:(SPPlaylist *)aPlaylist willAddItems:(NSArray *)items atIndexes:(NSIndexSet *)theseIndexesArentYetValid;
-
 /** Called after one or more items are added to the playlist. 
  
  @param aPlaylist The playlist in which items were added.
- @param items The items that were added.
  @param newIndexes The destination indexes of the items.
  */
--(void)playlist:(SPPlaylist *)aPlaylist didAddItems:(NSArray *)items atIndexes:(NSIndexSet *)newIndexes;
+-(void)playlist:(SPPlaylist *)aPlaylist didAddItemsAtIndexes:(NSIndexSet *)newIndexes;
 
 ///----------------------------
 /// @name Item Reordering
 ///----------------------------
 
-/** Called before one or more items are moved within the playlist. 
+/** Called after one or more items are moved within the playlist.
  
  @param aPlaylist The playlist in which items will be moved.
- @param items The items that will be moved.
- @param oldIndexes The current indexes of the items.
- @param newIndexes The (invalid, for now) indexes that the items will end up at.
- */
--(void)playlist:(SPPlaylist *)aPlaylist willMoveItems:(NSArray *)items atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes;
-
-/** Called after one or more items are moved within the playlist. 
- 
- @param aPlaylist The playlist in which items will be moved.
- @param items The items that will be moved.
  @param oldIndexes The (invalid) old indexes of the items.
  @param newIndexes The now current indexes of the items.
  */
--(void)playlist:(SPPlaylist *)aPlaylist didMoveItems:(NSArray *)items atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes;
+-(void)playlist:(SPPlaylist *)aPlaylist didMoveItemsAtIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes;
 
 ///----------------------------
 /// @name Other Changes
 ///----------------------------
-
-/** Called before a change that isn't a simple add, remove or move operation to the items in the playlist.
-
- @param aPlaylist The playlist in which items will be changed.
- */
--(void)playlistWillChangeItems:(SPPlaylist *)aPlaylist;
 
 /** Called after a change that isn't a simple add, remove or move operation to the items in the playlist.
 

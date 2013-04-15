@@ -114,7 +114,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 												 selector:@selector(sessionUpdatedMetadata:)
 													 name:SPSessionDidUpdateMetadataNotification
 												   object:self.session];
-    }   
+    }
     return self;
 }
 
@@ -213,6 +213,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		sp_track_availability newAvailability = sp_track_get_availability(self.session.session, self.track);
 		sp_track_offline_status newOfflineStatus = sp_track_offline_get_status(self.track);
 		BOOL newStarred = sp_track_is_starred(self.session.session, self.track);
+		sp_track_offline_status status = sp_track_offline_get_status(self.track);
 
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (self.isLocal != newLocal) self.local = newLocal;
@@ -220,6 +221,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			if (self.availability != newAvailability) self.availability = newAvailability;
 			if (self.offlineStatus != newOfflineStatus) self.offlineStatus = newOfflineStatus;
 			if (self.starred != newStarred) [self setStarredFromLibSpotifyUpdate:newStarred];
+			if (self.offlineStatus != status) [self setOfflineStatusFromLibSpotifyUpdate:status];
 		});
 	});
 }

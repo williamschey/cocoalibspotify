@@ -12,6 +12,8 @@
 		37738CF416F89BF70080530D /* SPAsyncLoadingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37738CF316F89BF70080530D /* SPAsyncLoadingTests.m */; };
 		37738CF516F89C000080530D /* AsyncLoadingMockObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 37738CEF16F896050080530D /* AsyncLoadingMockObjects.m */; };
 		377622571655176C00CB56C5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 377622561655176C00CB56C5 /* CoreAudio.framework */; };
+		37CAA642171D83A000372F36 /* SPSparseList.h in Headers */ = {isa = PBXBuildFile; fileRef = 37CAA640171D83A000372F36 /* SPSparseList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37CAA643171D83A000372F36 /* SPSparseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CAA641171D83A000372F36 /* SPSparseList.m */; };
 		37F0582116B7D489008DC38B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0582016B7D489008DC38B /* SystemConfiguration.framework */; };
 		37F4A378166901B40074A6C5 /* SPCoreAudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F4A376166901B40074A6C5 /* SPCoreAudioDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F4A379166901B40074A6C5 /* SPCoreAudioDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F4A377166901B40074A6C5 /* SPCoreAudioDevice.m */; };
@@ -146,6 +148,8 @@
 		37738CF216F89BF70080530D /* SPAsyncLoadingTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPAsyncLoadingTests.h; path = ../../common/Tests/SPAsyncLoadingTests.h; sourceTree = "<group>"; };
 		37738CF316F89BF70080530D /* SPAsyncLoadingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPAsyncLoadingTests.m; path = ../../common/Tests/SPAsyncLoadingTests.m; sourceTree = "<group>"; };
 		377622561655176C00CB56C5 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		37CAA640171D83A000372F36 /* SPSparseList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPSparseList.h; path = ../common/SPSparseList.h; sourceTree = "<group>"; };
+		37CAA641171D83A000372F36 /* SPSparseList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPSparseList.m; path = ../common/SPSparseList.m; sourceTree = "<group>"; };
 		37F0582016B7D489008DC38B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		37F4A376166901B40074A6C5 /* SPCoreAudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPCoreAudioDevice.h; path = ../common/SPCoreAudioDevice.h; sourceTree = "<group>"; };
 		37F4A377166901B40074A6C5 /* SPCoreAudioDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPCoreAudioDevice.m; path = ../common/SPCoreAudioDevice.m; sourceTree = "<group>"; };
@@ -464,6 +468,8 @@
 			children = (
 				50C3CDF61536FFA800B1F2C3 /* SPAsyncLoading.h */,
 				50C3CDF71536FFA800B1F2C3 /* SPAsyncLoading.m */,
+				37CAA640171D83A000372F36 /* SPSparseList.h */,
+				37CAA641171D83A000372F36 /* SPSparseList.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -527,6 +533,7 @@
 				50E8ED5F155C093100F14186 /* SPSessionInternal.h in Headers */,
 				37F4A378166901B40074A6C5 /* SPCoreAudioDevice.h in Headers */,
 				371F38CF171C35EA00372900 /* SPPlaylist.h in Headers */,
+				37CAA642171D83A000372F36 /* SPSparseList.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -695,6 +702,7 @@
 				50BED5B6152208E5000D0919 /* SPPlaybackManager.m in Sources */,
 				50C3CDF91536FFA800B1F2C3 /* SPAsyncLoading.m in Sources */,
 				37F4A379166901B40074A6C5 /* SPCoreAudioDevice.m in Sources */,
+				37CAA643171D83A000372F36 /* SPSparseList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

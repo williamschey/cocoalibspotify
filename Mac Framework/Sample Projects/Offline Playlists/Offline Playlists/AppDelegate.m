@@ -31,6 +31,12 @@
 #error Please get an appkey.c file from developer.spotify.com and remove this error before building.
 #include "appkey.c"
 
+@interface AppDelegate ()
+
+@property (nonatomic, readwrite, strong) NSMutableIndexSet *loadingIndexes;
+
+@end
+
 @implementation AppDelegate
 
 @synthesize window = _window;
@@ -61,6 +67,8 @@
 	[self didChangeValueForKey:@"session"];
 	[self.window center];
 	[self.window orderFront:nil];
+
+	self.loadingIndexes = [NSMutableIndexSet new];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -119,6 +127,7 @@
 
 	} else if ([keyPath isEqualToString:@"selectedPlaylist"]) {
 		self.sparseArray = [[SPSparseList alloc] initWithDataSource:self.selectedPlaylist];
+		[self.loadingIndexes removeAllIndexes];
 		[self.trackTable reloadData];
 	} else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -193,12 +202,14 @@
 
 	SPPlaylistItem *item = self.sparseArray[row];
 
-	if (item == nil) {
+	if (item == nil && ![self.loadingIndexes containsIndex:row]) {
 		[self.sparseArray loadObjectsInRange:NSMakeRange(row, 1) callback:^{
 			[tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:row]
 								 columnIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)]];
-			return;
+			[self.loadingIndexes removeIndex:row];
 		}];
+		[self.loadingIndexes addIndex:row];
+		return nil;
 	}
 
 	if ([tableColumn.identifier isEqualToString:@"name"]) {

@@ -65,7 +65,6 @@
 @property (nonatomic, readwrite) sp_connectionstate connectionState;
 @property (nonatomic, readwrite, strong) NSMutableDictionary *playlistCache;
 @property (nonatomic, readwrite, strong) NSMutableDictionary *userCache;
-@property (nonatomic, readwrite, strong) NSMutableDictionary *trackCache;
 @property (nonatomic, readwrite, strong) NSError *offlineSyncError;
 
 @property (nonatomic, readwrite) sp_session *session;
@@ -778,8 +777,6 @@ static SPSession *sharedSession;
 
 		self.userAgent = aUserAgent;
 		self.loadingPolicy = policy;
-
-		self.trackCache = [[NSMutableDictionary alloc] init];
 		self.userCache = [[NSMutableDictionary alloc] init];
 		self.playlistCache = [[NSMutableDictionary alloc] init];
 		self.loadingObjects = [[NSMutableSet alloc] init];
@@ -1062,7 +1059,6 @@ static SPSession *sharedSession;
 }
 
 -(void)logout:(void (^)())completionBlock {
-	[self.trackCache removeAllObjects];
 	[self.userCache removeAllObjects];
 	self.inboxPlaylist = nil;
 	self.starredPlaylist = nil;
@@ -1101,7 +1097,6 @@ static SPSession *sharedSession;
 
 @synthesize connectionState;
 @synthesize playlistCache;
-@synthesize trackCache;
 @synthesize userCache;
 @synthesize inboxPlaylist;
 @synthesize starredPlaylist;
@@ -1206,26 +1201,12 @@ static SPSession *sharedSession;
 
 -(SPTrack *)trackForTrackStruct:(sp_track *)spTrack {
     // WARNING: This MUST be called on the LibSpotify worker thread.
-	
 	SPAssertOnLibSpotifyThread();
 	
 	if (spTrack == NULL)
 		return nil;
 
-	NSValue *ptrValue = [NSValue valueWithPointer:spTrack];
-	SPTrack *cachedTrack = [self.trackCache objectForKey:ptrValue];
-	
-    if (cachedTrack != nil) {
-        // track may have been cached without album browse specific fields
-        [cachedTrack updateAlbumBrowseSpecificMembers];
-        return cachedTrack;
-    }
-    
-	cachedTrack = [[SPTrack alloc] initWithTrackStruct:spTrack
-											 inSession:self];
-	
-    [self.trackCache setObject:cachedTrack forKey:ptrValue];
-    return cachedTrack;
+	return [[SPTrack alloc] initWithTrackStruct:spTrack inSession:self];
 }
 
 -(SPUser *)userForUserStruct:(sp_user *)spUser {

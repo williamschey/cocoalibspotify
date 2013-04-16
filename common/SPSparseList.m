@@ -40,7 +40,6 @@
 
 @end
 
-
 @implementation SPSparseList
 
 -(id)init {
@@ -136,7 +135,10 @@
 			for (NSUInteger index = 0; index < items.count; index++)
 				self.loadedItems[@(index + range.location)] = items[index];
 
-			[self updateLoadedIndexes];
+			NSMutableIndexSet *newIndexes = [self.loadedIndexes mutableCopy];
+			[newIndexes removeIndexesInRange:range];
+			self.loadedIndexes = newIndexes;
+
 		}
 
 		if (block) block();
@@ -148,20 +150,14 @@
 	[self throwIfIndexesInvalid:[NSIndexSet indexSetWithIndexesInRange:range]];
 	
 	for (NSUInteger index = range.location; index < range.location + range.length; index++)
-		self.loadedItems[@(index)] = nil;
+		[self.loadedItems removeObjectForKey:@(index)];
 
-	[self updateLoadedIndexes];
+	NSMutableIndexSet *newIndexes = [self.loadedIndexes mutableCopy];
+	[newIndexes removeIndexesInRange:range];
+	self.loadedIndexes = newIndexes;
 }
 
 #pragma mark - Internal Helpers
-
--(void)updateLoadedIndexes {
-	NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
-	for (NSNumber *key in [self.loadedItems allKeys])
-		[indexSet addIndex:[key unsignedIntegerValue]];
-
-	self.loadedIndexes = indexSet;
-}
 
 -(void)throwIfIndexInvalid:(NSInteger)index {
 	if (index >= self.count) {

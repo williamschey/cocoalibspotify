@@ -28,7 +28,7 @@
 #import <Cocoa/Cocoa.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, SPSessionDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, SPSessionDelegate, NSTableViewDataSource>
 
 @property (unsafe_unretained) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSSlider *playbackProgressSlider;
@@ -36,7 +36,10 @@
 @property (weak) IBOutlet NSSecureTextField *passwordField;
 @property (unsafe_unretained) IBOutlet NSPanel *loginSheet;
 @property (weak) IBOutlet NSTableView *trackTable;
-@property (weak) IBOutlet NSArrayController *trackArrayController;
+@property (weak) IBOutlet NSArrayController *playlistArrayController;
+
+@property (nonatomic, strong, readwrite) SPPlaylist *selectedPlaylist;
+@property (nonatomic, strong, readwrite) SPSparseList *sparseArray;
 
 -(SPSession *)session;
 

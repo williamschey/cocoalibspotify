@@ -26,6 +26,7 @@
  */
 
 #import "AppDelegate.h"
+#import "SPPlaylistItem+SPPlaylistItemOfflineExtensions.h"
 
 #error Please get an appkey.c file from developer.spotify.com and remove this error before building.
 #include "appkey.c"
@@ -39,7 +40,6 @@
 @synthesize passwordField;
 @synthesize loginSheet;
 @synthesize trackTable;
-@synthesize trackArrayController;
 @synthesize playbackManager;
 
 -(void)applicationWillFinishLaunching:(NSNotification *)notification {
@@ -68,6 +68,11 @@
 
 	[self addObserver:self
 		   forKeyPath:@"playbackManager.trackPosition"
+			  options:0
+			  context:nil];
+
+	[self addObserver:self
+		   forKeyPath:@"selectedPlaylist"
 			  options:0
 			  context:nil];
 	
@@ -111,7 +116,11 @@
         if (![[self.playbackProgressSlider cell] isHighlighted]) {
 			[self.playbackProgressSlider setDoubleValue:self.playbackManager.trackPosition];
 		}
-    } else {
+
+	} else if ([keyPath isEqualToString:@"selectedPlaylist"]) {
+		self.sparseArray = [[SPSparseList alloc] initWithDataSource:self.selectedPlaylist];
+		[self.trackTable reloadData];
+	} else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
@@ -174,6 +183,32 @@
 		 informativeTextWithFormat:@"This message was sent to you from the Spotify service."] runModal];
 }
 
+#pragma mark - TableView
+
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+	return self.sparseArray.count;
+}
+
+-(id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+
+	SPPlaylistItem *item = self.sparseArray[row];
+
+	if (item == nil) {
+		[self.sparseArray loadObjectsInRange:NSMakeRange(row, 1) callback:^{
+			[tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:row]
+								 columnIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)]];
+			return;
+		}];
+	}
+
+	if ([tableColumn.identifier isEqualToString:@"name"]) {
+		return [item.item name];
+	} else {
+		return [item offlineTrackStatus];
+	}
+
+}
+
 #pragma mark -
 #pragma mark Playback
 
@@ -184,33 +219,34 @@
 	NSInteger row = [self.trackTable clickedRow];
 	if (row < 0) return;
 	
-	SPPlaylistItem *playlistItem = [self.trackArrayController.arrangedObjects objectAtIndex:row];
+	SPPlaylistItem *playlistItem = [self.sparseArray objectAtIndex:row];
 	if (playlistItem.itemClass != [SPTrack class]) return;
 	
 	SPTrack *track = playlistItem.item;
 	
 	if (track != nil) {
-		
-		if (!track.isLoaded) {
-			// Since we're trying to play a brand new track that may not be loaded, 
-			// we may have to wait for a moment before playing. Tracks that are present 
-			// in the user's "library" (playlists, starred, inbox, etc) are automatically loaded
-			// on login. All this happens on an internal thread, so we'll just try again in a moment.
-			[self performSelector:_cmd withObject:sender afterDelay:0.1];
-			return;
-		}
-		
-		[self.playbackManager playTrack:track callback:^(NSError *error) {
-			if (error) [self.window presentError:error];
+
+		[SPAsyncLoading waitUntilLoaded:track timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+
+			if (!track.isLoaded) {
+				[NSAlert alertWithMessageText:@"Track not loaded"
+								defaultButton:@"OK"
+							  alternateButton:nil
+								  otherButton:nil
+					informativeTextWithFormat:@"Track could not be played because it didn't load in time."];
+				return;
+			}
+
+			[self.playbackManager playTrack:track callback:^(NSError *error) {
+				if (error) [self.window presentError:error];
+			}];
 		}];
-		return;
 	}
 }
 
-- (IBAction)seekToPosition:(id)sender {
+-(IBAction)seekToPosition:(id)sender {
 	
 	// Invoked by dragging the position slider in the UI.
-	
 	if (self.playbackManager.currentTrack != nil && self.playbackManager.isPlaying) {
 		[self.playbackManager seekToTrackPosition:[sender doubleValue]];
 	}

@@ -40,7 +40,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @class SPSession;
 @protocol SPPlaylistDelegate;
 
-@interface SPPlaylist : NSObject <SPPlaylistableItem, SPAsyncLoading, SPDelayableAsyncLoading>
+@interface SPPlaylist : NSObject <SPPlaylistableItem, SPAsyncLoading, SPDelayableAsyncLoading, SPPartialAsyncLoading>
 
 ///----------------------------
 /// @name Creating and Initializing Playlists

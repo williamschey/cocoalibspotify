@@ -48,8 +48,23 @@ typedef enum SPAsyncLoadingPolicy {
 	SPAsyncLoadingManual /* Only load items when -startLoading is called. */
 } SPAsyncLoadingPolicy;
 
-/** Provides a standard protocol for CocoaLibSpotify metadata objects to load later. */
+/** Provides a standard protocol for CocoaLibSpotify metadata objects that can provide child metadata in partial ranges, like playlists. */
+@protocol SPPartialAsyncLoading <NSObject>
 
+/** Fetch child items in the given range.
+
+ @param range The range of items to retreive. Must be in the range [0..itemCount].
+ @param block Callback to be called with the requested items, or an error if one occurred.
+ */
+-(void)fetchItemsInRange:(NSRange)range callback:(void (^)(NSError *error, NSArray *items))block;
+
+/** Returns the number of child items the object provides. */
+-(NSUInteger)itemCount;
+
+@end
+
+
+/** Provides a standard protocol for CocoaLibSpotify metadata objects to load later. */
 @protocol SPDelayableAsyncLoading <SPAsyncLoading, NSObject>
 
 /** Starts the loading process. Has no effect if the loading process has already been started. */

@@ -615,7 +615,7 @@ static CFRunLoopSourceRef libspotify_runloop_source;
 
 #pragma mark - Runloop & Thread Management
 
-inline void SPDispatchAsync(dispatch_block_t block) { [SPSession dispatchToLibSpotifyThread:block]; }
+inline void SPDispatchAsync(dispatch_block_t blockForLibSpotifyThread) { [SPSession dispatchToLibSpotifyThread:blockForLibSpotifyThread]; }
 
 inline void SPDispatchSyncIfNeeded(dispatch_block_t block) {
 	if (CFRunLoopGetCurrent() == [SPSession libSpotifyRunloop])

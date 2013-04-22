@@ -85,7 +85,7 @@ static NSMutableDictionary *albumCache;
 +(void)albumWithAlbumURL:(NSURL *)aURL inSession:(SPSession *)aSession callback:(void (^)(SPAlbum *album))block {
 	
 	if ([aURL spotifyLinkType] != SP_LINKTYPE_ALBUM) {
-		if (block) block(nil);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(nil); });
 		return;
 	}
 	

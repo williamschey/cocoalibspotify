@@ -116,7 +116,7 @@ static NSMutableDictionary *imageCache;
 +(void)imageWithImageURL:(NSURL *)imageURL inSession:(SPSession *)aSession callback:(void (^)(SPImage *image))block {
 	
 	if ([imageURL spotifyLinkType] != SP_LINKTYPE_IMAGE) {
-		if (block) block(nil);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(nil); });
 		return;
 	}
 	

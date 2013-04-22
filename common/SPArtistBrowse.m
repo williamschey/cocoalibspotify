@@ -152,7 +152,7 @@ void artistbrowse_complete(sp_artistbrowse *result, void *userdata) {
 +(void)browseArtistAtURL:(NSURL *)artistURL inSession:(SPSession *)aSession type:(sp_artistbrowse_type)browseMode callback:(void (^)(SPArtistBrowse *artistBrowse))block {
 	
 	[SPArtist artistWithArtistURL:artistURL inSession:aSession callback:^(SPArtist *artist) {
-		if (block) block([[SPArtistBrowse alloc] initWithArtist:artist inSession:aSession type:browseMode]);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block([[SPArtistBrowse alloc] initWithArtist:artist inSession:aSession type:browseMode]); });
 	}];
 }
 

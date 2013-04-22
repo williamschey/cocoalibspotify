@@ -74,7 +74,7 @@ static NSMutableDictionary *artistCache;
 +(void)artistWithArtistURL:(NSURL *)aURL inSession:(SPSession *)aSession callback:(void (^)(SPArtist *artist))block {
 	
 	if ([aURL spotifyLinkType] != SP_LINKTYPE_ARTIST) {
-		if (block) block(nil);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(nil); });
 		return;
 	}
 	

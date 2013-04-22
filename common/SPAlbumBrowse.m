@@ -134,7 +134,7 @@ void albumbrowse_complete (sp_albumbrowse *result, void *userdata) {
 	[SPAlbum albumWithAlbumURL:albumURL 
 					 inSession:aSession 
 					  callback:^(SPAlbum *album) {
-						  if (block) block([SPAlbumBrowse browseAlbum:album inSession:aSession]);
+						  if (block) dispatch_async(dispatch_get_main_queue(), ^() { block([SPAlbumBrowse browseAlbum:album inSession:aSession]); });
 					  }];
 }
 

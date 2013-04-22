@@ -270,7 +270,7 @@ static NSMutableArray *observerCache;
 					NSMutableArray *completelyLoadedItems = [rootItems mutableCopy];
 					[completelyLoadedItems removeObjectsInArray:notLoadedRootItems];
 
-					if (block) block([NSArray arrayWithArray:completelyLoadedItems], [NSArray arrayWithArray:notLoadedRootItems]);
+					if (block) dispatch_async(dispatch_get_main_queue(), ^() { block([NSArray arrayWithArray:completelyLoadedItems], [NSArray arrayWithArray:notLoadedRootItems]); });
 					return;
 				}
 			}];
@@ -285,7 +285,7 @@ static NSMutableArray *observerCache;
 +(void)loadKeyPath:(NSString *)keyPath ofLoadedItems:(NSArray *)rootItems timeout:(NSTimeInterval)timeout callback:(dispatch_block_t)doneBlock {
 
 	if (rootItems.count == 0) {
-		if (doneBlock) doneBlock();
+		if (doneBlock) dispatch_async(dispatch_get_main_queue(), doneBlock);
 		return;
 	}
 
@@ -298,7 +298,7 @@ static NSMutableArray *observerCache;
 	loadNextLevel = loadNextLevelBlock = [^{
 
 		if (waitingKeyPathComponents.count == 0) {
-			if (doneBlock) doneBlock();
+			if (doneBlock) dispatch_async(dispatch_get_main_queue(), doneBlock);
 			return;
 		}
 

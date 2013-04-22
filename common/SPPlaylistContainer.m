@@ -419,7 +419,7 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 	else if ([playlistOrFolder isKindOfClass:[SPPlaylist class]])
 		[self removePlaylist:playlistOrFolder callback:block];
 	else if (block)
-		block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]);
+		dispatch_async(dispatch_get_main_queue(), ^() { block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]); });
 	
 }
 
@@ -585,7 +585,7 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 		});
 		
 	} else if (block) {
-		block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]);
+		dispatch_async(dispatch_get_main_queue(), ^() { block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]); });
 	}
 }
 
@@ -595,7 +595,7 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 		playlist.owner == self.session.user ||
 		[self.flattenedPlaylists containsObject:playlist]) {
 
-		if (block) block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]); });
 		return;
 	}
 

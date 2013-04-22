@@ -1122,7 +1122,7 @@ static SPSession *sharedSession;
 -(void)setScrobblingUserName:(NSString *)userName password:(NSString *)password forService:(sp_social_provider)service callback:(SPErrorableOperationCallback)block {
 	
 	if (userName.length == 0 || password.length == 0) {
-		if (block) block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]); });
 		return;
 	}
 	
@@ -1242,7 +1242,7 @@ static SPSession *sharedSession;
 	sp_linktype linkType = [url spotifyLinkType];
 	
 	if (!(linkType == SP_LINKTYPE_TRACK || linkType == SP_LINKTYPE_LOCALTRACK)) {
-		if (block) block(nil);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(nil); });
 		return;
 	}
 	
@@ -1264,7 +1264,7 @@ static SPSession *sharedSession;
 -(void)userForURL:(NSURL *)url callback:(void (^)(SPUser *user))block {
 	
 	if ([url spotifyLinkType] != SP_LINKTYPE_PROFILE) {
-		if (block) block(nil);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(nil); });
 		return;
 	}
 	
@@ -1286,7 +1286,7 @@ static SPSession *sharedSession;
 -(void)playlistForURL:(NSURL *)url callback:(void (^)(SPPlaylist *playlist))block {
 	sp_linktype linkType = [url spotifyLinkType];
 	if (linkType != SP_LINKTYPE_PLAYLIST && linkType != SP_LINKTYPE_STARRED) {
-		if (block) block(nil);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(nil); });
 		return;
 	}
 	
@@ -1305,7 +1305,7 @@ static SPSession *sharedSession;
 }
 
 -(void)searchForURL:(NSURL *)url callback:(void (^)(SPSearch *search))block {
-	if (block) block([SPSearch searchWithURL:url inSession:self]);
+	if (block) dispatch_async(dispatch_get_main_queue(), ^() { block([SPSearch searchWithURL:url inSession:self]); });
 }
 
 -(void)albumForURL:(NSURL *)url callback:(void (^)(SPAlbum *album))block {
@@ -1371,7 +1371,7 @@ static SPSession *sharedSession;
 -(void)objectRepresentationForSpotifyURL:(NSURL *)aSpotifyUrlOfSomeKind callback:(void (^)(sp_linktype linkType, id objectRepresentation))block {
 	
 	if (aSpotifyUrlOfSomeKind == nil || block == nil) {
-		if (block) block(SP_LINKTYPE_INVALID, nil);
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(SP_LINKTYPE_INVALID, nil); });
 		return;
 	}
 	

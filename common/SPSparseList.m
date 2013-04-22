@@ -32,27 +32,47 @@
 
 #import "SPSparseList.h"
 
+static NSUInteger const kSPSparseListDefaultBatchSize = 30;
+
+@interface SPSparseListWaitingBlock : NSObject
+
+@property (nonatomic, readwrite, copy) dispatch_block_t block;
+@property (nonatomic, readwrite) NSIndexSet *indexes;
+
+@end
+
+@implementation SPSparseListWaitingBlock
+@end
+
 @interface SPSparseList ()
 
 @property (nonatomic, strong, readwrite) id <SPPartialAsyncLoading> provider;
 @property (nonatomic, strong, readwrite) NSMutableDictionary *loadedItems;
 @property (nonatomic, copy, readwrite) NSIndexSet *loadedIndexes;
+@property (nonatomic, strong, readwrite) NSMutableArray *loadingBlocks;
+@property (nonatomic, readwrite) NSUInteger batchSize;
 
 @end
 
 @implementation SPSparseList
 
 -(id)init {
-	return [self initWithDataSource:nil];
+	return [self initWithDataSource:nil batchSize:kSPSparseListDefaultBatchSize];
 }
 
 -(id)initWithDataSource:(id<SPPartialAsyncLoading>)datasource {
+	return [self initWithDataSource:datasource batchSize:kSPSparseListDefaultBatchSize];
+}
+
+-(id)initWithDataSource:(id<SPPartialAsyncLoading>)datasource batchSize:(NSUInteger)batchSize {
 	self = [super init];
 
 	if (self) {
 		self.loadedItems = [NSMutableDictionary new];
 		self.provider = datasource;
 		self.loadedIndexes = [NSIndexSet indexSet];
+		self.loadingBlocks = [NSMutableArray new];
+		self.batchSize = batchSize;
 	}
 
 	return self;
@@ -127,21 +147,51 @@
 
 -(void)loadObjectsInRange:(NSRange)range callback:(dispatch_block_t)block {
 
-	[self throwIfIndexesInvalid:[NSIndexSet indexSetWithIndexesInRange:range]];
+	/*
+	 Intelligently deal with incoming requests by keeping a list of the indexes being loaded.
+	 That way, if a load request comes in for something already being requested, we don't
+	 fire off multiple requests to the data source.
+	 
+	 Additionally, this allows us to implement batching (loading objects in batches rather
+	 than individually) meaning the user of this class can request exactly which indexes
+	 they require (say, from a table view data source) and still get the performance benefits
+	 of loading in larger batches.
+	 */
 
-	[self.provider fetchItemsInRange:range callback:^(NSError *error, NSArray *items) {
+	NSRange expandedRange = [self chunkedRangeEncompassingRange:range];
+	NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:expandedRange];
+	[self throwIfIndexesInvalid:indexes];
+
+	SPSparseListWaitingBlock *waitingBlock = [SPSparseListWaitingBlock new];
+	waitingBlock.block = block;
+	waitingBlock.indexes = indexes;
+
+	BOOL indexesAlreadyBeingLoaded = [[self loadingIndexes] containsIndexes:indexes];
+	[self.loadingBlocks addObject:waitingBlock];
+
+	if (indexesAlreadyBeingLoaded) return;
+
+	[self.provider fetchItemsInRange:expandedRange callback:^(NSError *error, NSArray *items) {
+
+		NSIndexSet *loadedIndexes = [NSIndexSet indexSetWithIndexesInRange:expandedRange];
+
 		if (error == nil) {
-			NSAssert(items.count == range.length, @"Got wrong number of items for range");
+			NSAssert(items.count == expandedRange.length, @"Got wrong number of items for range");
 			for (NSUInteger index = 0; index < items.count; index++)
-				self.loadedItems[@(index + range.location)] = items[index];
+				self.loadedItems[@(index + expandedRange.location)] = items[index];
 
 			NSMutableIndexSet *newIndexes = [self.loadedIndexes mutableCopy];
-			[newIndexes removeIndexesInRange:range];
+			[newIndexes removeIndexes:loadedIndexes];
 			self.loadedIndexes = newIndexes;
-
 		}
 
-		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(); });
+		NSArray *blocks = [self.loadingBlocks copy];
+		for (SPSparseListWaitingBlock *waitingBlock in blocks) {
+			if ([loadedIndexes containsIndexes:waitingBlock.indexes]) {
+				dispatch_async(dispatch_get_main_queue(), ^{ waitingBlock.block(); });
+				[self.loadingBlocks removeObject:waitingBlock];
+			}
+		}
 	}];	
 }
 
@@ -158,6 +208,28 @@
 }
 
 #pragma mark - Internal Helpers
+
+-(NSRange)chunkedRangeEncompassingRange:(NSRange)range {
+
+	double floatChunk = self.batchSize;
+
+	NSRange chunkedRange = NSMakeRange(0, 0);
+	chunkedRange.location = floor(range.location / floatChunk) * floatChunk;
+	chunkedRange.length = ceil(range.length / floatChunk) * floatChunk;
+
+	if (chunkedRange.location + chunkedRange.length >= self.count)
+		chunkedRange.length = self.count - chunkedRange.location;
+
+	return chunkedRange;
+}
+
+-(NSIndexSet *)loadingIndexes {
+	NSMutableIndexSet *set = [NSMutableIndexSet indexSet];
+	for (SPSparseListWaitingBlock *waitingBlock in self.loadingBlocks)
+		[set addIndexes:waitingBlock.indexes];
+
+	return [set copy];
+}
 
 -(void)throwIfIndexInvalid:(NSInteger)index {
 	if (index >= self.count) {

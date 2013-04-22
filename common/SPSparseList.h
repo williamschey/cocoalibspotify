@@ -42,19 +42,39 @@
 
 @interface SPSparseList : NSObject
 
-/** Initialise the list with the given data source, which must conform
- to the `SPPartialAsyncLoading` protocol.
- 
- @note This is the designated initialiser for this class.
+/** Initialise the list with a default batch size with the given data source, 
+ which must conform to the `SPPartialAsyncLoading` protocol.
  
  @param dataSource The data source for this list.
  @return The initialised list.
  */
 -(id)initWithDataSource:(id <SPPartialAsyncLoading>)dataSource;
 
+/** Initialise the list with the given data source, which must conform
+ to the `SPPartialAsyncLoading` protocol.
+ 
+ The batch size parameter defines the minimum suggested number of
+ items to request at a time from the data source. This is done to increase
+ performance when a large number of small loading requests are made,
+ such as from a table view data source. For best results, set the value to
+ a number slightly larger than a "screenful" of data for your application. If 
+ you're unsure, simply call `initWithDataSource:` instead and the class will
+ choose a sensible default.
+
+ @note This is the designated initialiser for this class.
+
+ @param dataSource The data source for this list.
+ @param batchSize The batch size to use.
+ @return The initialised list.
+ */
+-(id)initWithDataSource:(id <SPPartialAsyncLoading>)dataSource batchSize:(NSUInteger)batchSize;
+
 ///----------------------------
 /// @name Item Loading and Unloading
 ///----------------------------
+
+/** Returns the batch size of the instance — that is, the typical minimum number of objects the list will request from its data source at once. */
+@property (nonatomic, readonly) NSUInteger batchSize;
 
 /** Load objects in the given range.
  

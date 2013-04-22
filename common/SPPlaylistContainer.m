@@ -336,6 +336,10 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 
 #pragma mark -
 
++(NSSet *)keyPathsForValuesAffectingFlattenedPlaylists {
+	return [NSSet setWithObject:@"playlists"];
+}
+
 -(NSArray *)flattenedPlaylists {
 	
 	NSArray *tree = [self.playlists copy];

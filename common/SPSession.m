@@ -788,11 +788,6 @@ static SPSession *sharedSession;
 				  options:0
 				  context:(__bridge void *)kSPSessionKVOContext];
 
-		[self addObserver:self
-			   forKeyPath:@"starredPlaylist.items"
-				  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
-				  context:(__bridge void *)kSPSessionKVOContext];
-
 		if (appKey == nil || [aUserAgent length] == 0) {
 			if (error && appKey == nil)
 				*error = [NSError spotifyErrorWithCode:SP_ERROR_BAD_APPLICATION_KEY];
@@ -957,37 +952,7 @@ static SPSession *sharedSession;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == (__bridge void *)kSPSessionKVOContext) {
 		
-		if ([keyPath isEqualToString:@"starredPlaylist.items"]) {
-			// Bit of a hack to KVO the starred-ness of tracks.
-			
-			NSArray *oldStarredItems = [change valueForKey:NSKeyValueChangeOldKey];
-			if (oldStarredItems == (id)[NSNull null])
-				oldStarredItems = nil;
-			
-			NSArray *newStarredItems = [change valueForKey:NSKeyValueChangeNewKey];
-			if (newStarredItems == (id)[NSNull null])
-				newStarredItems = nil;
-			
-			NSMutableSet *someItems = [NSMutableSet set];
-			[someItems addObjectsFromArray:newStarredItems];
-			[someItems addObjectsFromArray:oldStarredItems];
-			
-			dispatch_async(dispatch_get_main_queue(), ^{
-				for (SPPlaylistItem *playlistItem in someItems) {
-					if (playlistItem.itemClass == [SPTrack class]) {
-						
-						SPTrack *track = playlistItem.item;
-						SPDispatchAsync(^() { 
-							BOOL starred = sp_track_is_starred(self.session, track.track);
-							dispatch_async(dispatch_get_main_queue(), ^() { [track setStarredFromLibSpotifyUpdate:starred]; });
-						});
-					}
-				}
-			});
-			
-			return;
-            
-        } else if ([keyPath isEqualToString:@"connectionState"]) {
+		if ([keyPath isEqualToString:@"connectionState"]) {
             
             if (self.connectionState == SP_CONNECTION_STATE_LOGGED_IN || self.connectionState == SP_CONNECTION_STATE_OFFLINE) {
 
@@ -1696,7 +1661,6 @@ static SPSession *sharedSession;
 -(void)dealloc {
 	
 	[self removeObserver:self forKeyPath:@"connectionState"];
-	[self removeObserver:self forKeyPath:@"starredPlaylist.items"];
 
 	[self.prodTimeoutTimer invalidate];
 	self.prodTimeoutTimer = nil;

@@ -59,7 +59,6 @@
 		[SPAsyncLoading waitUntilLoaded:session.inboxPlaylist timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
 			
 			SPTestAssert(notLoadedItems.count == 0, @"Playlist loading timed out for %@", session.inboxPlaylist);
-			SPTestAssert(session.inboxPlaylist.items != nil, @"Inbox playlist's tracks is nil");
 			SPPassTest();
 		}];
 	}];
@@ -77,7 +76,6 @@
 		[SPAsyncLoading waitUntilLoaded:session.starredPlaylist timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
 			
 			SPTestAssert(notLoadedItems.count == 0, @"Playlist loading timed out for %@", session.starredPlaylist);
-			SPTestAssert(session.starredPlaylist.items != nil, @"Starred playlist's tracks is nil");
 			SPPassTest();
 		}];
 	}];
@@ -163,29 +161,39 @@
 					SPTestAssert(dispatch_get_current_queue() == dispatch_get_main_queue(), @"addItems callback on wrong queue.");
 					
 					// Tracks get converted to items.
-					NSArray *originalPlaylistTracks = [self.playlist.items valueForKey:@"item"];
-					SPTestAssert(originalPlaylistTracks.count == 2, @"Playlist doesn't have 2 tracks, instead has: %u", originalPlaylistTracks.count);
-					SPTestAssert([originalPlaylistTracks objectAtIndex:0] == track1, @"Playlist track 0 should be %@, is actually %@", track1, [originalPlaylistTracks objectAtIndex:0]);
-					SPTestAssert([originalPlaylistTracks objectAtIndex:1] == track2, @"Playlist track 1 should be %@, is actually %@", track2, [originalPlaylistTracks objectAtIndex:1]);
-					
-					[sself.playlist moveItemsAtIndexes:[NSIndexSet indexSetWithIndex:0] toIndex:2 callback:^(NSError *moveError) {
-						SPTestAssert(moveError == nil, @"Move operation returned error: %@", moveError);
-						SPTestAssert(dispatch_get_current_queue() == dispatch_get_main_queue(), @"moveItemsAtIndexes callback on wrong queue.");
-						
-						NSArray *movedPlaylistTracks = [self.playlist.items valueForKey:@"item"];
-						SPTestAssert(movedPlaylistTracks.count == 2, @"Playlist doesn't have 2 tracks after move, instead has: %u", movedPlaylistTracks.count);
-						SPTestAssert([movedPlaylistTracks objectAtIndex:0] == track2, @"Playlist track 0 should be %@ after move, is actually %@", track2, [movedPlaylistTracks objectAtIndex:0]);
-						SPTestAssert([movedPlaylistTracks objectAtIndex:1] == track1, @"Playlist track 1 should be %@ after move, is actually %@", track1, [movedPlaylistTracks objectAtIndex:1]);
-						
-						[sself.playlist removeItemAtIndex:0 callback:^(NSError *deletionError) {
-							
-							SPTestAssert(deletionError == nil, @"Removal operation returned error: %@", deletionError);
-							SPTestAssert(dispatch_get_current_queue() == dispatch_get_main_queue(), @"removeItemAtIndex		callback on wrong queue.");
-							
-							NSArray *afterDeletionPlaylistTracks = [self.playlist.items valueForKey:@"item"];
-							SPTestAssert(afterDeletionPlaylistTracks.count == 1, @"Playlist doesn't have 1 tracks after track remove, instead has: %u", afterDeletionPlaylistTracks.count);
-							SPTestAssert([afterDeletionPlaylistTracks objectAtIndex:0] == track1, @"Playlist track 0 should be %@ after track remove, is actually %@", track1, [afterDeletionPlaylistTracks objectAtIndex:0]);
-							SPPassTest();
+					[sself.playlist fetchItemsInRange:NSMakeRange(0, sself.playlist.itemCount) callback:^(NSError *error, NSArray *originalPlaylistTracks) {
+
+						SPTestAssert(error == nil, @"Got error when fetching tracks: %@", error);
+						SPTestAssert(originalPlaylistTracks.count == 2, @"Playlist doesn't have 2 tracks, instead has: %u", originalPlaylistTracks.count);
+						SPTestAssert([[originalPlaylistTracks objectAtIndex:0] item] == track1, @"Playlist track 0 should be %@, is actually %@", track1, [originalPlaylistTracks objectAtIndex:0]);
+						SPTestAssert([[originalPlaylistTracks objectAtIndex:1] item] == track2, @"Playlist track 1 should be %@, is actually %@", track2, [originalPlaylistTracks objectAtIndex:1]);
+
+						[sself.playlist moveItemsAtIndexes:[NSIndexSet indexSetWithIndex:0] toIndex:2 callback:^(NSError *moveError) {
+
+							SPTestAssert(moveError == nil, @"Move operation returned error: %@", moveError);
+							SPTestAssert(dispatch_get_current_queue() == dispatch_get_main_queue(), @"moveItemsAtIndexes callback on wrong queue.");
+
+							[sself.playlist fetchItemsInRange:NSMakeRange(0, sself.playlist.itemCount) callback:^(NSError *error, NSArray *movedPlaylistTracks) {
+
+								SPTestAssert(error == nil, @"Got error when fetching tracks: %@", error);
+								SPTestAssert(movedPlaylistTracks.count == 2, @"Playlist doesn't have 2 tracks after move, instead has: %u", movedPlaylistTracks.count);
+								SPTestAssert([[movedPlaylistTracks objectAtIndex:0] item] == track2, @"Playlist track 0 should be %@ after move, is actually %@", track2, [movedPlaylistTracks objectAtIndex:0]);
+								SPTestAssert([[movedPlaylistTracks objectAtIndex:1] item] == track1, @"Playlist track 1 should be %@ after move, is actually %@", track1, [movedPlaylistTracks objectAtIndex:1]);
+
+								[sself.playlist removeItemAtIndex:0 callback:^(NSError *deletionError) {
+
+									SPTestAssert(deletionError == nil, @"Removal operation returned error: %@", deletionError);
+									SPTestAssert(dispatch_get_current_queue() == dispatch_get_main_queue(), @"removeItemAtIndex		callback on wrong queue.");
+
+									[sself.playlist fetchItemsInRange:NSMakeRange(0, sself.playlist.itemCount) callback:^(NSError *error, NSArray *afterDeletionPlaylistTracks) {
+
+										SPTestAssert(error == nil, @"Got error when fetching tracks: %@", error);
+										SPTestAssert(afterDeletionPlaylistTracks.count == 1, @"Playlist doesn't have 1 tracks after track remove, instead has: %u", afterDeletionPlaylistTracks.count);
+										SPTestAssert([[afterDeletionPlaylistTracks objectAtIndex:0] item] == track1, @"Playlist track 0 should be %@ after track remove, is actually %@", track1, [afterDeletionPlaylistTracks objectAtIndex:0]);
+										SPPassTest();
+									}];
+								}];
+							}];
 						}];
 					}];
 				}];

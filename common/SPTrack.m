@@ -118,6 +118,17 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return self;
 }
 
+-(NSUInteger)hash {
+	return (NSUInteger)_track;
+}
+
+-(BOOL)isEqual:(id)object {
+	if (![object isKindOfClass:[self class]])
+		return NO;
+
+	return [self hash] == [object hash];
+}
+
 -(NSString *)description {
     return [NSString stringWithFormat:@"%@: %@", [super description], [self name]];
 }

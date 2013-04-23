@@ -34,6 +34,7 @@
 #import "SPSession.h"
 #import "SPPlaylistContainer.h"
 #import "SPPlaylist.h"
+#import "SPPlaylistItem.h"
 #import "SPPlaylistFolder.h"
 #import "SPAsyncLoading.h"
 #import "SPTrack.h"
@@ -164,8 +165,8 @@
 
 						SPTestAssert(error == nil, @"Got error when fetching tracks: %@", error);
 						SPTestAssert(originalPlaylistTracks.count == 2, @"Playlist doesn't have 2 tracks, instead has: %u", originalPlaylistTracks.count);
-						SPTestAssert([[[originalPlaylistTracks objectAtIndex:0] item] isEqual:track1], @"Playlist track 0 should be %@, is actually %@", track1, [originalPlaylistTracks objectAtIndex:0]);
-						SPTestAssert([[[originalPlaylistTracks objectAtIndex:1] item] isEqual:track2], @"Playlist track 1 should be %@, is actually %@", track2, [originalPlaylistTracks objectAtIndex:1]);
+						SPTestAssert([[(SPPlaylistItem *)[originalPlaylistTracks objectAtIndex:0] item] isEqual:track1], @"Playlist track 0 should be %@, is actually %@", track1, [originalPlaylistTracks objectAtIndex:0]);
+						SPTestAssert([[(SPPlaylistItem *)[originalPlaylistTracks objectAtIndex:1] item] isEqual:track2], @"Playlist track 1 should be %@, is actually %@", track2, [originalPlaylistTracks objectAtIndex:1]);
 
 						[sself.playlist moveItemsAtIndexes:[NSIndexSet indexSetWithIndex:0] toIndex:2 callback:^(NSError *moveError) {
 
@@ -176,8 +177,8 @@
 
 								SPTestAssert(error == nil, @"Got error when fetching tracks: %@", error);
 								SPTestAssert(movedPlaylistTracks.count == 2, @"Playlist doesn't have 2 tracks after move, instead has: %u", movedPlaylistTracks.count);
-								SPTestAssert([[[movedPlaylistTracks objectAtIndex:0] item] isEqual:track2], @"Playlist track 0 should be %@ after move, is actually %@", track2, [movedPlaylistTracks objectAtIndex:0]);
-								SPTestAssert([[[movedPlaylistTracks objectAtIndex:1] item] isEqual:track1], @"Playlist track 1 should be %@ after move, is actually %@", track1, [movedPlaylistTracks objectAtIndex:1]);
+								SPTestAssert([[(SPPlaylistItem *)[movedPlaylistTracks objectAtIndex:0] item] isEqual:track2], @"Playlist track 0 should be %@ after move, is actually %@", track2, [movedPlaylistTracks objectAtIndex:0]);
+								SPTestAssert([[(SPPlaylistItem *)[movedPlaylistTracks objectAtIndex:1] item] isEqual:track1], @"Playlist track 1 should be %@ after move, is actually %@", track1, [movedPlaylistTracks objectAtIndex:1]);
 
 								[sself.playlist removeItemAtIndex:0 callback:^(NSError *deletionError) {
 
@@ -188,7 +189,7 @@
 
 										SPTestAssert(error == nil, @"Got error when fetching tracks: %@", error);
 										SPTestAssert(afterDeletionPlaylistTracks.count == 1, @"Playlist doesn't have 1 tracks after track remove, instead has: %u", afterDeletionPlaylistTracks.count);
-										SPTestAssert([[[afterDeletionPlaylistTracks objectAtIndex:0] item] isEqual:track1], @"Playlist track 0 should be %@ after track remove, is actually %@", track1, [afterDeletionPlaylistTracks objectAtIndex:0]);
+										SPTestAssert([[(SPPlaylistItem *)[afterDeletionPlaylistTracks objectAtIndex:0] item] isEqual:track1], @"Playlist track 0 should be %@ after track remove, is actually %@", track1, [afterDeletionPlaylistTracks objectAtIndex:0]);
 										SPPassTest();
 									}];
 								}];

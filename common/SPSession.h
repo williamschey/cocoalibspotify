@@ -325,7 +325,7 @@
 ///----------------------------
 
 /** Returns the current delegate object. */
-@property (nonatomic, readwrite, assign) __unsafe_unretained id <SPSessionDelegate> delegate;
+@property (nonatomic, readwrite, weak) id <SPSessionDelegate> delegate;
 
 /** Returns the opaque structure used by the C LibSpotify API. 
  
@@ -643,14 +643,14 @@
  The playback delegate is responsible for dealing with playback events from CocoaLibSpotify, such as
  playback ending or being paused because the account is being used for playback elsewhere.
  */
-@property (nonatomic, readwrite, assign) __unsafe_unretained id <SPSessionPlaybackDelegate> playbackDelegate;
+@property (nonatomic, readwrite, weak) id <SPSessionPlaybackDelegate> playbackDelegate;
 
 /** Returns the session's audio delivery delegate object.
  
  The audio delivery delegate is responsible for pushing raw audio data provided by the session
  to the system's audio output. See the SimplePlayback sample project for an example of how to do this.
 */
-@property (nonatomic, readwrite, assign) __unsafe_unretained id <SPSessionAudioDeliveryDelegate> audioDeliveryDelegate;
+@property (nonatomic, readwrite, weak) id <SPSessionAudioDeliveryDelegate> audioDeliveryDelegate;
 
 /** Preloads playback assets for the given track.
  

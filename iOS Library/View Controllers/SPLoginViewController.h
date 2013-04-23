@@ -67,7 +67,7 @@
 @property (nonatomic, readwrite) BOOL dismissesAfterLogin;
 
 /** Returns the controller's loginDelegate object. */
-@property (nonatomic, readwrite, unsafe_unretained) id <SPLoginViewControllerDelegate> loginDelegate;
+@property (nonatomic, readwrite, weak) id <SPLoginViewControllerDelegate> loginDelegate;
 
 @end
 

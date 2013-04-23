@@ -154,7 +154,7 @@
 @property (nonatomic, readonly) sp_track_offline_status offlineStatus;
 
 /** Returns the Spotify session the track is associated with. */
-@property (nonatomic, readonly, assign) __unsafe_unretained SPSession *session;
+@property (nonatomic, readonly, weak) SPSession *session;
 
 ///----------------------------
 /// @name Metadata

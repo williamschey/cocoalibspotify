@@ -26,6 +26,6 @@
 
 -(id)initWithPermissions:(NSArray *)permissions inSession:(SPSession *)aSession;
 
-@property (nonatomic, readwrite, unsafe_unretained) id <SPSignupPageDelegate> delegate;
+@property (nonatomic, readwrite, weak) id <SPSignupPageDelegate> delegate;
 
 @end

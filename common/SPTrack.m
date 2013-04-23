@@ -47,7 +47,7 @@
 @property (nonatomic, readwrite, getter = isLocal) BOOL local;
 @property (nonatomic, readwrite) sp_track *track;
 
-@property (nonatomic, readwrite, assign) __unsafe_unretained SPSession *session;
+@property (nonatomic, readwrite, weak) SPSession *session;
 	
 @end
 

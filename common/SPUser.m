@@ -34,7 +34,7 @@
 @property (nonatomic, readwrite, copy) NSString *displayName;
 @property (nonatomic, readwrite, getter=isLoaded) BOOL loaded;
 @property (nonatomic, readwrite) sp_user *user;
-@property (nonatomic, readwrite, assign) __unsafe_unretained SPSession *session;
+@property (nonatomic, readwrite, weak) SPSession *session;
 
 @end
 

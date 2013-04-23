@@ -45,8 +45,6 @@
 
 @implementation SPPlaylistTests
 
-@synthesize playlist;
-
 -(void)test1InboxPlaylist {
 
 	SPAssertTestCompletesInTimeInterval(kSPAsyncLoadingDefaultTimeout * 2);

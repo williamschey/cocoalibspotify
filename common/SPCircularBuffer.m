@@ -32,7 +32,13 @@
 
 #import "SPCircularBuffer.h"
 
-@implementation SPCircularBuffer
+@implementation SPCircularBuffer {
+	void *_buffer;
+	NSUInteger _maximumLength;
+	NSUInteger _dataStartOffset;
+	NSUInteger _dataEndOffset;
+	BOOL _empty;
+}
 
 -(id)init {
     return [self initWithMaximumLength:1024];
@@ -42,8 +48,8 @@
 	self = [super init];
     if (self) {
         // Initialization code here.
-		buffer = malloc(size);
-		maximumLength = size;
+		_buffer = malloc(size);
+		_maximumLength = size;
 		[self clear];
     }
     
@@ -52,10 +58,10 @@
 
 -(void)clear {
 	@synchronized(self) {
-		memset(buffer, 0, maximumLength);
-		dataStartOffset = 0;
-		dataEndOffset = 0;
-		empty = YES;
+		memset(_buffer, 0, _maximumLength);
+		_dataStartOffset = 0;
+		_dataEndOffset = 0;
+		_empty = YES;
 	}
 }
 
@@ -79,22 +85,22 @@
 		// ...that also fits into our chunkSize
 		writableByteCount -= (writableByteCount % chunkSize);
 
-		NSUInteger directCopyByteCount = MIN(writableByteCount, self.maximumLength - (empty ? 0 : dataEndOffset + 1));
+		NSUInteger directCopyByteCount = MIN(writableByteCount, self.maximumLength - (_empty ? 0 : _dataEndOffset + 1));
 		NSUInteger wraparoundByteCount = writableByteCount - directCopyByteCount;
 		
 		if (directCopyByteCount > 0) {
-			void *writePtr = buffer + (empty ? 0 : dataEndOffset + 1);
+			void *writePtr = _buffer + (_empty ? 0 : _dataEndOffset + 1);
 			memcpy(writePtr, data, directCopyByteCount);
-			dataEndOffset += (empty ? directCopyByteCount - 1 : directCopyByteCount);
+			_dataEndOffset += (_empty ? directCopyByteCount - 1 : directCopyByteCount);
 		}
 		
 		if (wraparoundByteCount > 0) {
-			memcpy(buffer, data + directCopyByteCount, wraparoundByteCount);
-			dataEndOffset = wraparoundByteCount - 1;
+			memcpy(_buffer, data + directCopyByteCount, wraparoundByteCount);
+			_dataEndOffset = wraparoundByteCount - 1;
 		}
 		
 		if (writableByteCount > 0)
-			empty = NO;
+			_empty = NO;
 		
 		return writableByteCount;
 	}
@@ -114,19 +120,19 @@
 		}
 		
 		NSUInteger readableByteCount = MIN(usedBufferSpace, desiredLength);
-		NSUInteger directCopyByteCount = MIN(readableByteCount, self.maximumLength - dataStartOffset);
+		NSUInteger directCopyByteCount = MIN(readableByteCount, self.maximumLength - _dataStartOffset);
 		NSUInteger wraparoundByteCount = readableByteCount - directCopyByteCount;
 		
 		void *destinationBuffer = *outBuffer;
 		
 		if (directCopyByteCount > 0) {
-			memcpy(destinationBuffer, buffer + dataStartOffset, directCopyByteCount);
-			dataStartOffset += directCopyByteCount;
+			memcpy(destinationBuffer, _buffer + _dataStartOffset, directCopyByteCount);
+			_dataStartOffset += directCopyByteCount;
 		}
 		
 		if (wraparoundByteCount > 0) {
-			memcpy(destinationBuffer + directCopyByteCount, buffer, wraparoundByteCount);
-			dataStartOffset = wraparoundByteCount;
+			memcpy(destinationBuffer + directCopyByteCount, _buffer, wraparoundByteCount);
+			_dataStartOffset = wraparoundByteCount;
 		}
 		
 		return readableByteCount;
@@ -138,23 +144,21 @@
 	// Length is the distance between the start offset (start of the data)
 	// and the end offset (end).
 	@synchronized(self) {
-		if (dataStartOffset == dataEndOffset) {
+		if (_dataStartOffset == _dataEndOffset) {
 			// Empty!
 			return 0;
-		} else if (dataEndOffset > dataStartOffset) {
-			return (dataEndOffset - dataStartOffset) + 1;
+		} else if (_dataEndOffset > _dataStartOffset) {
+			return (_dataEndOffset - _dataStartOffset) + 1;
 		} else {
-			return (maximumLength - dataStartOffset) + dataEndOffset + 1;
+			return (_maximumLength - _dataStartOffset) + _dataEndOffset + 1;
 		}
 	}
 }
 
-@synthesize maximumLength;
-
 - (void)dealloc {
 	@synchronized(self) {
-		memset(buffer, 0, maximumLength);
-		free(buffer);
+		memset(_buffer, 0, _maximumLength);
+		free(_buffer);
 	}
 }
 

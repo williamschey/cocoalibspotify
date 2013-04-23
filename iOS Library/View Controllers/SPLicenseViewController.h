@@ -31,10 +31,7 @@
  */
 #import <UIKit/UIKit.h>
 
-@interface SPLicenseViewController : UIViewController <UIWebViewDelegate> {
-	UIActivityIndicatorView *spinner;
-	NSString *version;
-}
+@interface SPLicenseViewController : UIViewController <UIWebViewDelegate>
 
 -(id)initWithVersion:(NSString *)licenseVersion;
 

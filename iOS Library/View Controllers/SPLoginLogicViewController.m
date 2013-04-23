@@ -51,22 +51,11 @@
 
 @property (nonatomic, strong) IBOutlet UIView *loginFormView;
 
+@property (nonatomic, readwrite) UIStatusBarStyle previousStyle;
+
 @end
 
 @implementation SPLoginLogicViewController
-
-@synthesize session;
-@synthesize usernameField;
-@synthesize passwordField;
-@synthesize loggingInView;
-@synthesize loginLabel;
-@synthesize passwordLabel;
-@synthesize loginAreaSeparator;
-@synthesize backgroundImageView;
-@synthesize loginFormView;
-@synthesize allowsCancel;
-@synthesize cancelButton;
-@synthesize loginButton;
 
 -(id)initWithSession:(SPSession *)sess {
 	
@@ -315,12 +304,12 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-	previousStyle = [[UIApplication sharedApplication] statusBarStyle];
+	self.previousStyle = [[UIApplication sharedApplication] statusBarStyle];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
-	[[UIApplication sharedApplication] setStatusBarStyle:previousStyle animated:animated];
+	[[UIApplication sharedApplication] setStatusBarStyle:self.previousStyle animated:animated];
 
     [super viewWillDisappear:animated];
 }

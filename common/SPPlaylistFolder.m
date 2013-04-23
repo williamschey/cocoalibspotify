@@ -47,6 +47,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @property (nonatomic, readwrite, weak) SPPlaylistContainer *parentContainer;
 @property (nonatomic, readwrite, weak) SPSession *session;
 @property (nonatomic, readwrite, strong) NSArray *playlists;
+@property (nonatomic, readwrite) sp_uint64 folderId;
 
 @end
 
@@ -62,7 +63,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         self.session = aSession;
 		self.parentContainer = aContainer;
 		self.playlists = [NSArray array];
-		folderId = anId;
+		self.folderId = anId;
     }
     return self;
 }
@@ -70,13 +71,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -(NSString *)description {
 	return [NSString stringWithFormat:@"%@: %@ %@", [super description], self.name, [self valueForKey:@"playlists"]];
 }
-
-@synthesize parentContainer;
-@synthesize playlists;
-@synthesize name;
-@synthesize session;
-@synthesize folderId;
-@synthesize parentFolder;
 
 -(void)addObject:(id)playlistOrFolder {
 	if (playlistOrFolder) self.playlists = [self.playlists arrayByAddingObject:playlistOrFolder];

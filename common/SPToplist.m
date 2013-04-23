@@ -279,23 +279,6 @@ void toplistbrowse_albums_complete(sp_toplistbrowse *result, void *userdata) {
 		return [NSString stringWithFormat:@"%@: Locale toplist browse for %@", [super description], self.locale];
 }
 
-@synthesize tracks;
-@synthesize artists;
-@synthesize albums;
-
-@synthesize username;
-@synthesize locale;
-@synthesize session;
-
-@synthesize tracksLoaded;
-@synthesize albumsLoaded;
-@synthesize artistsLoaded;
-@synthesize loadError;
-
-@synthesize albumBrowseOperation = _albumBrowseOperation;
-@synthesize artistBrowseOperation = _artistBrowseOperation;
-@synthesize trackBrowseOperation = _trackBrowseOperation;
-
 -(sp_toplistbrowse *)albumBrowseOperation {
 #if DEBUG
 	SPAssertOnLibSpotifyThread();

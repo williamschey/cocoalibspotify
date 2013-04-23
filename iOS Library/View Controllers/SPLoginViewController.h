@@ -62,11 +62,7 @@
  then login directly next time using the saved credentias instead of using this view controller.
  If login fails, display the appropriate error and you can then show this view controller for logging in manually again if needed.
  */
-@interface SPLoginViewController : UINavigationController <SPSignupPageDelegate> {
-	SPSession *session;
-	BOOL waitingForFacebookPermissions;
-	id <SPLoginViewControllerDelegate> __unsafe_unretained loginDelegate;
-}
+@interface SPLoginViewController : UINavigationController <SPSignupPageDelegate>
 
 /** Returns an SPLoginViewController instance for the given session. 
  

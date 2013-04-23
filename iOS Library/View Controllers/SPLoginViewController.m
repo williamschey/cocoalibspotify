@@ -102,14 +102,6 @@ static NSMutableDictionary *loginControllerCache;
 
 #pragma mark -
 
-@synthesize shown;
-@synthesize didReceiveSignupFlow;
-@synthesize session;
-@synthesize waitingForFacebookPermissions;
-@synthesize loginDelegate;
-@synthesize dismissesAfterLogin;
-
-
 -(void)setAllowsCancel:(BOOL)allowsCancel {
 	SPLoginLogicViewController *root = [[self viewControllers] objectAtIndex:0];
 	root.allowsCancel = allowsCancel;

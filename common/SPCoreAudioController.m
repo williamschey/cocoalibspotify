@@ -156,12 +156,6 @@ static NSTimeInterval const kTargetBufferLength = 0.5;
 	}
 }
 
-@synthesize volume;
-@synthesize audioOutputEnabled;
-@synthesize audioBuffer;
-@synthesize inputAudioDescription;
-@synthesize delegate;
-
 #pragma mark -
 #pragma mark CocoaLS Audio Delivery
 

@@ -211,25 +211,6 @@ void search_complete(sp_search *result, void *userdata) {
 	return [NSString stringWithFormat:@"%@: %@", [super description], self.searchQuery];
 }
 
-@synthesize tracks;
-@synthesize artists;
-@synthesize albums;
-@synthesize playlists;
-
-@synthesize hasExhaustedTrackResults;
-@synthesize hasExhaustedArtistResults;
-@synthesize hasExhaustedAlbumResults;
-@synthesize hasExhaustedPlaylistResults;
-
-@synthesize searchType;
-@synthesize searchError;
-@synthesize loaded;
-
-@synthesize searchQuery;
-@synthesize suggestedSearchQuery;
-@synthesize spotifyURL;
-@synthesize session;
-
 -(sp_search *)activeSearch {
 #if DEBUG
 	SPAssertOnLibSpotifyThread();

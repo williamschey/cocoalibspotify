@@ -44,9 +44,6 @@
 return self;
 }
 
-@synthesize name;
-@synthesize state;
-
 @end
 
 @interface SPTests ()
@@ -67,9 +64,6 @@ return self;
 	}
 	return self;
 }
-
-@synthesize testSelectorNames;
-@synthesize completionBlock;
 
 -(void)passTest:(SEL)testSelector {
 

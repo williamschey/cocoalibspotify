@@ -58,16 +58,6 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 
 @implementation TestRunner
 
-@synthesize sessionTests;
-@synthesize metadataTests;
-@synthesize searchTests;
-@synthesize inboxTests;
-@synthesize audioTests;
-@synthesize teardownTests;
-@synthesize playlistTests;
-@synthesize concurrencyTests;
-@synthesize asyncTests;
-
 -(void)completeTestsWithPassCount:(NSUInteger)passCount failCount:(NSUInteger)failCount {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kLogForTeamCityUserDefaultsKey])
 		printf("##teamcity[testSuiteFinished name='CocoaLibSpotify']\n");

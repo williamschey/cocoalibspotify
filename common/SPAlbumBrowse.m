@@ -163,16 +163,6 @@ void albumbrowse_complete (sp_albumbrowse *result, void *userdata) {
 	return [NSString stringWithFormat:@"%@: %@", [super description], self.album];
 }
 
-@synthesize loaded;
-@synthesize loadError;
-@synthesize session;
-@synthesize album;
-@synthesize artist;
-@synthesize tracks;
-@synthesize copyrights;
-@synthesize review;
-@synthesize albumBrowse = _albumBrowse;
-
 -(sp_albumbrowse *)albumBrowse {
 #if DEBUG
 	SPAssertOnLibSpotifyThread();

@@ -1060,20 +1060,6 @@ static SPSession *sharedSession;
 	});
 }
 
-@synthesize connectionState;
-@synthesize playlistCache;
-@synthesize userCache;
-@synthesize inboxPlaylist;
-@synthesize starredPlaylist;
-@synthesize userPlaylists;
-@synthesize user;
-@synthesize locale;
-@synthesize offlineSyncError;
-@synthesize userAgent;
-@synthesize loadingPolicy;
-@synthesize loadingObjects;
-@synthesize logoutCompletionBlock;
-
 +(NSSet *)keyPathsForValuesAffectingLoaded {
 	return [NSSet setWithObjects:@"inboxPlaylist", @"starredPlaylist", @"user", @"locale", @"userPlaylists", nil];
 }
@@ -1201,7 +1187,7 @@ static SPSession *sharedSession;
 	SPAssertOnLibSpotifyThread();
 	
 	NSValue *ptrValue = [NSValue valueWithPointer:playlist];
-	SPPlaylist *cachedPlaylist = [playlistCache objectForKey:ptrValue];
+	SPPlaylist *cachedPlaylist = [self.playlistCache objectForKey:ptrValue];
 	
 	if (cachedPlaylist != nil) {
 		return cachedPlaylist;
@@ -1210,7 +1196,7 @@ static SPSession *sharedSession;
 	cachedPlaylist = [[SPPlaylist alloc] initWithPlaylistStruct:playlist
 													  inSession:self];
 	
-	[playlistCache setObject:cachedPlaylist forKey:ptrValue];
+	[self.playlistCache setObject:cachedPlaylist forKey:ptrValue];
 	return cachedPlaylist;
 }
 
@@ -1219,7 +1205,7 @@ static SPSession *sharedSession;
 	SPAssertOnLibSpotifyThread();
 	
 	NSNumber *wrappedId = [NSNumber numberWithUnsignedLongLong:playlistId];
-	SPPlaylistFolder *cachedPlaylistFolder = [playlistCache objectForKey:wrappedId];
+	SPPlaylistFolder *cachedPlaylistFolder = [self.playlistCache objectForKey:wrappedId];
 	
 	if (cachedPlaylistFolder != nil) {
 		return cachedPlaylistFolder;
@@ -1229,7 +1215,7 @@ static SPSession *sharedSession;
 																	container:aContainer
 																	inSession:self];
 	
-	[playlistCache setObject:cachedPlaylistFolder forKey:wrappedId];
+	[self.playlistCache setObject:cachedPlaylistFolder forKey:wrappedId];
 	return cachedPlaylistFolder;
 }
 
@@ -1456,20 +1442,6 @@ static SPSession *sharedSession;
 		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block(interval); });
 	});
 }
-
-@synthesize offlineStatistics;
-@synthesize offlinePlaylistsRemaining;
-@synthesize offlineTracksRemaining;
-@synthesize offlineSyncing;
-
-@synthesize delegate;
-@synthesize playbackDelegate;
-@synthesize audioDeliveryDelegate;
-@synthesize session = _session;
-
-@synthesize forceOfflineMode = _forceOfflineMode;
-@synthesize allowSyncOverWifi = _allowSyncOverWifi;
-@synthesize allowSyncOverMobile = _allowSyncOverMobile;
 
 -(void)setForceOfflineMode:(BOOL)forceOfflineMode {
     

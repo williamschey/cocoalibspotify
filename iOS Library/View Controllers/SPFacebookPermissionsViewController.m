@@ -67,10 +67,6 @@
 	return self;
 }
 
-
-@synthesize permissions;
-@synthesize delegate;
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;

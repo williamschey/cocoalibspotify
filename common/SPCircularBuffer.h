@@ -39,14 +39,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SPCircularBuffer : NSObject {
-@private
-    void *buffer;
-	NSUInteger maximumLength;
-	NSUInteger dataStartOffset;
-	NSUInteger dataEndOffset;
-	BOOL empty;
-}
+@interface SPCircularBuffer : NSObject
 
 /** Initialize a new buffer. 
  

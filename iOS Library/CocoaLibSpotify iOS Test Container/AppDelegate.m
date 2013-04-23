@@ -60,17 +60,6 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 
 @implementation AppDelegate
 
-@synthesize window = _window;
-@synthesize viewController = _viewController;
-@synthesize sessionTests;
-@synthesize metadataTests;
-@synthesize searchTests;
-@synthesize inboxTests;
-@synthesize audioTests;
-@synthesize teardownTests;
-@synthesize playlistTests;
-@synthesize concurrencyTests;
-
 -(void)completeTestsWithPassCount:(NSUInteger)passCount failCount:(NSUInteger)failCount {
 	printf("**** Completed %lu tests with %lu passes and %lu failures ****\n", (unsigned long)(passCount + failCount), (unsigned long)passCount, (unsigned long)failCount);
 	[self pushColorToStatusServer:failCount > 0 ? [UIColor redColor] : [UIColor greenColor]];

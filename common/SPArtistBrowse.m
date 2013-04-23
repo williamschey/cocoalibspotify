@@ -182,17 +182,6 @@ void artistbrowse_complete(sp_artistbrowse *result, void *userdata) {
 	return [NSString stringWithFormat:@"%@: %@", [super description], self.artist];
 }
 
-@synthesize loaded;
-@synthesize loadError;
-@synthesize artist;
-@synthesize session;
-@synthesize portraits;
-@synthesize topTracks;
-@synthesize albums;
-@synthesize relatedArtists;
-@synthesize biography;
-@synthesize artistBrowse = _artistBrowse;
-
 -(sp_artistbrowse *)artistBrowse {
 #if DEBUG
 	SPAssertOnLibSpotifyThread();

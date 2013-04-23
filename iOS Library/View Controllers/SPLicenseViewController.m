@@ -55,10 +55,6 @@ static NSString * const kSPLicensesFormatter = @"http://www.spotify.com/mobile/e
 	return self;
 }
 
-
-@synthesize spinner;
-@synthesize version;
-
 -(void)done {
 	
 	UIViewController *parent = self.navigationController;

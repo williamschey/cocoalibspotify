@@ -135,14 +135,6 @@ void inboxpost_complete(sp_inbox *result, void *userdata) {
 	return [NSString stringWithFormat:@"%@: Sending to %@: %@", [super description], self.destinationUser, self.tracks];
 }
 
-@synthesize session;
-@synthesize destinationUser;
-@synthesize tracks;
-@synthesize message;
-
-@synthesize completionBlock;
-@synthesize inboxOperation = _inboxOperation;
-
 -(sp_inbox *)inboxOperation {
 #if DEBUG
 	SPAssertOnLibSpotifyThread();

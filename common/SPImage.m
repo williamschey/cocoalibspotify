@@ -41,7 +41,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @end
 
 @implementation SPImageCallbackProxy
-@synthesize image;
 @end
 
 @interface SPImage ()
@@ -187,13 +186,6 @@ static NSMutableDictionary *imageCache;
 #endif 
 	return _spImage;
 }
-
-@synthesize spImage = _spImage;
-@synthesize loaded;
-@synthesize session;
-@synthesize spotifyURL;
-@synthesize imageId;
-@synthesize callbackProxy;
 
 -(SPPlatformNativeImage *)image {
 	if (_image == nil && !hasRequestedImage)

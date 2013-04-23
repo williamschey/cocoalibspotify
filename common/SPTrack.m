@@ -189,7 +189,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		for (currentArtist = 0; currentArtist < artistCount; currentArtist++) {
 			sp_artist *artist = sp_track_artist(self.track, (int)currentArtist);
 			if (artist != NULL) {
-				[array addObject:[SPArtist artistWithArtistStruct:artist inSession:session]];
+				[array addObject:[SPArtist artistWithArtistStruct:artist inSession:self.session]];
 			}
 		}
 		
@@ -255,22 +255,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma mark -
 #pragma mark Properties 
 
-@synthesize album;
-@synthesize artists;
-@synthesize trackNumber;
-@synthesize discNumber;
-@synthesize popularity;
-@synthesize duration;
-@synthesize availability;
-@synthesize offlineStatus;
-@synthesize loaded;
-@synthesize name;
-@synthesize session;
-@synthesize starred = _starred;
-@synthesize local;
-@synthesize spotifyURL;
-@synthesize track = _track;
-
 -(sp_track *)track {
 #if DEBUG
 	SPAssertOnLibSpotifyThread();
@@ -295,7 +279,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -(void)setStarred:(BOOL)starred {
     SPDispatchAsync(^() {
 		sp_track *track = self.track;
-		sp_track_set_starred([session session], (sp_track *const *)&track, 1, starred);
+		sp_track_set_starred(self.session.session, (sp_track *const *)&track, 1, starred);
 	});
 	_starred = starred;
 }
@@ -305,7 +289,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	sp_track *outgoing_track = _track;
 	_track = NULL;
     if (outgoing_track) SPDispatchAsync(^() { sp_track_release(outgoing_track); });
-    session = nil;
+    _session = nil;
 }
 
 @end

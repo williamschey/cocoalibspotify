@@ -128,9 +128,6 @@ static NSMutableArray *observerCache;
 		[(id)item removeObserver:self forKeyPath:@"loaded"];
 }
 
-@synthesize observedItems;
-@synthesize loadedWithTimeoutHandler;
-
 -(void)triggerTimeout {
 	
 	NSMutableArray *loadedItems = [NSMutableArray arrayWithCapacity:self.observedItems.count];

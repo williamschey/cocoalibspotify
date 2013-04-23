@@ -72,12 +72,6 @@
 	return self;
 }
 
-
-@synthesize jsQueue;
-@synthesize loaded;
-@synthesize currentPage;
-@synthesize session;
-
 -(UIWebView *)webView {
 	return (UIWebView *)self.view;
 }

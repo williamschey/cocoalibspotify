@@ -46,7 +46,6 @@
 @end
 
 @implementation SPPlaylistContainerCallbackProxy
-@synthesize container;
 @end
 
 
@@ -152,16 +151,6 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 -(NSString *)description {
 	return [NSString stringWithFormat:@"%@: %@", [super description], [self playlists]];
 }
-
-@synthesize owner;
-@synthesize session;
-@synthesize container = _container;
-@synthesize loaded;
-@synthesize folderCache;
-@synthesize playlists;
-@synthesize callbackProxy;
-@synthesize playlistAddCallbackStack;
-@synthesize playlistRemoveCallbackStack;
 
 -(sp_playlistcontainer *)container {
 #if DEBUG

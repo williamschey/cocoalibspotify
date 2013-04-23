@@ -98,11 +98,6 @@ static void * const kSPPlaybackManagerKVOContext = @"kSPPlaybackManagerKVOContex
 	self.audioController = nil;
 }
 
-@synthesize audioController;
-@synthesize playbackSession;
-@synthesize trackPosition;
-@synthesize delegate;
-
 +(NSSet *)keyPathsForValuesAffectingVolume {
 	return [NSSet setWithObject:@"audioController.volume"];
 }
@@ -114,8 +109,6 @@ static void * const kSPPlaybackManagerKVOContext = @"kSPPlaybackManagerKVOContex
 -(void)setVolume:(double)volume {
 	self.audioController.volume = volume;
 }
-
-@synthesize currentTrack;
 
 -(void)playTrack:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block {
 	

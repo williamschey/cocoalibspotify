@@ -33,16 +33,7 @@
 #import <UIKit/UIKit.h>
 #import "CocoaLibSpotify.h"
 
-@interface SPLoginLogicViewController : UIViewController <UITextFieldDelegate> {
-	UITextField *usernameField;
-	UITextField *passwordField;
-	SPSession *session;
-	UIStatusBarStyle previousStyle;
-	UIViewController *myParentViewController;
-	UIBarButtonItem *cancelButton;
-	UIBarButtonItem *loginButton;
-	BOOL allowsCancel;
-}
+@interface SPLoginLogicViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic) SPSession *session;
 @property (nonatomic) BOOL allowsCancel;

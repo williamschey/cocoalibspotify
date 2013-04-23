@@ -49,7 +49,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @end
 
 @implementation SPPlaylistCallbackProxy
-@synthesize playlist;
 @end
 
 @interface SPPlaylist ()

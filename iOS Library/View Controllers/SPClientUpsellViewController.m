@@ -59,10 +59,6 @@ static NSString * const kClientUpsellPageURL = @"http://ls.scdn.co/client-upsell
 	return self;
 }
 
-@synthesize spinner;
-@synthesize completionBlock;
-@synthesize session;
-
 -(void)done {
 	if (self.completionBlock) self.completionBlock();
 }

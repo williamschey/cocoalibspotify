@@ -162,11 +162,6 @@ static NSMutableDictionary *artistCache;
 	return _artist;
 }
 
-@synthesize artist = _artist;
-@synthesize spotifyURL;
-@synthesize name;
-@synthesize loaded;
-
 -(void)dealloc {
 	sp_artist *outgoing_artist = _artist;
 	_artist = NULL;

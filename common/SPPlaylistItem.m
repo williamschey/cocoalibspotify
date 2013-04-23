@@ -100,13 +100,6 @@
 
 @implementation SPPlaylistItem
 
-@synthesize item;
-@synthesize dateAdded;
-@synthesize creator;
-@synthesize message;
-@synthesize itemIndex;
-@synthesize playlist;
-
 -(NSString *)description {
 	return [NSString stringWithFormat:@"%@: %@", [super description], [self.item description]];
 }
@@ -134,8 +127,6 @@
 -(Class)itemClass {
 	return [self.item class];
 }
-
-@synthesize unread = _unread;
 
 -(void)setUnread:(BOOL)unread {
 	SPDispatchAsync(^() { sp_playlist_track_set_seen(self.playlist.playlist, self.itemIndex, !unread); });

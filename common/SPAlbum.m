@@ -214,19 +214,6 @@ static NSMutableDictionary *albumCache;
 	return _album;
 }
 
-@synthesize album = _album;
-@synthesize session;
-@synthesize cover;
-@synthesize smallCover;
-@synthesize largeCover;
-@synthesize artist;
-@synthesize spotifyURL;
-@synthesize available;
-@synthesize loaded;
-@synthesize year;
-@synthesize type;
-@synthesize name;
-
 +(NSSet *)keyPathsForValuesAffectingSmallestAvailableCover {
 	return [NSSet setWithObjects:@"smallCover", @"cover", @"largeCover", nil];
 }

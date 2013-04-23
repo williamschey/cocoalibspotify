@@ -33,10 +33,7 @@
 #import "SPSignupViewController.h"
 #import "CocoaLibSpotify.h"
 
-@interface SPFacebookPermissionsViewController : SPSignupViewController {
-	NSArray *permissions;
-	id <SPSignupPageDelegate> __unsafe_unretained delegate;
-}
+@interface SPFacebookPermissionsViewController : SPSignupViewController
 
 -(id)initWithPermissions:(NSArray *)permissions inSession:(SPSession *)aSession;
 

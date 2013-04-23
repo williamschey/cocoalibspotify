@@ -33,9 +33,7 @@
 
 @class SPSession;
 
-@interface SPClientUpsellViewController : UIViewController <UIWebViewDelegate> {
-	UIActivityIndicatorView *spinner;
-}
+@interface SPClientUpsellViewController : UIViewController <UIWebViewDelegate>
 
 -(id)initWithSession:(SPSession *)aSession;
 

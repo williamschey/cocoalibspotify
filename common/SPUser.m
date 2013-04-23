@@ -134,13 +134,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	}
 }
 
-@synthesize spotifyURL;
-@synthesize canonicalName;
-@synthesize displayName;
-@synthesize loaded;
-@synthesize user = _user;
-@synthesize session;
-
 -(sp_user *)user {
 #if DEBUG
 	SPAssertOnLibSpotifyThread();

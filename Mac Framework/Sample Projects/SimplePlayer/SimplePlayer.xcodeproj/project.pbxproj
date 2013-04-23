@@ -157,7 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				504E0904140CCE23008A20D9 /* CocoaLibSpotify.framework */,
-				50DCFC7B156BADAB0090723A /* CocoaLibSpotify Test Container.app */,
+				50DCFC7B156BADAB0090723A /* CocoaLSTests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -224,10 +224,9 @@
 			remoteRef = 504E0903140CCE23008A20D9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		50DCFC7B156BADAB0090723A /* CocoaLibSpotify Test Container.app */ = {
+		50DCFC7B156BADAB0090723A /* CocoaLSTests.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			name = "CocoaLibSpotify Test Container.app";
 			path = CocoaLSTests.app;
 			remoteRef = 50DCFC7A156BADAB0090723A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -299,7 +298,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				FRAMEWORK_SEARCH_PATHS = "\"$SRCROOT\"";
+				FRAMEWORK_SEARCH_PATHS = "$(CONFIGURATION_BUILD_DIR)/CocoaLibSpotify.framework/Versions/Frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -320,7 +319,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				FRAMEWORK_SEARCH_PATHS = "\"$SRCROOT\"";
+				FRAMEWORK_SEARCH_PATHS = "$(CONFIGURATION_BUILD_DIR)/CocoaLibSpotify.framework/Versions/Frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -339,10 +338,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					$CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks,
-				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -361,10 +356,6 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					$CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks,
-				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SimplePlayer/SimplePlayer-Prefix.pch";

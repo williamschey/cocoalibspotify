@@ -41,5 +41,7 @@
 
 - (IBAction)seekToPosition:(id)sender;
 - (IBAction)togglePlayPause:(id)sender;
+- (IBAction)purgeUnseenTracks:(id)sender;
+- (IBAction)loadAllTracks:(id)sender;
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3734AF3D1726CED700407244 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3734AF3C1726CED700407244 /* Default-568h@2x.png */; };
 		50EECB2915CABA47006E54FA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50EECB2815CABA47006E54FA /* UIKit.framework */; };
 		50EECB2B15CABA47006E54FA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50EECB2A15CABA47006E54FA /* Foundation.framework */; };
 		50EECB2D15CABA47006E54FA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50EECB2C15CABA47006E54FA /* CoreGraphics.framework */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3734AF3C1726CED700407244 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		50EECB2415CABA47006E54FA /* Empty CocoaLibSpotify Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Empty CocoaLibSpotify Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50EECB2815CABA47006E54FA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		50EECB2A15CABA47006E54FA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -150,6 +152,7 @@
 				50EECB6315CABACA006E54FA /* SPLoginResources.bundle */,
 				50EECB3015CABA47006E54FA /* Empty CocoaLibSpotify Project-Info.plist */,
 				50EECB3115CABA47006E54FA /* InfoPlist.strings */,
+				3734AF3C1726CED700407244 /* Default-568h@2x.png */,
 				50EECB3415CABA47006E54FA /* main.m */,
 				50EECB3615CABA47006E54FA /* Empty CocoaLibSpotify Project-Prefix.pch */,
 			);
@@ -192,7 +195,7 @@
 		50EECB1B15CABA47006E54FA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Your Company";
 			};
 			buildConfigurationList = 50EECB1E15CABA47006E54FA /* Build configuration list for PBXProject "Empty CocoaLibSpotify Project" */;
@@ -244,6 +247,7 @@
 				50EECB3F15CABA47006E54FA /* ViewController_iPhone.xib in Resources */,
 				50EECB4215CABA47006E54FA /* ViewController_iPad.xib in Resources */,
 				50EECB6415CABACA006E54FA /* SPLoginResources.bundle in Resources */,
+				3734AF3D1726CED700407244 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +309,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -333,6 +340,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -363,6 +373,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "\"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts/include\"";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -381,6 +392,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "\"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts/include\"";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -22,49 +22,7 @@
 #import <Cocoa/Cocoa.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
-@interface Guess_The_IntroAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate, SPSessionDelegate, SPPlaybackManagerDelegate> {
-	
-@private
-	
-	NSTextField *__weak userNameField;
-	NSSecureTextField *__weak passwordField;
-	NSTextField *__weak playlistNameField;
-	NSView *__weak loginView;
-	
-	NSWindow *__unsafe_unretained window;
-	NSButton *__weak oneButton;
-	NSButton *__weak twoButton;
-	NSButton *__weak threeButton;
-	NSButton *__weak fourButton;
-	NSProgressIndicator *__weak countdownProgress;
-	
-	NSUInteger loginAttempts;
-	
-	SPPlaylist *playlist;
-	
-	SPPlaybackManager *playbackManager;
-	
-	SPToplist *regionTopList;
-	SPToplist *userTopList;
-	
-	NSMutableArray *trackPool;
-	SPTrack *firstSuggestion;
-	SPTrack *secondSuggestion;
-	SPTrack *thirdSuggestion;
-	SPTrack *fourthSuggestion;
-	
-	BOOL canPushOne;
-	BOOL canPushTwo;
-	BOOL canPushThree;
-	BOOL canPushFour;
-	
-	NSTimer *roundTimer;
-	
-	NSUInteger multiplier; // Reset every time a wrong guess is made.
-	NSUInteger score; // The current score
-	NSDate *roundStartDate; // The time at which the current round started. Round score = (kRoundTime - seconds from this date) * multiplier.
-	NSDate *gameStartDate;
-}
+@interface Guess_The_IntroAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate, SPSessionDelegate, SPPlaybackManagerDelegate>
 
 @property (weak) IBOutlet NSTextField *userNameField;
 @property (weak) IBOutlet NSSecureTextField *passwordField;

@@ -256,4 +256,17 @@
 	self.playbackManager.isPlaying = !self.playbackManager.isPlaying;
 }
 
+- (IBAction)purgeUnseenTracks:(id)sender {
+	[self.sparseArray unloadObjectsInRange:NSMakeRange(0, self.sparseArray.count)];
+	[self.loadingIndexes removeAllIndexes];
+}
+
+- (IBAction)loadAllTracks:(id)sender {
+	NSRange range = NSMakeRange(0, self.sparseArray.count);
+	[self.loadingIndexes addIndexesInRange:range];
+	[self.sparseArray loadObjectsInRange:range callback:^{
+		[self.loadingIndexes removeIndexesInRange:range];
+	}];
+}
+
 @end

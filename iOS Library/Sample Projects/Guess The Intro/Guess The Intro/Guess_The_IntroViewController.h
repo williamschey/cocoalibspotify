@@ -10,54 +10,7 @@
 #import "CocoaLibSpotify.h"
 #import "SPPlaybackManager.h"
 
-@interface Guess_The_IntroViewController : UIViewController <SPSessionDelegate, SPPlaybackManagerDelegate, SPLoginViewControllerDelegate> {
-	UILabel *currentScoreLabel;
-	UILabel *highScoreLabel;
-	UIProgressView *roundProgressIndicator;
-	UILabel *currentRoundScoreLabel;
-	UIActivityIndicatorView *isLoadingView;
-	UILabel *countdownLabel;
-	UIButton *track1Button;
-	UILabel *track1TitleLabel;
-	UILabel *track2ArtistLabel;
-	UIButton *track3Button;
-	UILabel *track3TitleLabel;
-	UILabel *track3ArtistLabel;
-	UIButton *track4Button;
-	UILabel *track4TitleLabel;
-	UILabel *track4ArtistLabel;
-	UILabel *track1ArtistLabel;
-	UIButton *track2Button;
-	UILabel *track2TitleLabel;
-	UILabel *multiplierLabel;
-
-	NSUInteger loginAttempts;
-	NSNumberFormatter *formatter;
-	
-	SPPlaylist *playlist;
-	SPPlaybackManager *playbackManager;
-	
-	SPToplist *regionTopList;
-	SPToplist *userTopList;
-	
-	NSMutableArray *trackPool;
-	SPTrack *firstSuggestion;
-	SPTrack *secondSuggestion;
-	SPTrack *thirdSuggestion;
-	SPTrack *fourthSuggestion;
-	
-	BOOL canPushOne;
-	BOOL canPushTwo;
-	BOOL canPushThree;
-	BOOL canPushFour;
-	
-	NSTimer *roundTimer;
-	
-	NSUInteger multiplier; // Reset every time a wrong guess is made.
-	NSUInteger score; // The current score
-	NSDate *roundStartDate; // The time at which the current round started. Round score = (kRoundTime - seconds from this date) * multiplier.
-	NSDate *gameStartDate;
-}
+@interface Guess_The_IntroViewController : UIViewController <SPSessionDelegate, SPPlaybackManagerDelegate, SPLoginViewControllerDelegate>
 
 @property (nonatomic, readwrite, strong) SPPlaybackManager *playbackManager;
 

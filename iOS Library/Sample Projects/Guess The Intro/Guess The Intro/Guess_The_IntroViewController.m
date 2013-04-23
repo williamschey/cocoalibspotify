@@ -17,52 +17,10 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 
 @interface Guess_The_IntroViewController ()
 -(NSString *)stringFromScore:(NSInteger)aScore;
+@property (nonatomic, readwrite, strong) NSNumberFormatter *formatter;
 @end
 
 @implementation Guess_The_IntroViewController
-
-@synthesize multiplierLabel;
-@synthesize currentScoreLabel;
-@synthesize highScoreLabel;
-@synthesize roundProgressIndicator;
-@synthesize currentRoundScoreLabel;
-@synthesize isLoadingView;
-@synthesize countdownLabel;
-@synthesize track1Button;
-@synthesize track1TitleLabel;
-@synthesize track2ArtistLabel;
-@synthesize track3Button;
-@synthesize track3TitleLabel;
-@synthesize track3ArtistLabel;
-@synthesize track4Button;
-@synthesize track4TitleLabel;
-@synthesize track4ArtistLabel;
-@synthesize track1ArtistLabel;
-@synthesize track2Button;
-@synthesize track2TitleLabel;
-
-@synthesize playbackManager;
-@synthesize playlist;
-
-@synthesize firstSuggestion;
-@synthesize secondSuggestion;
-@synthesize thirdSuggestion;
-@synthesize fourthSuggestion;
-
-@synthesize canPushOne;
-@synthesize canPushTwo;
-@synthesize canPushThree;
-@synthesize canPushFour;
-
-@synthesize userTopList;
-@synthesize regionTopList;
-
-@synthesize multiplier;
-@synthesize score;
-@synthesize roundStartDate;
-@synthesize gameStartDate;
-@synthesize trackPool;
-@synthesize roundTimer;
 
 - (void)didReceiveMemoryWarning
 {
@@ -73,7 +31,7 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 }
 
 -(NSString *)stringFromScore:(NSInteger)aScore {
-	return [formatter stringFromNumber:[NSNumber numberWithInteger:aScore]];
+	return [self.formatter stringFromNumber:[NSNumber numberWithInteger:aScore]];
 }
 
 #pragma mark - View lifecycle
@@ -96,8 +54,8 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 	self.track4Button.layer.borderColor = [UIColor darkGrayColor].CGColor;
 	self.track4Button.layer.borderWidth = 1.0;
 	
-	formatter = [[NSNumberFormatter alloc] init];
-	formatter.numberStyle = NSNumberFormatterDecimalStyle;
+	self.formatter = [[NSNumberFormatter alloc] init];
+	self.formatter.numberStyle = NSNumberFormatterDecimalStyle;
 	
 	self.multiplier = 1;
 	self.highScoreLabel.text = [NSString stringWithFormat:@"High Score: %@", [self stringFromScore:[[NSUserDefaults standardUserDefaults] integerForKey:@"highScore"]]];
@@ -180,7 +138,7 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 	[self removeObserver:self forKeyPath:@"multiplier"];
 
 	
-	formatter = nil;
+	self.formatter = nil;
 
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -337,49 +295,77 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 		
 		// The session is logged in and loaded — now wait for the userPlaylists to load.
 		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Session loaded.");
-		
+
 		[SPAsyncLoading waitUntilLoaded:[SPSession sharedSession].userPlaylists timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedContainers, NSArray *notLoadedContainers) {
-			
+
 			// User playlists are loaded — wait for playlists to load their metadata.
 			NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Container loaded.");
-			
+
 			NSMutableArray *playlists = [NSMutableArray array];
 			[playlists addObject:[SPSession sharedSession].starredPlaylist];
 			[playlists addObject:[SPSession sharedSession].inboxPlaylist];
 			[playlists addObjectsFromArray:[SPSession sharedSession].userPlaylists.flattenedPlaylists];
-			
+
 			[SPAsyncLoading waitUntilLoaded:playlists timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedPlaylists, NSArray *notLoadedPlaylists) {
-				
+
 				// All of our playlists have loaded their metadata — wait for all tracks to load their metadata.
-				NSLog(@"[%@ %@]: %@ of %@ playlists loaded.", NSStringFromClass([self class]), NSStringFromSelector(_cmd), 
+				NSLog(@"[%@ %@]: %@ of %@ playlists loaded.", NSStringFromClass([self class]), NSStringFromSelector(_cmd),
 					  [NSNumber numberWithInteger:loadedPlaylists.count], [NSNumber numberWithInteger:loadedPlaylists.count + notLoadedPlaylists.count]);
-				
-				NSArray *playlistItems = [loadedPlaylists valueForKeyPath:@"@unionOfArrays.items"];
-				NSArray *tracks = [self tracksFromPlaylistItems:playlistItems];
-				
-				[SPAsyncLoading waitUntilLoaded:tracks timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
-					
-					// All of our tracks have loaded their metadata. Hooray!
-					NSLog(@"[%@ %@]: %@ of %@ tracks loaded.", NSStringFromClass([self class]), NSStringFromSelector(_cmd), 
-						  [NSNumber numberWithInteger:loadedTracks.count], [NSNumber numberWithInteger:loadedTracks.count + notLoadedTracks.count]);
-					
-					NSMutableArray *theTrackPool = [NSMutableArray arrayWithCapacity:loadedTracks.count];
-					
-					for (SPTrack *aTrack in loadedTracks) {
-						if (aTrack.availability == SP_TRACK_AVAILABILITY_AVAILABLE && [aTrack.name length] > 0)
-							[theTrackPool addObject:aTrack];
-					}
-					
-					self.trackPool = [NSMutableArray arrayWithArray:[[NSSet setWithArray:theTrackPool] allObjects]];
-					// ^ Thin out duplicates.
-					
-					[self startNewRound];
-					
+
+				[self getTracksFromPlaylists:loadedPlaylists then:^(NSSet *tracks) {
+
+					[SPAsyncLoading waitUntilLoaded:[tracks allObjects] timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
+
+						// All of our tracks have loaded their metadata. Hooray!
+						NSLog(@"[%@ %@]: %@ of %@ tracks loaded.", NSStringFromClass([self class]), NSStringFromSelector(_cmd),
+							  [NSNumber numberWithInteger:loadedTracks.count], [NSNumber numberWithInteger:loadedTracks.count + notLoadedTracks.count]);
+
+						NSMutableArray *theTrackPool = [NSMutableArray arrayWithCapacity:loadedTracks.count];
+
+						for (SPTrack *aTrack in loadedTracks) {
+							if (aTrack.availability == SP_TRACK_AVAILABILITY_AVAILABLE && [aTrack.name length] > 0)
+								[theTrackPool addObject:aTrack];
+						}
+
+						self.trackPool = [NSMutableArray arrayWithArray:[[NSSet setWithArray:theTrackPool] allObjects]];
+						// ^ Thin out duplicates.
+
+						[self startNewRound];
+
+					}];
 				}];
 			}];
 		}];
 	}];
 }
+
+-(void)getTracksFromPlaylists:(NSArray *)playlists then:(void (^)(NSSet *tracks))block {
+
+	__block NSMutableArray *mutablePlaylists = [NSMutableArray arrayWithArray:playlists];
+	__block NSMutableSet *tracks = [NSMutableSet set];
+
+	__block dispatch_block_t extractTracks = ^{
+
+		if (mutablePlaylists.count == 0) {
+			if (block) block([NSSet setWithSet:tracks]);
+			return;
+		}
+
+		SPPlaylist *playlist = [mutablePlaylists lastObject];
+		[mutablePlaylists removeObject:playlist];
+
+		[playlist fetchItemsInRange:NSMakeRange(0, playlist.itemCount) callback:^(NSError *error, NSArray *items) {
+			if (error == nil) {
+				// Playlists have playlist items rather than tracks, so make sure we extract the tracks.
+				[tracks addObjectsFromArray:[self tracksFromPlaylistItems:items]];
+			}
+			extractTracks();
+		}];
+	};
+
+	extractTracks();
+}
+
 
 -(NSArray *)playlistsInFolder:(SPPlaylistFolder *)aFolder {
 	
@@ -539,7 +525,7 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 -(void)startNewRound {
 	
 	if (self.playbackManager.currentTrack != nil) {
-		[self.playlist addItem:self.playbackManager.currentTrack atIndex:self.playlist.items.count callback:^(NSError *error) {
+		[self.playlist addItem:self.playbackManager.currentTrack atIndex:self.playlist.itemCount callback:^(NSError *error) {
 			if (error) NSLog(@"%@", error);
 		}];
 	}
@@ -655,7 +641,7 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 	
 	self.roundStartDate = [NSDate date];
 	if (self.gameStartDate == nil)
-		self.gameStartDate = roundStartDate;
+		self.gameStartDate = self.roundStartDate;
 	
 	self.roundTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
 													   target:self
@@ -670,10 +656,11 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 	
 }
 
+-(void)playbackManagerIsFinishingPlayback:(SPPlaybackManager *)aPlaybackManager {}
 
 - (void)dealloc {
 	
-	[roundTimer invalidate];
+	[self.roundTimer invalidate];
 	
 }
 

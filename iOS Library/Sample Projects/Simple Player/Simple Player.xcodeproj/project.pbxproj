@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3734AF421726CF4D00407244 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3734AF411726CF4D00407244 /* Default-568h@2x.png */; };
 		5002BD6C1439DE2400FEAB3C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5002BD6B1439DE2400FEAB3C /* AudioToolbox.framework */; };
 		5002BD7D1439E8E800FEAB3C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5002BD7C1439E8E800FEAB3C /* SystemConfiguration.framework */; };
 		5002BD7F1439E8FC00FEAB3C /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5002BD7E1439E8FC00FEAB3C /* CFNetwork.framework */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3734AF411726CF4D00407244 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../../Empty CocoaLibSpotify Project/Empty CocoaLibSpotify Project/Default-568h@2x.png"; sourceTree = "<group>"; };
 		5002BD6B1439DE2400FEAB3C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5002BD7C1439E8E800FEAB3C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5002BD7E1439E8FC00FEAB3C /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -146,6 +148,7 @@
 				50AF49BC1439CB6D00E4A5EF /* Simple_PlayerAppDelegate.m */,
 				50DBB5E21520C2B800BF516F /* RotatableViewController.h */,
 				50DBB5E31520C2B800BF516F /* RotatableViewController.m */,
+				3734AF411726CF4D00407244 /* Default-568h@2x.png */,
 				50AF49C21439CB6D00E4A5EF /* MainWindow_iPhone.xib */,
 				50AF49C91439CB6D00E4A5EF /* MainWindow_iPad.xib */,
 				50DBB5E01520BF6100BF516F /* SPLoginResources.bundle */,
@@ -244,6 +247,7 @@
 				50AF49C41439CB6D00E4A5EF /* MainWindow_iPhone.xib in Resources */,
 				50AF49CB1439CB6D00E4A5EF /* MainWindow_iPad.xib in Resources */,
 				50DBB5E11520BF6100BF516F /* SPLoginResources.bundle in Resources */,
+				3734AF421726CF4D00407244 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +365,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "\"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts/include\"";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -381,6 +386,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "\"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts/include\"";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

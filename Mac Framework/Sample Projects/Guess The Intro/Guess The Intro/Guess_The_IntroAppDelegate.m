@@ -33,40 +33,6 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 
 @implementation Guess_The_IntroAppDelegate
 
-@synthesize userNameField;
-@synthesize passwordField;
-@synthesize playlistNameField;
-@synthesize loginView;
-@synthesize window;
-@synthesize oneButton;
-@synthesize fourButton;
-@synthesize countdownProgress;
-@synthesize threeButton;
-@synthesize twoButton;
-
-@synthesize playbackManager;
-@synthesize playlist;
-
-@synthesize firstSuggestion;
-@synthesize secondSuggestion;
-@synthesize thirdSuggestion;
-@synthesize fourthSuggestion;
-
-@synthesize canPushOne;
-@synthesize canPushTwo;
-@synthesize canPushThree;
-@synthesize canPushFour;
-
-@synthesize userTopList;
-@synthesize regionTopList;
-
-@synthesize multiplier;
-@synthesize score;
-@synthesize roundStartDate;
-@synthesize gameStartDate;
-@synthesize trackPool;
-@synthesize roundTimer;
-
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
 
 	NSError *error = nil;
@@ -133,11 +99,11 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 	
 	// Invoked by clicking the "Login" button in the UI.
 	
-	if ([[userNameField stringValue] length] > 0 && 
-		[[passwordField stringValue] length] > 0) {
+	if ([[self.userNameField stringValue] length] > 0 &&
+		[[self.passwordField stringValue] length] > 0) {
 		
-		[[SPSession sharedSession] attemptLoginWithUserName:[userNameField stringValue]
-												   password:[passwordField stringValue]];
+		[[SPSession sharedSession] attemptLoginWithUserName:[self.userNameField stringValue]
+												   password:[self.passwordField stringValue]];
 	} else {
 		NSBeep();
 	}
@@ -247,38 +213,64 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 			[playlists addObject:[SPSession sharedSession].starredPlaylist];
 			[playlists addObject:[SPSession sharedSession].inboxPlaylist];
 			[playlists addObjectsFromArray:[SPSession sharedSession].userPlaylists.flattenedPlaylists];
-			
+
 			[SPAsyncLoading waitUntilLoaded:playlists timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedPlaylists, NSArray *notLoadedPlaylists) {
-				
+
 				// All of our playlists have loaded their metadata — wait for all tracks to load their metadata.
-				NSLog(@"[%@ %@]: %@ of %@ playlists loaded.", NSStringFromClass([self class]), NSStringFromSelector(_cmd), 
+				NSLog(@"[%@ %@]: %@ of %@ playlists loaded.", NSStringFromClass([self class]), NSStringFromSelector(_cmd),
 					  [NSNumber numberWithInteger:loadedPlaylists.count], [NSNumber numberWithInteger:loadedPlaylists.count + notLoadedPlaylists.count]);
-				
-				NSArray *playlistItems = [loadedPlaylists valueForKeyPath:@"@unionOfArrays.items"];
-				NSArray *tracks = [self tracksFromPlaylistItems:playlistItems];
-				
-				[SPAsyncLoading waitUntilLoaded:tracks timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
-					
-					// All of our tracks have loaded their metadata. Hooray!
-					NSLog(@"[%@ %@]: %@ of %@ tracks loaded.", NSStringFromClass([self class]), NSStringFromSelector(_cmd), 
-						  [NSNumber numberWithInteger:loadedTracks.count], [NSNumber numberWithInteger:loadedTracks.count + notLoadedTracks.count]);
-					
-					NSMutableArray *theTrackPool = [NSMutableArray arrayWithCapacity:loadedTracks.count];
-					
-					for (SPTrack *aTrack in loadedTracks) {
-						if (aTrack.availability == SP_TRACK_AVAILABILITY_AVAILABLE && [aTrack.name length] > 0)
-							[theTrackPool addObject:aTrack];
-					}
-					
-					self.trackPool = [NSMutableArray arrayWithArray:[[NSSet setWithArray:theTrackPool] allObjects]];
-					// ^ Thin out duplicates.
-					
-					[self startNewRound];
-					
+
+				[self getTracksFromPlaylists:loadedPlaylists then:^(NSSet *tracks) {
+
+					[SPAsyncLoading waitUntilLoaded:[tracks allObjects] timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
+
+						// All of our tracks have loaded their metadata. Hooray!
+						NSLog(@"[%@ %@]: %@ of %@ tracks loaded.", NSStringFromClass([self class]), NSStringFromSelector(_cmd),
+							  [NSNumber numberWithInteger:loadedTracks.count], [NSNumber numberWithInteger:loadedTracks.count + notLoadedTracks.count]);
+
+						NSMutableArray *theTrackPool = [NSMutableArray arrayWithCapacity:loadedTracks.count];
+
+						for (SPTrack *aTrack in loadedTracks) {
+							if (aTrack.availability == SP_TRACK_AVAILABILITY_AVAILABLE && [aTrack.name length] > 0)
+								[theTrackPool addObject:aTrack];
+						}
+
+						self.trackPool = [NSMutableArray arrayWithArray:[[NSSet setWithArray:theTrackPool] allObjects]];
+						// ^ Thin out duplicates.
+
+						[self startNewRound];
+					}];
 				}];
 			}];
 		}];
 	}];
+}
+
+-(void)getTracksFromPlaylists:(NSArray *)playlists then:(void (^)(NSSet *tracks))block {
+
+	__block NSMutableArray *mutablePlaylists = [NSMutableArray arrayWithArray:playlists];
+	__block NSMutableSet *tracks = [NSMutableSet set];
+
+	__block dispatch_block_t extractTracks = ^{
+
+		if (mutablePlaylists.count == 0) {
+			if (block) block([NSSet setWithSet:tracks]);
+			return;
+		}
+
+		SPPlaylist *playlist = [mutablePlaylists lastObject];
+		[mutablePlaylists removeObject:playlist];
+
+		[playlist fetchItemsInRange:NSMakeRange(0, playlist.itemCount) callback:^(NSError *error, NSArray *items) {
+			if (error == nil) {
+				// Playlists have playlist items rather than tracks, so make sure we extract the tracks.
+				[tracks addObjectsFromArray:[self tracksFromPlaylistItems:items]];
+			}
+			extractTracks();
+		}];
+	};
+
+	extractTracks();
 }
 
 -(NSArray *)playlistsInFolder:(SPPlaylistFolder *)aFolder {
@@ -437,7 +429,7 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 -(void)startNewRound {
 	
 	if (self.playbackManager.currentTrack != nil) {
-		[self.playlist addItem:self.playbackManager.currentTrack atIndex:self.playlist.items.count callback:^(NSError *error) {
+		[self.playlist addItem:self.playbackManager.currentTrack atIndex:self.playlist.itemCount callback:^(NSError *error) {
 			if (error) NSLog(@"%@", error);
 		}];
 	}
@@ -540,7 +532,7 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 	
 	self.roundStartDate = [NSDate date];
 	if (self.gameStartDate == nil)
-		self.gameStartDate = roundStartDate;
+		self.gameStartDate = self.roundStartDate;
 	
 	self.roundTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
 													   target:self
@@ -554,5 +546,7 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 	self.canPushFour = YES;
 
 }
+
+-(void)playbackManagerIsFinishingPlayback:(SPPlaybackManager *)aPlaybackManager {}
 
 @end

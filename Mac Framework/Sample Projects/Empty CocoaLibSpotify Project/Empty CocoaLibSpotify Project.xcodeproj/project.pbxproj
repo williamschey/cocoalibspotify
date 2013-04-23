@@ -219,7 +219,6 @@
 		50EECB0815CAA856006E54FA /* CocoaLibSpotify Test Container.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			name = "CocoaLibSpotify Test Container.app";
 			path = CocoaLSTests.app;
 			remoteRef = 50EECB0715CAA856006E54FA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -383,6 +382,7 @@
 				50EECAFB15CAA82C006E54FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

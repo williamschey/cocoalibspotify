@@ -1,3 +1,61 @@
+CocoaLibSpotify 3.0 for libspotify 12, currently in development
+===============================================================
+
+## New Features
+
+### SPAsyncLoading
+
+* `SPAsyncLoading` now accepts `NSSet` instances.
+
+* `SPAsyncLoading` now has support for nested loading through `+waitUntilLoaded:withKeyPaths:timeout:then:`. For example, passing in an array of `SPTrack` objects and the key paths `@[@“album”, @“album.cover” @“artists”]` will load the given tracks along with their albums, album covers and artists before triggering the loaded callback.
+
+### Audio Playback
+
+* Add `playbackManagerWillStartPlayingAudio:` to `SPPlaybackManagerDelegate`.
+
+* On Mac OS X, `SPCoreAudioController` now has the `currentOutputDevice` and `availableOutputDevices` properties. This allows control over which audio device is used for output, including AirPlay devices on Mac OS X 10.8 and newer.
+
+### SPSparseList
+
+The `SPSparseList` class is a helper class for dealing with classes that implement the new `SPPartialAsyncLoading` protocol to fetch their child items, such as playlists. `SPSparseList` behaves somewhat like an array, except that only parts of it are loaded and filled with data. You can request missing parts of the array to be filled in and unneeded parts of the array to be unloaded, allowing efficient memory usage as the user, for example, scrolls through a long playlist. See the `SPSparseList` documentation and sample projects for more information.
+
+## SPSession
+
+* Add properties for defining offline syncing bitrate. (Thanks to Kristian Trenskow).
+
+* Add `connectionType` property. (Thanks to Kristian Trenskow).
+
+* `-playlistForURL:callback:` now handles starred playlists. (Thanks to Leo Lobato).
+
+## Breaking Changes
+
+### Playlists
+
+* The API for dealing with playlist items has been rewritten. The `SPPlaylist` class no longer maintains an array of items (the `items` property) for performance and memory reasons. Instead, you must request the items you want using the `fetchItemsAtRange:callback:` method and refetch needed items if the playlist notifies you of any changes from its delegate methods. There is a new helper class, `SPSparseList`, to help with this.
+
+* A number of `SPPlaylistDelegate` methods have been removed.
+
+### Misc.
+
+* CocoaLibSpotify is now licensed under the Apache 2.0 license. Please make sure you accept this license before using version 3.0 of CocoaLibSpotify.
+
+* For memory usage reasons, `SPTrack` instances are no longer cached — it’s now possible to have two `SPTrack` instances representing the same track. This means that it’s no longer safe to use `==` to compare `SPTrack` instances — instead, use `isEqual:`.
+
+* All block-based callbacks will be called on the main queue. This was the typical behaviour in version 2.x, but now it’s enforced everywhere.
+
+* All members previously delared as deprecated have been removed, including `[SPArtistBrowse -tracks]` and the `session:shouldDeliverAudioFrames:ofCount:format:` delegate method.
+
+* All members previously declared as `unsafe_unretained` are now declared `weak`, increasing the minimum iOS deployment target to iOS 5.0 and the mimimum Mac OS X deployment target to Mac OS X 10.7.
+
+## Other Bug Fixes and Changes
+
+* The library should be less “spiky” in memory usage, especially with users with large playlists.
+
+* The playlist changes have considerably reduced the amount of RAM and CPU used by the library, especially with users with large playlists.
+
+* The `flattenedPlaylists` property on `SPPlaylistContainer` can now be observed with KVO.
+
+
 CocoaLibSpotify 2.4.2 for libspotify 12, released January 29th 2012
 ===================================================================
 

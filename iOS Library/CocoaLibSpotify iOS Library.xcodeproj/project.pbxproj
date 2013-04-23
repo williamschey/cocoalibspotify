@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3734AF2F1726B28E00407244 /* SPSparseList.h in Headers */ = {isa = PBXBuildFile; fileRef = 3734AF2D1726B28E00407244 /* SPSparseList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3734AF301726B28E00407244 /* SPSparseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3734AF2E1726B28E00407244 /* SPSparseList.m */; };
 		3755E24A16440D400050348E /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3755E24916440D400050348E /* NSData+Base64.m */; };
 		37738CF916F8C59F0080530D /* AsyncLoadingMockObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 37738CF816F8C59F0080530D /* AsyncLoadingMockObjects.m */; };
 		37738CFC16F8C5A60080530D /* SPAsyncLoadingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37738CFB16F8C5A60080530D /* SPAsyncLoadingTests.m */; };
@@ -137,6 +139,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3734AF2D1726B28E00407244 /* SPSparseList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPSparseList.h; path = ../common/SPSparseList.h; sourceTree = "<group>"; };
+		3734AF2E1726B28E00407244 /* SPSparseList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPSparseList.m; path = ../common/SPSparseList.m; sourceTree = "<group>"; };
 		3755E24816440D400050348E /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		3755E24916440D400050348E /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		37738CF716F8C59F0080530D /* AsyncLoadingMockObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncLoadingMockObjects.h; sourceTree = "<group>"; };
@@ -253,7 +257,6 @@
 		50DBB5B715206AF900BF516F /* SPLicenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPLicenseViewController.m; path = "View Controllers/SPLicenseViewController.m"; sourceTree = "<group>"; };
 		50DE7F54147E833D005403A9 /* SPPlaylistInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPPlaylistInternal.h; path = ../common/SPPlaylistInternal.h; sourceTree = "<group>"; };
 		50DE7F57147E834D005403A9 /* SPTrackInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPTrackInternal.h; path = ../common/SPTrackInternal.h; sourceTree = "<group>"; };
-		A1717CA516963D8E00076154 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,7 +320,6 @@
 		50AF49D11439CBFE00E4A5EF = {
 			isa = PBXGroup;
 			children = (
-				37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */,
 				50B1F18915188A7200CB7186 /* api.h */,
 				50AF49E11439CBFE00E4A5EF /* CocoaLibSpotify */,
 				50D4F532156BCDE800E237DD /* Unit Tests */,
@@ -338,7 +340,7 @@
 		50AF49DE1439CBFE00E4A5EF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A1717CA516963D8E00076154 /* SystemConfiguration.framework */,
+				37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */,
 				50D4F588156BCF1700E237DD /* AVFoundation.framework */,
 				50D4F586156BCF0A00E237DD /* CFNetwork.framework */,
 				50D4F584156BCF0200E237DD /* libstdc++.dylib */,
@@ -442,6 +444,8 @@
 			children = (
 				501E8ECA15384945001CEA82 /* SPAsyncLoading.h */,
 				501E8ECB15384945001CEA82 /* SPAsyncLoading.m */,
+				3734AF2D1726B28E00407244 /* SPSparseList.h */,
+				3734AF2E1726B28E00407244 /* SPSparseList.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -570,6 +574,7 @@
 				5082C6C81577694C00B74280 /* SPClientUpsellViewController.h in Headers */,
 				50A9F3ED161AE9600009ECA2 /* TestsViewController.h in Headers */,
 				50A9F3F1161AFC9A0009ECA2 /* TestProgressCell.h in Headers */,
+				3734AF2F1726B28E00407244 /* SPSparseList.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -703,6 +708,7 @@
 				5082C6C91577694C00B74280 /* SPClientUpsellViewController.m in Sources */,
 				50A9F3EE161AE9600009ECA2 /* TestsViewController.m in Sources */,
 				50A9F3F2161AFC9A0009ECA2 /* TestProgressCell.m in Sources */,
+				3734AF301726B28E00407244 /* SPSparseList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -222,7 +222,7 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 
 				[self getTracksFromPlaylists:loadedPlaylists then:^(NSSet *tracks) {
 
-					[SPAsyncLoading waitUntilLoaded:[tracks allObjects] timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
+					[SPAsyncLoading waitUntilLoaded:tracks timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
 
 						// All of our tracks have loaded their metadata. Hooray!
 						NSLog(@"[%@ %@]: %@ of %@ tracks loaded.", NSStringFromClass([self class]), NSStringFromSelector(_cmd),

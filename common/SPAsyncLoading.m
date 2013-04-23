@@ -36,23 +36,29 @@ static NSMutableArray *observerCache;
 
 @implementation SPAsyncLoading
 
++(NSArray *)itemArrayFromObject:(id)itemOrItems {
+	if ([itemOrItems isKindOfClass:[NSArray class]])
+		return itemOrItems;
+	else if ([itemOrItems isKindOfClass:[NSSet class]])
+		return [itemOrItems allObjects];
+	else
+		return [NSArray arrayWithObject:itemOrItems];
+}
+
 +(void)waitUntilLoaded:(id)itemOrItems withKeyPaths:(NSArray *)keyPathsToLoad timeout:(NSTimeInterval)timeout then:(void (^)(NSArray *completelyLoadedItems, NSArray *notLoadedItems))block {
 	
 	if (keyPathsToLoad == nil) {
 		[self waitUntilLoaded:itemOrItems timeout:timeout then:block];
 		return;
 	}
-	
-	NSArray *itemArray = [itemOrItems isKindOfClass:[NSArray class]] ? itemOrItems : [NSArray arrayWithObject:itemOrItems];
-	[self loadKeyPaths:keyPathsToLoad ofItems:itemArray timeout:timeout callback:block];
+
+	[self loadKeyPaths:keyPathsToLoad ofItems:[self itemArrayFromObject:itemOrItems] timeout:timeout callback:block];
 }
 
 
 +(void)waitUntilLoaded:(id)itemOrItems timeout:(NSTimeInterval)timeout then:(void (^)(NSArray *, NSArray *))block {
 
-	NSArray *itemArray = [itemOrItems isKindOfClass:[NSArray class]] ? itemOrItems : [NSArray arrayWithObject:itemOrItems];
-
-	SPAsyncLoading *observer = [[SPAsyncLoading alloc] initWithItems:itemArray
+	SPAsyncLoading *observer = [[SPAsyncLoading alloc] initWithItems:[self itemArrayFromObject:itemOrItems]
 															 timeout:timeout
 														 loadedBlock:block];
 	

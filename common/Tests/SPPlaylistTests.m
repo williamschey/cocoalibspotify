@@ -142,7 +142,7 @@
 
 -(void)test5PlaylistTrackManagement {
 	
-	__block SPPlaylistTests *sself = self;
+	__weak SPPlaylistTests *sself = self;
 
 	SPAssertTestCompletesInTimeInterval((kDefaultNonAsyncLoadingTestTimeout * 2) + kSPAsyncLoadingDefaultTimeout);
 	SPTestAssert(self.playlist != nil, @"Test playlist is nil - cannot run test");

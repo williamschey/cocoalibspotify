@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37E8E0A81746325C000A9747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8E0A71746325C000A9747 /* Security.framework */; };
 		5002BD6C1439DE2400FEAB3C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5002BD6B1439DE2400FEAB3C /* AudioToolbox.framework */; };
 		5002BD7D1439E8E800FEAB3C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5002BD7C1439E8E800FEAB3C /* SystemConfiguration.framework */; };
 		5002BD7F1439E8FC00FEAB3C /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5002BD7E1439E8FC00FEAB3C /* CFNetwork.framework */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		37E8E0A71746325C000A9747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5002BD6B1439DE2400FEAB3C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5002BD7C1439E8E800FEAB3C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5002BD7E1439E8FC00FEAB3C /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -80,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37E8E0A81746325C000A9747 /* Security.framework in Frameworks */,
 				50FAA141143A0B1400FF06D7 /* AVFoundation.framework in Frameworks */,
 				5002BD811439E90400FEAB3C /* libstdc++.dylib in Frameworks */,
 				5002BD7F1439E8FC00FEAB3C /* CFNetwork.framework in Frameworks */,
@@ -126,6 +129,7 @@
 		50AF49AB1439CB6D00E4A5EF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37E8E0A71746325C000A9747 /* Security.framework */,
 				50FAA140143A0B1400FF06D7 /* AVFoundation.framework */,
 				5002BD801439E90400FEAB3C /* libstdc++.dylib */,
 				5002BD7E1439E8FC00FEAB3C /* CFNetwork.framework */,

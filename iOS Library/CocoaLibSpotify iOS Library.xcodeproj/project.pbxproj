@@ -17,6 +17,7 @@
 		37B633741778C1FF00AC3265 /* SparseListArrayAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B633731778C1FF00AC3265 /* SparseListArrayAdapter.m */; };
 		37B633771778C21600AC3265 /* SPSparseListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B633761778C21600AC3265 /* SPSparseListTests.m */; };
 		37F0582316B7D4D3008DC38B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */; };
+		37E8E09D17463193000A9747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8E09C17463193000A9747 /* Security.framework */; };
 		500EC8B51439D02A00E8A60C /* CocoaLibSpotify iOS Library-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 500EC8B41439D02A00E8A60C /* CocoaLibSpotify iOS Library-Prefix.pch */; };
 		501E8ECC15384945001CEA82 /* SPAsyncLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 501E8ECA15384945001CEA82 /* SPAsyncLoading.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		501E8ECD15384945001CEA82 /* SPAsyncLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 501E8ECB15384945001CEA82 /* SPAsyncLoading.m */; };
@@ -160,6 +161,7 @@
 		37B633751778C21600AC3265 /* SPSparseListTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPSparseListTests.h; sourceTree = "<group>"; };
 		37B633761778C21600AC3265 /* SPSparseListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPSparseListTests.m; sourceTree = "<group>"; };
 		37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		37E8E09C17463193000A9747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		500EC8B41439D02A00E8A60C /* CocoaLibSpotify iOS Library-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CocoaLibSpotify iOS Library-Prefix.pch"; sourceTree = "<group>"; };
 		501E8ECA15384945001CEA82 /* SPAsyncLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPAsyncLoading.h; path = ../common/SPAsyncLoading.h; sourceTree = "<group>"; };
 		501E8ECB15384945001CEA82 /* SPAsyncLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPAsyncLoading.m; path = ../common/SPAsyncLoading.m; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37F0582316B7D4D3008DC38B /* SystemConfiguration.framework in Frameworks */,
+				37E8E09D17463193000A9747 /* Security.framework in Frameworks */,
 				50D4F589156BCF1700E237DD /* AVFoundation.framework in Frameworks */,
 				50D4F587156BCF0A00E237DD /* CFNetwork.framework in Frameworks */,
 				50D4F585156BCF0200E237DD /* libstdc++.dylib in Frameworks */,
@@ -406,6 +409,7 @@
 			isa = PBXGroup;
 			children = (
 				37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */,
+				37E8E09C17463193000A9747 /* Security.framework */,
 				50D4F588156BCF1700E237DD /* AVFoundation.framework */,
 				50D4F586156BCF0A00E237DD /* CFNetwork.framework */,
 				50D4F584156BCF0200E237DD /* libstdc++.dylib */,

@@ -103,6 +103,7 @@ When including libCocoaLibSpotify in your application, you must also link to the
 - CoreAudio.framework
 - AudioToolbox.framework
 - AVFoundation.framework
+- Security.framework
 
 In addition, you must add the following two items to the "Other Linker Flags" build setting:
 

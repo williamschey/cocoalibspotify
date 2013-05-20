@@ -1,9 +1,21 @@
-CocoaLibSpotify 2.4.2 for libspotify 12, released January 29th 2012
+CocoaLibSpotify 2.4.3 for libspotify 12, released May 20th 2013
+===============================================================
+
+* Uses libspotify 12.1.62 for iOS, which provides:
+    * Fixes an issue that would cause applications using libspotify to be rejected from the iOS App Store.
+    * Adds armv7s build.
+    * Fixes a potential crashing problem.
+
+* `SPDispatchSyncIfNeeded` and `SPDispatchAsync` are now declared as inline functions rather than macros to aid debugging.
+
+* Unit tests output the version of libspotify being used at runtime. 
+
+CocoaLibSpotify 2.4.2 for libspotify 12, released January 29th 2013
 ===================================================================
 
 * Fixes build on Xcode 4.6.
 
-CocoaLibSpotify 2.4.1 for libspotify 12, released January 28th 2012
+CocoaLibSpotify 2.4.1 for libspotify 12, released January 28th 2013
 ===================================================================
 
 * Adds a build script that corrects a problem in libspotify 12 preventing submission of CocoaLibSpotify applications to the Mac App Store (GitHub issue #136).

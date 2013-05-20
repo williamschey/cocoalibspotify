@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37E8E0A0174631E9000A9747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8E09F174631E9000A9747 /* Security.framework */; };
 		50EECB2915CABA47006E54FA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50EECB2815CABA47006E54FA /* UIKit.framework */; };
 		50EECB2B15CABA47006E54FA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50EECB2A15CABA47006E54FA /* Foundation.framework */; };
 		50EECB2D15CABA47006E54FA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50EECB2C15CABA47006E54FA /* CoreGraphics.framework */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		37E8E09F174631E9000A9747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		50EECB2415CABA47006E54FA /* Empty CocoaLibSpotify Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Empty CocoaLibSpotify Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50EECB2815CABA47006E54FA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		50EECB2A15CABA47006E54FA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -80,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37E8E0A0174631E9000A9747 /* Security.framework in Frameworks */,
 				50EECB7015CABB00006E54FA /* AVFoundation.framework in Frameworks */,
 				50EECB6E15CABAFB006E54FA /* AudioToolbox.framework in Frameworks */,
 				50EECB6C15CABAF5006E54FA /* CoreAudio.framework in Frameworks */,
@@ -117,6 +120,7 @@
 		50EECB2715CABA47006E54FA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37E8E09F174631E9000A9747 /* Security.framework */,
 				50EECB6F15CABB00006E54FA /* AVFoundation.framework */,
 				50EECB6D15CABAFB006E54FA /* AudioToolbox.framework */,
 				50EECB6B15CABAF5006E54FA /* CoreAudio.framework */,

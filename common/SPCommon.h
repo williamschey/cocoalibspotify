@@ -33,21 +33,21 @@ typedef void (^SPErrorableOperationCallback)(NSError *error);
 
 /** Call the given block synchronously on the libSpotify thread, or inline if already on that thread.
 
- This helper macro allows you to perform synchronous code on the libSpotify thread.
+ This helper allows you to perform synchronous code on the libSpotify thread.
  It helps avoid deadlocks by checking if you're already on the thread and just calls the
  block inline if that's the case.
 
  @param block The block to execute.
  */
-#define SPDispatchSyncIfNeeded(block) if (CFRunLoopGetCurrent() == [SPSession libSpotifyRunloop]) block(); else [SPSession dispatchToLibSpotifyThread:block waitUntilDone:YES];
+extern inline void SPDispatchSyncIfNeeded(dispatch_block_t block);
 
 /** Call the given block asynchronously on the libSpotify thread.
 
- This helper macro allows you to perform asynchronous operations on the libSpotify thread.
+ This helper allows you to perform asynchronous operations on the libSpotify thread.
 
  @param block The block to execute.
  */
-#define SPDispatchAsync(block) [SPSession dispatchToLibSpotifyThread:block];
+extern inline void SPDispatchAsync(dispatch_block_t block);
 
 /** Throw an assertion if the current execution is not on the libSpotify thread.
 

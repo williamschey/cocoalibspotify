@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37E8E0A417463241000A9747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8E0A317463241000A9747 /* Security.framework */; };
 		5029717F143B0A8600B8C31D /* SPArrayExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5029717E143B0A8600B8C31D /* SPArrayExtensions.m */; };
 		5073D8C81520C5DC0058AA4F /* SPLoginResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5073D8C71520C5DC0058AA4F /* SPLoginResources.bundle */; };
 		50A0D829143AF62100458686 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50A0D828143AF62100458686 /* UIKit.framework */; };
@@ -52,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		37E8E0A317463241000A9747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5029717D143B0A8600B8C31D /* SPArrayExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPArrayExtensions.h; sourceTree = "<group>"; };
 		5029717E143B0A8600B8C31D /* SPArrayExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPArrayExtensions.m; sourceTree = "<group>"; };
 		5073D8C71520C5DC0058AA4F /* SPLoginResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SPLoginResources.bundle; path = ../../../SPLoginResources.bundle; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37E8E0A417463241000A9747 /* Security.framework in Frameworks */,
 				50A0D86F143B017400458686 /* AudioToolbox.framework in Frameworks */,
 				50A0D86D143B016B00458686 /* CoreAudio.framework in Frameworks */,
 				50A0D86B143B016700458686 /* AVFoundation.framework in Frameworks */,
@@ -129,6 +132,7 @@
 		50A0D827143AF62100458686 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37E8E0A317463241000A9747 /* Security.framework */,
 				50A0D86E143B017400458686 /* AudioToolbox.framework */,
 				50A0D86C143B016B00458686 /* CoreAudio.framework */,
 				50A0D86A143B016700458686 /* AVFoundation.framework */,
@@ -315,7 +319,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -340,7 +343,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

@@ -16,8 +16,8 @@
 		37B63366177886E000AC3265 /* SPStressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B63365177886E000AC3265 /* SPStressTests.m */; };
 		37B633741778C1FF00AC3265 /* SparseListArrayAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B633731778C1FF00AC3265 /* SparseListArrayAdapter.m */; };
 		37B633771778C21600AC3265 /* SPSparseListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B633761778C21600AC3265 /* SPSparseListTests.m */; };
-		37F0582316B7D4D3008DC38B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */; };
 		37E8E09D17463193000A9747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8E09C17463193000A9747 /* Security.framework */; };
+		37F0582316B7D4D3008DC38B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */; };
 		500EC8B51439D02A00E8A60C /* CocoaLibSpotify iOS Library-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 500EC8B41439D02A00E8A60C /* CocoaLibSpotify iOS Library-Prefix.pch */; };
 		501E8ECC15384945001CEA82 /* SPAsyncLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 501E8ECA15384945001CEA82 /* SPAsyncLoading.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		501E8ECD15384945001CEA82 /* SPAsyncLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 501E8ECB15384945001CEA82 /* SPAsyncLoading.m */; };
@@ -160,8 +160,8 @@
 		37B633731778C1FF00AC3265 /* SparseListArrayAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparseListArrayAdapter.m; sourceTree = "<group>"; };
 		37B633751778C21600AC3265 /* SPSparseListTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPSparseListTests.h; sourceTree = "<group>"; };
 		37B633761778C21600AC3265 /* SPSparseListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPSparseListTests.m; sourceTree = "<group>"; };
-		37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		37E8E09C17463193000A9747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		500EC8B41439D02A00E8A60C /* CocoaLibSpotify iOS Library-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CocoaLibSpotify iOS Library-Prefix.pch"; sourceTree = "<group>"; };
 		501E8ECA15384945001CEA82 /* SPAsyncLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPAsyncLoading.h; path = ../common/SPAsyncLoading.h; sourceTree = "<group>"; };
 		501E8ECB15384945001CEA82 /* SPAsyncLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPAsyncLoading.m; path = ../common/SPAsyncLoading.m; sourceTree = "<group>"; };
@@ -891,7 +891,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = include;
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -913,14 +912,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = include;
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};
 		50D4F547156BCDE800E237DD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CocoaLibSpotify iOS Test Container/CocoaLibSpotify iOS Test Container-Prefix.pch";
@@ -930,7 +927,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -938,7 +934,6 @@
 		50D4F548156BCDE800E237DD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CocoaLibSpotify iOS Test Container/CocoaLibSpotify iOS Test Container-Prefix.pch";
@@ -949,7 +944,6 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

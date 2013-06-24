@@ -43,6 +43,8 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 @property (nonatomic, strong) SPTests *playlistTests;
 @property (nonatomic, strong) SPTests *concurrencyTests;
 @property (nonatomic, strong) SPTests *asyncTests;
+
+@property (nonatomic, strong) dispatch_block_t runTestBlock;
 @end
 
 @implementation TestRunner
@@ -145,13 +147,13 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 	__block NSUInteger totalFailCount = 0;
 	__block NSUInteger currentTestIndex = 0;
 
+	__weak typeof(self) weakSelf = self;
+
 	// Shenanigans to allow a block to reference itself without circular references.
-	dispatch_block_t runNextTestBlock;
-    __block __weak dispatch_block_t runNextTest;
-	runNextTest = runNextTestBlock = [^{
+	self.runTestBlock = ^{
 
 		if (currentTestIndex >= tests.count) {
-			[self completeTestsWithPassCount:totalPassCount failCount:totalFailCount];
+			[weakSelf completeTestsWithPassCount:totalPassCount failCount:totalFailCount];
 			return;
 		}
 
@@ -163,19 +165,19 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 			//Special-case the first test suite since libspotify currently crashes a lot
 			//if you call certain APIs without being logged in.
 			if (currentTestIndex == 0 && totalFailCount > 0) {
-				[self completeTestsWithPassCount:totalPassCount failCount:totalFailCount];
+				[weakSelf completeTestsWithPassCount:totalPassCount failCount:totalFailCount];
 				return;
 			}
 
 			currentTestIndex++;
-			runNextTest();
+			weakSelf.runTestBlock();
 		}];
-	} copy];
+	};
 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kLogForTeamCityUserDefaultsKey])
 		printf("##teamcity[testSuiteStarted name='CocoaLibSpotify']\n");
 
-	runNextTest();
+	weakSelf.runTestBlock();
 }
 
 @end

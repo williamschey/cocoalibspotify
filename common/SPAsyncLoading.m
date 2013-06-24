@@ -301,7 +301,8 @@ static NSMutableArray *observerCache;
 		// Part of the key path might be an array!
 		NSArray *items = rootItems;
 		for (NSString *keyPathComponent in completedKeyPathComponents) {
-			NSArray *item = [items valueForKey:keyPathComponent];
+			NSMutableArray *item = [[items valueForKey:keyPathComponent] mutableCopy];
+			[item removeObject:[NSNull null]];
 			if (item.count > 0 && [item[0] isKindOfClass:[NSArray class]]) {
 				NSMutableArray *extractedItems = [NSMutableArray array];
 				for (NSArray *childArray in item)

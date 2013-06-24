@@ -147,9 +147,9 @@ static NSUInteger const kSPSparseListDefaultBatchSize = 30;
 	 of loading in larger batches.
 	 */
 
+	[self throwIfIndexesInvalid:[NSIndexSet indexSetWithIndexesInRange:range]];
 	NSRange expandedRange = [self chunkedRangeEncompassingRange:range];
 	NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:expandedRange];
-	[self throwIfIndexesInvalid:indexes];
 
 	SPSparseListWaitingBlock *waitingBlock = [SPSparseListWaitingBlock new];
 	waitingBlock.block = block;

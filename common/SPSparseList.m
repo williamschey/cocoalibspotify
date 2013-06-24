@@ -170,7 +170,7 @@ static NSUInteger const kSPSparseListDefaultBatchSize = 30;
 				self.loadedItems[@(index + expandedRange.location)] = items[index];
 
 			NSMutableIndexSet *newIndexes = [self.loadedIndexes mutableCopy];
-			[newIndexes removeIndexes:loadedIndexes];
+			[newIndexes addIndexes:loadedIndexes];
 			self.loadedIndexes = newIndexes;
 		}
 

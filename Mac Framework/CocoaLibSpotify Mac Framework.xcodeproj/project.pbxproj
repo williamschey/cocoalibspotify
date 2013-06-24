@@ -14,6 +14,8 @@
 		377622571655176C00CB56C5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 377622561655176C00CB56C5 /* CoreAudio.framework */; };
 		378152C217784E8900F2F190 /* SPStressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 378152C117784E8600F2F190 /* SPStressTests.m */; };
 		37B633601778845500AC3265 /* TestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B6335F1778845500AC3265 /* TestRunner.m */; };
+		37B633691778923200AC3265 /* SparseListArrayAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B633681778923200AC3265 /* SparseListArrayAdapter.m */; };
+		37B6336C1778947C00AC3265 /* SPSparseListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B6336B1778947700AC3265 /* SPSparseListTests.m */; };
 		37CAA642171D83A000372F36 /* SPSparseList.h in Headers */ = {isa = PBXBuildFile; fileRef = 37CAA640171D83A000372F36 /* SPSparseList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37CAA643171D83A000372F36 /* SPSparseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CAA641171D83A000372F36 /* SPSparseList.m */; };
 		37F0582116B7D489008DC38B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0582016B7D489008DC38B /* SystemConfiguration.framework */; };
@@ -153,6 +155,10 @@
 		378152C117784E8600F2F190 /* SPStressTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SPStressTests.m; path = ../../common/Tests/SPStressTests.m; sourceTree = "<group>"; };
 		37B6335E1778845500AC3265 /* TestRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestRunner.h; path = ../../common/Tests/TestRunner.h; sourceTree = "<group>"; };
 		37B6335F1778845500AC3265 /* TestRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestRunner.m; path = ../../common/Tests/TestRunner.m; sourceTree = "<group>"; };
+		37B633671778923200AC3265 /* SparseListArrayAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SparseListArrayAdapter.h; path = "../../common/Tests/Mock Objects/SparseListArrayAdapter.h"; sourceTree = "<group>"; };
+		37B633681778923200AC3265 /* SparseListArrayAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SparseListArrayAdapter.m; path = "../../common/Tests/Mock Objects/SparseListArrayAdapter.m"; sourceTree = "<group>"; };
+		37B6336A1778947700AC3265 /* SPSparseListTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SPSparseListTests.h; path = ../../common/Tests/SPSparseListTests.h; sourceTree = "<group>"; };
+		37B6336B1778947700AC3265 /* SPSparseListTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SPSparseListTests.m; path = ../../common/Tests/SPSparseListTests.m; sourceTree = "<group>"; };
 		37CAA640171D83A000372F36 /* SPSparseList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPSparseList.h; path = ../common/SPSparseList.h; sourceTree = "<group>"; };
 		37CAA641171D83A000372F36 /* SPSparseList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPSparseList.m; path = ../common/SPSparseList.m; sourceTree = "<group>"; };
 		37F0582016B7D489008DC38B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -280,8 +286,60 @@
 			children = (
 				37738CEE16F896050080530D /* AsyncLoadingMockObjects.h */,
 				37738CEF16F896050080530D /* AsyncLoadingMockObjects.m */,
+				37B633671778923200AC3265 /* SparseListArrayAdapter.h */,
+				37B633681778923200AC3265 /* SparseListArrayAdapter.m */,
 			);
 			name = "Mock Objects";
+			sourceTree = "<group>";
+		};
+		37B6336D177894AD00AC3265 /* Helper Tests */ = {
+			isa = PBXGroup;
+			children = (
+				37738CF216F89BF70080530D /* SPAsyncLoadingTests.h */,
+				37738CF316F89BF70080530D /* SPAsyncLoadingTests.m */,
+				37B6336A1778947700AC3265 /* SPSparseListTests.h */,
+				37B6336B1778947700AC3265 /* SPSparseListTests.m */,
+			);
+			name = "Helper Tests";
+			sourceTree = "<group>";
+		};
+		37B6336E177894CE00AC3265 /* Stress Tests */ = {
+			isa = PBXGroup;
+			children = (
+				378152C017784E8600F2F190 /* SPStressTests.h */,
+				378152C117784E8600F2F190 /* SPStressTests.m */,
+			);
+			name = "Stress Tests";
+			sourceTree = "<group>";
+		};
+		37B6336F1778955300AC3265 /* Session Management */ = {
+			isa = PBXGroup;
+			children = (
+				504E4955155AB29100E1C0F7 /* SPSessionTests.h */,
+				504E4956155AB29100E1C0F7 /* SPSessionTests.m */,
+				50DB8432155D138100608BFB /* SPSessionTeardownTests.h */,
+				50DB8433155D138100608BFB /* SPSessionTeardownTests.m */,
+			);
+			name = "Session Management";
+			sourceTree = "<group>";
+		};
+		37B633701778957E00AC3265 /* Functionality Tests */ = {
+			isa = PBXGroup;
+			children = (
+				5063553B156CD93400E1C8D1 /* SPConcurrencyTests.h */,
+				5063553C156CD93400E1C8D1 /* SPConcurrencyTests.m */,
+				50E8ED54155BE46500F14186 /* SPMetadataTests.h */,
+				50E8ED55155BE46500F14186 /* SPMetadataTests.m */,
+				50E8ED57155BFA1100F14186 /* SPSearchTests.h */,
+				50E8ED58155BFA1200F14186 /* SPSearchTests.m */,
+				50E8ED5A155C018A00F14186 /* SPPostTracksToInboxTests.h */,
+				50E8ED5B155C018A00F14186 /* SPPostTracksToInboxTests.m */,
+				50E8ED61155C0F3E00F14186 /* SPAudioDeliveryTests.h */,
+				50E8ED62155C0F3E00F14186 /* SPAudioDeliveryTests.m */,
+				50DB8437155D296B00608BFB /* SPPlaylistTests.h */,
+				50DB8438155D296B00608BFB /* SPPlaylistTests.m */,
+			);
+			name = "Functionality Tests";
 			sourceTree = "<group>";
 		};
 		5028EC7C13092B7B00BF0B22 = {
@@ -429,26 +487,10 @@
 				3755E24216440C440050348E /* NSData+Base64.m */,
 				50E8ED49155BB55900F14186 /* SPTests.h */,
 				50E8ED4A155BB55900F14186 /* SPTests.m */,
-				37738CF216F89BF70080530D /* SPAsyncLoadingTests.h */,
-				37738CF316F89BF70080530D /* SPAsyncLoadingTests.m */,
-				5063553B156CD93400E1C8D1 /* SPConcurrencyTests.h */,
-				5063553C156CD93400E1C8D1 /* SPConcurrencyTests.m */,
-				504E4955155AB29100E1C0F7 /* SPSessionTests.h */,
-				504E4956155AB29100E1C0F7 /* SPSessionTests.m */,
-				50E8ED54155BE46500F14186 /* SPMetadataTests.h */,
-				50E8ED55155BE46500F14186 /* SPMetadataTests.m */,
-				50E8ED57155BFA1100F14186 /* SPSearchTests.h */,
-				50E8ED58155BFA1200F14186 /* SPSearchTests.m */,
-				50E8ED5A155C018A00F14186 /* SPPostTracksToInboxTests.h */,
-				50E8ED5B155C018A00F14186 /* SPPostTracksToInboxTests.m */,
-				50E8ED61155C0F3E00F14186 /* SPAudioDeliveryTests.h */,
-				50E8ED62155C0F3E00F14186 /* SPAudioDeliveryTests.m */,
-				50DB8437155D296B00608BFB /* SPPlaylistTests.h */,
-				50DB8438155D296B00608BFB /* SPPlaylistTests.m */,
-				50DB8432155D138100608BFB /* SPSessionTeardownTests.h */,
-				50DB8433155D138100608BFB /* SPSessionTeardownTests.m */,
-				378152C017784E8600F2F190 /* SPStressTests.h */,
-				378152C117784E8600F2F190 /* SPStressTests.m */,
+				37B6336D177894AD00AC3265 /* Helper Tests */,
+				37B6336E177894CE00AC3265 /* Stress Tests */,
+				37B6336F1778955300AC3265 /* Session Management */,
+				37B633701778957E00AC3265 /* Functionality Tests */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -715,6 +757,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37B6336C1778947C00AC3265 /* SPSparseListTests.m in Sources */,
 				504E493E155AA85500E1C0F7 /* main.m in Sources */,
 				378152C217784E8900F2F190 /* SPStressTests.m in Sources */,
 				504E4957155AB29100E1C0F7 /* SPSessionTests.m in Sources */,
@@ -728,6 +771,7 @@
 				50DB843B155D296E00608BFB /* SPPlaylistTests.m in Sources */,
 				5063553D156CD93400E1C8D1 /* SPConcurrencyTests.m in Sources */,
 				3755E24316440C440050348E /* NSData+Base64.m in Sources */,
+				37B633691778923200AC3265 /* SparseListArrayAdapter.m in Sources */,
 				37738CF416F89BF70080530D /* SPAsyncLoadingTests.m in Sources */,
 				37738CF516F89C000080530D /* AsyncLoadingMockObjects.m in Sources */,
 			);

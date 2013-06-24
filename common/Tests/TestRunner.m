@@ -36,6 +36,7 @@
 #import "SPConcurrencyTests.h"
 #import "SPAsyncLoadingTests.h"
 #import "SPStressTests.h"
+#import "SPSparseListTests.h"
 #import "TestConstants.h"
 
 static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
@@ -51,6 +52,7 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 @property (nonatomic, strong) SPTests *concurrencyTests;
 @property (nonatomic, strong) SPTests *asyncTests;
 @property (nonatomic, strong) SPTests *stressTests;
+@property (nonatomic, strong) SPTests *sparseListTests;
 
 @property (nonatomic, strong) dispatch_block_t runTestBlock;
 @end
@@ -156,6 +158,7 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 	self.teardownTests = [SPSessionTeardownTests new];
 	self.asyncTests = [SPAsyncLoadingTests new];
 	self.stressTests = [SPStressTests new];
+	self.sparseListTests = [SPSparseListTests new];
 
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	BOOL shouldDoAllTests = [defaults boolForKey:kRunAllTestsUserDefaultsKey];
@@ -170,7 +173,7 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 
 	BOOL needsLoginAndTeardown = shouldDoStandardTests || shouldDoStressTests;
 
-	NSArray *helperTests = @[self.asyncTests]; // Helper tests don't need an SPSession
+	NSArray *helperTests = @[self.sparseListTests, self.asyncTests]; // Helper tests don't need an SPSession
 	NSArray *standardTests = @[self.concurrencyTests, self.playlistTests, self.audioTests, self.searchTests,
 							   self.inboxTests, self.metadataTests];
 	NSArray *stressTests = @[self.stressTests];

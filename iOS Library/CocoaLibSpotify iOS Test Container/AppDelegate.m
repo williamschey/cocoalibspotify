@@ -190,9 +190,9 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 			totalPassCount += passCount;
 			totalFailCount += failCount;
 
-			//Special-case the first test suite since libspotify currently crashes a lot
+			//Special-case the login test suite since libspotify currently crashes a lot
 			//if you call certain APIs without being logged in.
-			if (currentTestIndex == 0 && totalFailCount > 0) {
+			if (testsToRun == weakSelf.sessionTests && failCount > 0) {
 				[weakSelf completeTestsWithPassCount:totalPassCount failCount:totalFailCount];
 				return;
 			}

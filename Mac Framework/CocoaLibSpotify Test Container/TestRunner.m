@@ -29,6 +29,7 @@
 #import "SPPlaylistTests.h"
 #import "SPConcurrencyTests.h"
 #import "SPAsyncLoadingTests.h"
+#import "SPStressTests.h"
 #import "TestConstants.h"
 
 static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
@@ -43,6 +44,7 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 @property (nonatomic, strong) SPTests *playlistTests;
 @property (nonatomic, strong) SPTests *concurrencyTests;
 @property (nonatomic, strong) SPTests *asyncTests;
+@property (nonatomic, strong) SPTests *stressTests;
 
 @property (nonatomic, strong) dispatch_block_t runTestBlock;
 @end
@@ -139,9 +141,33 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 	self.metadataTests = [SPMetadataTests new];
 	self.teardownTests = [SPSessionTeardownTests new];
 	self.asyncTests = [SPAsyncLoadingTests new];
+	self.stressTests = [SPStressTests new];
 
-	NSArray *tests = @[self.asyncTests, self.sessionTests, self.concurrencyTests, self.playlistTests, self.audioTests, self.searchTests,
-	self.inboxTests, self.metadataTests, self.teardownTests];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	BOOL shouldDoAllTests = [defaults boolForKey:kRunAllTestsUserDefaultsKey];
+
+	// Figure out which tests to do.
+	BOOL shouldDoHelperTests = shouldDoAllTests || [defaults boolForKey:kRunHelperTestsUserDefaultsKey];
+	BOOL shouldDoStandardTests = shouldDoAllTests || [defaults boolForKey:kRunStandardTestsUserDefaultsKey];;
+	BOOL shouldDoStressTests = shouldDoAllTests || [defaults boolForKey:kRunStressTestsUserDefaultsKey];;
+
+	if ((shouldDoHelperTests | shouldDoStandardTests | shouldDoStressTests) == NO)
+		shouldDoStandardTests = YES;
+
+	BOOL needsLoginAndTeardown = shouldDoStandardTests || shouldDoStressTests;
+
+	NSArray *helperTests = @[self.asyncTests]; // Helper tests don't need an SPSession
+	NSArray *standardTests = @[self.concurrencyTests, self.playlistTests, self.audioTests, self.searchTests,
+							   self.inboxTests, self.metadataTests];
+	NSArray *stressTests = @[self.stressTests];
+
+	NSMutableArray *tests = [NSMutableArray new];
+
+	if (shouldDoHelperTests) [tests addObjectsFromArray:helperTests];
+	if (needsLoginAndTeardown) [tests addObject:self.sessionTests];
+	if (shouldDoStandardTests) [tests addObjectsFromArray:standardTests];
+	if (shouldDoStressTests) [tests addObjectsFromArray:stressTests];
+	if (needsLoginAndTeardown) [tests addObject:self.teardownTests];
 
 	__block NSUInteger totalPassCount = 0;
 	__block NSUInteger totalFailCount = 0;

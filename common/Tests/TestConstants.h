@@ -12,6 +12,10 @@ static NSString * const kTestUserNameUserDefaultsKey = @"TestUserName";
 static NSString * const kTestPasswordUserDefaultsKey = @"TestPassword";
 static NSString * const kLogForTeamCityUserDefaultsKey = @"LogForTeamCity";
 static NSString * const kAppKeyUserDefaultsKey = @"AppKey";
+static NSString * const kRunStressTestsUserDefaultsKey = @"RunStressTests"; // Set to YES to run stress tests (not on a physical iOS device!)
+static NSString * const kRunStandardTestsUserDefaultsKey = @"RunStandardTests"; // Set to YES to run standard CocoaLS functionality tests
+static NSString * const kRunHelperTestsUserDefaultsKey = @"RunHelperTests"; // Set to YES to run helper functionality tests (SPAsyncLoading, etc)
+static NSString * const kRunAllTestsUserDefaultsKey = @"RunAllTests"; // Set to YES to run all tests
 
 static NSTimeInterval const kDefaultNonAsyncLoadingTestTimeout = 10.0;
 
@@ -36,3 +40,5 @@ static NSString * const kPlaylistTestTrack2TestURI = @"spotify:track:2zpRYcfuvri
 
 static NSString * const kArtistBrowseLoadingTestURI = @"spotify:artist:5zzrJD2jXrE9dZ1AklRFcL"; //KT Tunstall
 static NSString * const kAlbumBrowseLoadingTestURI = @"spotify:album:7IH5SRyEVemZWfhjYmWtT1"; //Wall-E Soundtrack
+
+static NSString * const kHugePlaylistURI = @"spotify:user:cocoalibspotifytestaccount:playlist:4KdbNB42KKdGV8wnJtEc4Y";

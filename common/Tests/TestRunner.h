@@ -21,6 +21,19 @@
 
 #import <Foundation/Foundation.h>
 
+@class TestRunner;
+
+@protocol TestRunnerDelegate <NSObject>
+
+-(void)testRunner:(TestRunner *)runner willStartTests:(NSArray *)tests;
+-(void)testRunner:(TestRunner *)runner didCompleteTestsWithPassCount:(NSUInteger)passCount failCount:(NSUInteger)failCount;
+
+@end
+
 @interface TestRunner : NSObject
+
+@property (nonatomic, weak) id <TestRunnerDelegate> delegate;
+
 -(void)runTests;
+
 @end

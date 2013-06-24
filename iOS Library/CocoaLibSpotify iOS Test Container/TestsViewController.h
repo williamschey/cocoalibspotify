@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TestRunner.h"
 
-@interface TestsViewController : UITableViewController
+@interface TestsViewController : UITableViewController <TestRunnerDelegate>
 
 @property (nonatomic, readwrite, copy) NSArray *tests;
 

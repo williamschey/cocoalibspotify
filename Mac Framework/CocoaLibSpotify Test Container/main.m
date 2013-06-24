@@ -21,17 +21,28 @@
 
 #import <Foundation/Foundation.h>
 #import "TestRunner.h"
-#import <CocoaLibSpotify/CocoaLibSpotify.h>
+
+@interface TestRunnerDelegateHandler : NSObject <TestRunnerDelegate>
+@end
+
+@implementation TestRunnerDelegateHandler
+
+-(void)testRunner:(TestRunner *)runner willStartTests:(NSArray *)tests {}
+
+-(void)testRunner:(TestRunner *)runner didCompleteTestsWithPassCount:(NSUInteger)passCount failCount:(NSUInteger)failCount {
+	exit(failCount > 0 ? EXIT_FAILURE : EXIT_SUCCESS);
+}
+
+@end
 
 int main(int argc, char *argv[])
 {
-
-	printf("Unit tests starting with libspotify version %s.\n", [[SPSession libSpotifyBuildId] UTF8String]);
-
 	TestRunner *runner = [[TestRunner alloc] init];
+	TestRunnerDelegateHandler *handler = [TestRunnerDelegateHandler new];
 	@autoreleasepool {
 		NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 		[runLoop addPort:[NSPort port] forMode:NSRunLoopCommonModes];
+		runner.delegate = handler;
 		[runner runTests];
 		[runLoop run];
  	}

@@ -47,6 +47,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - TestRunner delegates
+
+-(void)testRunner:(TestRunner *)runner didCompleteTestsWithPassCount:(NSUInteger)passCount failCount:(NSUInteger)failCount {
+	self.title = failCount > 0 ? @"Test(s) failed" : @"All tests passed";
+}
+
+-(void)testRunner:(TestRunner *)runner willStartTests:(NSArray *)tests {
+	self.tests = tests;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

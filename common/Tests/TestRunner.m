@@ -19,6 +19,12 @@
  limitations under the License.
  */
 
+#if TARGET_OS_IPHONE
+#define PLATFORM_COLOR UIColor
+#else
+#define PLATFORM_COLOR NSColor
+#endif
+
 #import "TestRunner.h"
 #import "SPSessionTests.h"
 #import "SPMetadataTests.h"
@@ -51,27 +57,33 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 
 @implementation TestRunner
 
--(void)completeTestsWithPassCount:(NSUInteger)passCount failCount:(NSUInteger)failCount {
+-(void)completeTestsWithPassCount:(uint32_t)passCount failCount:(uint32_t)failCount {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kLogForTeamCityUserDefaultsKey])
 		printf("##teamcity[testSuiteFinished name='CocoaLibSpotify']\n");
 	else
-		printf("**** Completed %lu tests with %lu passes and %lu failures ****\n", passCount + failCount, passCount, failCount);
-	[self pushColorToStatusServer:failCount > 0 ? [NSColor redColor] : [NSColor greenColor]];
-	exit(failCount > 0 ? EXIT_FAILURE : EXIT_SUCCESS);
+		printf("**** Completed %u tests with %u passes and %u failures ****\n", passCount + failCount, passCount, failCount);
+	[self pushColorToStatusServer:failCount > 0 ? [PLATFORM_COLOR redColor] : [PLATFORM_COLOR greenColor]];
+
+	[self.delegate testRunner:self didCompleteTestsWithPassCount:passCount failCount:failCount];
 }
 
--(void)pushColorToStatusServer:(NSColor *)color {
+-(void)pushColorToStatusServer:(PLATFORM_COLOR *)color {
 	
 	NSString *statusServerAddress = [[NSUserDefaults standardUserDefaults] stringForKey:kTestStatusServerUserDefaultsKey];
 	if (statusServerAddress.length == 0) return;
+
+	CGFloat red, green, blue, alpha;
+	[color getRed:&red green:&green blue:&blue alpha:&alpha];
+
+#if !TARGET_OS_IPHONE
+	color = [color colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];
+#endif
 	
-	NSColor *colorToSend = [color colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];
-	
-	NSString *requestUrlString = [NSString stringWithFormat:@"http://%@/push-color?red=%lu&green=%lu&blue=%lu",
+	NSString *requestUrlString = [NSString stringWithFormat:@"http://%@/push-color?red=%@&green=%@&blue=%@",
 								  statusServerAddress,
-								  (NSUInteger)colorToSend.redComponent * 255,
-								  (NSUInteger)colorToSend.greenComponent * 255,
-								  (NSUInteger)colorToSend.blueComponent * 255];
+								  @((NSUInteger)red * 255),
+								  @((NSUInteger)green * 255),
+								  @((NSUInteger)blue * 255)];
 	
 	NSURL *requestUrl = [NSURL URLWithString:requestUrlString];							  
 	NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl 
@@ -87,8 +99,10 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 #pragma mark - Running Tests
 
 -(void)runTests {
-	[self pushColorToStatusServer:[NSColor yellowColor]];
-	
+	[self pushColorToStatusServer:[PLATFORM_COLOR yellowColor]];
+
+	printf("Unit tests starting with libspotify version %s.\n", [[SPSession libSpotifyBuildId] UTF8String]);
+
 	// Make sure we have a clean cache before starting.
 	NSString *aUserAgent = @"com.spotify.CocoaLSUnitTests";
 
@@ -169,8 +183,8 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 	if (shouldDoStressTests) [tests addObjectsFromArray:stressTests];
 	if (needsLoginAndTeardown) [tests addObject:self.teardownTests];
 
-	__block NSUInteger totalPassCount = 0;
-	__block NSUInteger totalFailCount = 0;
+	__block uint32_t totalPassCount = 0;
+	__block uint32_t totalFailCount = 0;
 	__block NSUInteger currentTestIndex = 0;
 
 	__weak typeof(self) weakSelf = self;
@@ -199,6 +213,8 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 			weakSelf.runTestBlock();
 		}];
 	};
+
+	[self.delegate testRunner:self willStartTests:tests];
 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kLogForTeamCityUserDefaultsKey])
 		printf("##teamcity[testSuiteStarted name='CocoaLibSpotify']\n");

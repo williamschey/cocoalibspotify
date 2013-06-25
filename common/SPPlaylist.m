@@ -31,15 +31,6 @@
 #import "SPPlaylistItem.h"
 #import "SPPlaylistItemInternal.h"
 
-@interface SPPlaylistCallbackProxy : NSObject
-// SPPlaylistCallbackProxy is here to bridge the gap between -dealloc and the 
-// playlist callbacks being unregistered, since that's done async.
-@property (nonatomic, readwrite, weak) SPPlaylist *playlist;
-@end
-
-@implementation SPPlaylistCallbackProxy
-@end
-
 @interface SPPlaylist ()
 
 @property (nonatomic, readwrite, getter=isUpdating) BOOL updating;
@@ -54,7 +45,6 @@
 @property (nonatomic, readwrite) sp_playlist_offline_status offlineStatus;
 @property (nonatomic, readwrite) sp_playlist *playlist;
 @property (nonatomic, readwrite, weak) SPSession *session;
-@property (nonatomic, readwrite, strong) SPPlaylistCallbackProxy *callbackProxy;
 @property (nonatomic, readwrite) NSUInteger itemCount;
 
 @property (nonatomic, readwrite, strong) NSMutableArray *moveCallbackStack;
@@ -75,11 +65,8 @@
 // Called when one or more tracks have been added to a playlist
 static void tracks_added(sp_playlist *pl, sp_track *const *tracks, int num_tracks, int position, void *userdata) {
     
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 
-	
 	SPErrorableOperationCallback callback = nil;
 	if (playlist.addCallbackStack.count > 0) {
 		callback = [playlist.addCallbackStack objectAtIndex:0];
@@ -100,9 +87,7 @@ static void tracks_added(sp_playlist *pl, sp_track *const *tracks, int num_track
 // Called when one or more tracks have been removed from a playlist
 static void	tracks_removed(sp_playlist *pl, const int *tracks, int num_tracks, void *userdata) {
 
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 	
 	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
 	
@@ -129,9 +114,7 @@ static void	tracks_removed(sp_playlist *pl, const int *tracks, int num_tracks, v
 // Called when one or more tracks have been moved within a playlist
 static void	tracks_moved(sp_playlist *pl, const int *tracks, int num_tracks, int new_position, void *userdata) {
     
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 
 	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
 	NSUInteger newStartIndex = new_position;
@@ -165,9 +148,7 @@ static void	tracks_moved(sp_playlist *pl, const int *tracks, int num_tracks, int
 // Called when a playlist has been renamed. sp_playlist_name() can be used to find out the new name
 static void	playlist_renamed(sp_playlist *pl, void *userdata) {
 	
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 	
     NSString *name = [NSString stringWithUTF8String:sp_playlist_name(pl)];
 	dispatch_async(dispatch_get_main_queue(), ^{
@@ -186,10 +167,7 @@ static void	playlist_renamed(sp_playlist *pl, void *userdata) {
  */
 static void	playlist_state_changed(sp_playlist *pl, void *userdata) {
     
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
-	
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 	[playlist offlineSyncStatusMayHaveChanged];
 	
 	BOOL isLoaded = sp_playlist_is_loaded(pl);
@@ -199,9 +177,7 @@ static void	playlist_state_changed(sp_playlist *pl, void *userdata) {
 // Called when a playlist is updating or is done updating
 static void	playlist_update_in_progress(sp_playlist *pl, bool done, void *userdata) {
    
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 
 	if (playlist.updating == done)
 		dispatch_async(dispatch_get_main_queue(), ^{ playlist.updating = !done; });
@@ -210,9 +186,7 @@ static void	playlist_update_in_progress(sp_playlist *pl, bool done, void *userda
 // Called when metadata for one or more tracks in a playlist has been updated.
 static void	playlist_metadata_updated(sp_playlist *pl, void *userdata) {
 
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 
 	@autoreleasepool {
 		if ([[playlist delegate] respondsToSelector:@selector(itemsInPlaylistDidUpdateMetadata:)]) {
@@ -226,9 +200,7 @@ static void	playlist_metadata_updated(sp_playlist *pl, void *userdata) {
 // Called when create time and/or creator for a playlist entry changes
 static void	track_created_changed(sp_playlist *pl, int position, sp_user *user, int when, void *userdata) {
 
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 
 	if ([[playlist delegate] respondsToSelector:@selector(itemsInPlaylistDidUpdateMetadata:)]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -240,9 +212,7 @@ static void	track_created_changed(sp_playlist *pl, int position, sp_user *user, 
 // Called when seen attribute for a playlist entry changes
 static void	track_seen_changed(sp_playlist *pl, int position, bool seen, void *userdata) {
     
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 	
 	if ([[playlist delegate] respondsToSelector:@selector(itemsInPlaylistDidUpdateMetadata:)]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -254,10 +224,7 @@ static void	track_seen_changed(sp_playlist *pl, int position, bool seen, void *u
 // Called when playlist description has changed
 static void	description_changed(sp_playlist *pl, const char *desc, void *userdata) {
    
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
-	
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 	NSString *newDesc = [NSString stringWithUTF8String:desc];
 	
 	dispatch_async(dispatch_get_main_queue(), ^{
@@ -267,10 +234,7 @@ static void	description_changed(sp_playlist *pl, const char *desc, void *userdat
 
 static void	image_changed(sp_playlist *pl, const byte *image, void *userdata) {
     
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
-	
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 	SPImage *spImage = [SPImage imageWithImageId:image inSession:playlist.session];
 	dispatch_async(dispatch_get_main_queue(), ^{ playlist.image = spImage; });
 }
@@ -278,9 +242,7 @@ static void	image_changed(sp_playlist *pl, const byte *image, void *userdata) {
 // Called when message attribute for a playlist entry changes
 static void	track_message_changed(sp_playlist *pl, int position, const char *message, void *userdata) {
 
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 	
 	if ([[playlist delegate] respondsToSelector:@selector(itemsInPlaylistDidUpdateMetadata:)]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -292,10 +254,7 @@ static void	track_message_changed(sp_playlist *pl, int position, const char *mes
 // Called when playlist subscribers changes (count or list of names)
 static void	subscribers_changed(sp_playlist *pl, void *userdata) {
     
-	SPPlaylistCallbackProxy *proxy = (__bridge SPPlaylistCallbackProxy *)userdata;
-	SPPlaylist *playlist = proxy.playlist;
-	if (!playlist) return;
-	
+	SPPlaylist *playlist = (__bridge SPPlaylist *)userdata;
 	[playlist rebuildSubscribers];
 }
 
@@ -512,29 +471,15 @@ static NSString * const kSPPlaylistKVOContext = @"kSPPlaylistKVOContext";
 }
 
 -(void)startLoading {
-	
+
 	SPDispatchAsync(^() {
-		
-		if (self.callbackProxy != nil) return;
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			SPDispatchAsync(^() {
-
-				if (self.callbackProxy == nil) {
-					// We do this check earlier on, but there's a race condition that causes a nasty crash
-					self.callbackProxy = [[SPPlaylistCallbackProxy alloc] init];
-					self.callbackProxy.playlist = self;
-					sp_playlist_add_callbacks(self.playlist, &_playlistCallbacks, (__bridge void *)self.callbackProxy);
-				}
-
-				sp_playlist_set_in_ram(self.session.session, self.playlist, true);
-				BOOL isLoaded = sp_playlist_is_loaded(self.playlist);
-				if (isLoaded) dispatch_async(dispatch_get_main_queue(), ^() { [self loadPlaylistData]; });
-			});
-		});
+		sp_playlist_set_in_ram(self.session.session, self.playlist, true);
+		BOOL isLoaded = sp_playlist_is_loaded(self.playlist);
+		if (isLoaded) dispatch_async(dispatch_get_main_queue(), ^() { [self loadPlaylistData]; });
+		sp_playlist_add_callbacks(self.playlist, &_playlistCallbacks, (__bridge void *)self);
 	});
 }
-				   
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     if (context == (__bridge void *)kSPPlaylistKVOContext) {
@@ -733,16 +678,10 @@ static NSString * const kSPPlaylistKVOContext = @"kSPPlaylistKVOContext";
     self.session = nil;
 	
 	sp_playlist *outgoing_playlist = _playlist;
-	
-	self.callbackProxy.playlist = nil;
-	
-	SPPlaylistCallbackProxy *outgoingProxy = self.callbackProxy;
-	self.callbackProxy = nil;
+	if (outgoing_playlist == NULL) return;
 
-	if (outgoing_playlist != NULL) return;
-
-	SPDispatchAsync(^() {
-		sp_playlist_remove_callbacks(outgoing_playlist, &_playlistCallbacks, (__bridge void *)outgoingProxy);
+	SPDispatchSyncIfNeeded(^{
+		sp_playlist_remove_callbacks(outgoing_playlist, &_playlistCallbacks, (__bridge void *)self);
 		sp_playlist_release(outgoing_playlist);
 	});
 }

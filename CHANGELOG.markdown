@@ -55,6 +55,7 @@ The `SPSparseList` class is a helper class for dealing with classes that impleme
 
 * The `flattenedPlaylists` property on `SPPlaylistContainer` can now be observed with KVO.
 
+* Many other minor fixes, improvements and tweaks.
 
 CocoaLibSpotify 2.4.2 for libspotify 12, released January 29th 2012
 ===================================================================

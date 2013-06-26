@@ -16,6 +16,7 @@ static NSString * const kRunStressTestsUserDefaultsKey = @"RunStressTests"; // S
 static NSString * const kRunStandardTestsUserDefaultsKey = @"RunStandardTests"; // Set to YES to run standard CocoaLS functionality tests
 static NSString * const kRunHelperTestsUserDefaultsKey = @"RunHelperTests"; // Set to YES to run helper functionality tests (SPAsyncLoading, etc)
 static NSString * const kRunAllTestsUserDefaultsKey = @"RunAllTests"; // Set to YES to run all tests
+static NSString * const kKeepExistingCacheUserDefaultsKey = @"KeepExistingCache"; // Set to YES to keep libspotify's cache from the last test run
 
 static NSTimeInterval const kDefaultNonAsyncLoadingTestTimeout = 10.0;
 

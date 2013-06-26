@@ -105,47 +105,53 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 
 	printf("Unit tests starting with libspotify version %s.\n", [[SPSession libSpotifyBuildId] UTF8String]);
 
-	// Make sure we have a clean cache before starting.
-	NSString *aUserAgent = @"com.spotify.CocoaLSUnitTests";
-
-	// Find the application support directory for settings
-	NSString *applicationSupportDirectory = nil;
-	NSArray *potentialDirectories = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
-																		NSUserDomainMask,
-																		YES);
-
-	if ([potentialDirectories count] > 0) {
-		applicationSupportDirectory = [[potentialDirectories objectAtIndex:0] stringByAppendingPathComponent:aUserAgent];
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:kKeepExistingCacheUserDefaultsKey]) {
+		printf("Keeping existing caches intact.\n");
 	} else {
-		applicationSupportDirectory = [NSTemporaryDirectory() stringByAppendingPathComponent:aUserAgent];
-	}
+		
+		// Make sure we have a clean cache before starting.
+		NSString *aUserAgent = @"com.spotify.CocoaLSUnitTests";
 
-	if ([[NSFileManager defaultManager] fileExistsAtPath:applicationSupportDirectory]) {
-		printf("Application support directory exists, deleting… ");
-		if (![[NSFileManager defaultManager] removeItemAtPath:applicationSupportDirectory error:nil])
-			printf("failed.\n");
-		else
-			printf("done.\n");
-	}
+		// Find the application support directory for settings
+		NSString *applicationSupportDirectory = nil;
+		NSArray *potentialDirectories = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+																			NSUserDomainMask,
+																			YES);
 
-	// Find the caches directory for cache
-	NSString *cacheDirectory = nil;
-	NSArray *potentialCacheDirectories = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,
-																			 NSUserDomainMask,
-																			 YES);
+		if ([potentialDirectories count] > 0) {
+			applicationSupportDirectory = [[potentialDirectories objectAtIndex:0] stringByAppendingPathComponent:aUserAgent];
+		} else {
+			applicationSupportDirectory = [NSTemporaryDirectory() stringByAppendingPathComponent:aUserAgent];
+		}
 
-	if ([potentialCacheDirectories count] > 0) {
-		cacheDirectory = [[potentialCacheDirectories objectAtIndex:0] stringByAppendingPathComponent:aUserAgent];
-	} else {
-		cacheDirectory = [NSTemporaryDirectory() stringByAppendingPathComponent:aUserAgent];
-	}
+		if ([[NSFileManager defaultManager] fileExistsAtPath:applicationSupportDirectory]) {
+			printf("Application support directory exists, deleting… ");
+			if (![[NSFileManager defaultManager] removeItemAtPath:applicationSupportDirectory error:nil])
+				printf("failed.\n");
+			else
+				printf("done.\n");
+		}
 
-	if ([[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory]) {
-		printf("Cache directory exists, deleting… ");
-		if (![[NSFileManager defaultManager] removeItemAtPath:cacheDirectory error:nil])
-			printf("failed.\n");
-		else
-			printf("done.\n");
+		// Find the caches directory for cache
+		NSString *cacheDirectory = nil;
+		NSArray *potentialCacheDirectories = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,
+																				 NSUserDomainMask,
+																				 YES);
+
+		if ([potentialCacheDirectories count] > 0) {
+			cacheDirectory = [[potentialCacheDirectories objectAtIndex:0] stringByAppendingPathComponent:aUserAgent];
+		} else {
+			cacheDirectory = [NSTemporaryDirectory() stringByAppendingPathComponent:aUserAgent];
+		}
+
+		if ([[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory]) {
+			printf("Cache directory exists, deleting… ");
+			if (![[NSFileManager defaultManager] removeItemAtPath:cacheDirectory error:nil])
+				printf("failed.\n");
+			else
+				printf("done.\n");
+		}
+
 	}
 
 	self.sessionTests = [SPSessionTests new];

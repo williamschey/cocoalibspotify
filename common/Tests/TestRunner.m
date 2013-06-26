@@ -180,7 +180,7 @@ static NSString * const kTestStatusServerUserDefaultsKey = @"StatusColorServer";
 	BOOL needsLoginAndTeardown = shouldDoStandardTests || shouldDoStressTests;
 
 	NSArray *helperTests = @[self.sparseListTests, self.asyncTests]; // Helper tests don't need an SPSession
-	NSArray *standardTests = @[self.concurrencyTests, self.playlistTests, self.audioTests, self.searchTests,
+	NSArray *standardTests = @[self.audioTests, self.concurrencyTests, self.playlistTests, self.searchTests,
 							   self.inboxTests, self.metadataTests];
 	NSArray *stressTests = @[self.stressTests];
 

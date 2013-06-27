@@ -1,3 +1,11 @@
+CocoaLibSpotify 2.4.4 for libspotify 12, released June 27th 2013
+================================================================
+
+* Uses libspotify 12.1.64 for iOS, which provides:
+    * Fixes an issue that would cause a crash on login in certain circumstances.
+
+* `-[SPSession attemptLoginWithUserName:existingCredential:]` should no longer hang for five minutes on iOS hardware.
+
 CocoaLibSpotify 2.4.3 for libspotify 12, released May 20th 2013
 ===============================================================
 

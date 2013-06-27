@@ -1558,7 +1558,7 @@ static SPSession *sharedSession;
 	@autoreleasepool {
 		int timeout = 0;
 		sp_session_process_events(self.session, &timeout);
-		NSTimeInterval nextNaturalProd = ((double)timeout) / 1000.0;
+		NSTimeInterval nextNaturalProd = MIN(5.0, ((double)timeout) / 1000.0);
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self resetProdTimerWithTimeout:nextNaturalProd];
 		});

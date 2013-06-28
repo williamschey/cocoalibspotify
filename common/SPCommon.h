@@ -53,6 +53,10 @@ extern inline void SPDispatchAsync(dispatch_block_t block);
 -(NSURL *)spotifyURL;
 @end
 
+@protocol SPPlaylistProvider <NSObject>
+@property (nonatomic, readonly, strong) NSArray *playlists;
+@end
+
 @protocol SPSessionPlaybackProvider <NSObject>
 
 @property (nonatomic, readwrite, getter=isPlaying) BOOL playing;

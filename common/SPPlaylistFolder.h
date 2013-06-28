@@ -30,7 +30,7 @@
 @class SPPlaylistContainer;
 @class SPSession;
 
-@interface SPPlaylistFolder : NSObject
+@interface SPPlaylistFolder : NSObject <SPPlaylistProvider>
 
 ///----------------------------
 /// @name Properties

@@ -30,7 +30,7 @@
 @class SPPlaylist;
 @class SPPlaylistFolder;
 
-@interface SPPlaylistContainer : NSObject <SPAsyncLoading, SPDelayableAsyncLoading>
+@interface SPPlaylistContainer : NSObject <SPAsyncLoading, SPDelayableAsyncLoading, SPPlaylistProvider>
 
 ///----------------------------
 /// @name Properties

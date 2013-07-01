@@ -141,6 +141,10 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 	return [NSString stringWithFormat:@"%@: %@", [super description], [self playlists]];
 }
 
+-(NSString *)name {
+	return @"Playlists";
+}
+
 -(sp_playlistcontainer *)container {
 #if DEBUG
 	SPAssertOnLibSpotifyThread();

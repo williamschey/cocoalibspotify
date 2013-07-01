@@ -55,6 +55,7 @@ extern inline void SPDispatchAsync(dispatch_block_t block);
 
 @protocol SPPlaylistProvider <NSObject>
 @property (nonatomic, readonly, strong) NSArray *playlists;
+@property (nonatomic, readonly, copy) NSString *name;
 @end
 
 @protocol SPSessionPlaybackProvider <NSObject>

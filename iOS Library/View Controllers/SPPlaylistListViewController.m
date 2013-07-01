@@ -37,6 +37,7 @@
 	if (self) {
 		self.provider = provider;
 		self.allowTrackLists = allowTrackLists;
+		self.title = self.provider.name;
 
 		[self addObserver:self forKeyPath:@"provider.playlists" options:0 context:nil];
 
@@ -97,6 +98,7 @@
     // Configure the cell...
 	id playlistOrFolder = self.provider.playlists[indexPath.row];
 	cell.textLabel.text = [playlistOrFolder name];
+	cell.textLabel.textColor = [UIColor darkTextColor];
 
 	if (self.allowTrackLists || [playlistOrFolder isKindOfClass:[SPPlaylistFolder class]])
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -108,8 +110,14 @@
 		if (!loadable.loaded) {
 			__weak typeof(self) weakSelf = self;
 			[SPAsyncLoading waitUntilLoaded:loadable timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
-				[weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+				UITableViewCell *cell = [weakSelf.tableView cellForRowAtIndexPath:indexPath];
+				if (loadable.loaded) {
+					cell.textLabel.text = [playlistOrFolder name];
+					cell.textLabel.textColor = [UIColor darkTextColor];
+				}
 			}];
+			cell.textLabel.textColor = [UIColor lightGrayColor];
+			cell.textLabel.text = @"Loading…";
 		}
 	}
     

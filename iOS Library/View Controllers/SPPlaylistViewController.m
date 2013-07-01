@@ -33,21 +33,31 @@
 	self = [super init];
 	if (self) {
 		self.playlist = playlist;
+		[self.playlist startLoading];
 		// TODO: Unload stuff from the sparse list when scrolling away from it
 		self.trackList = [[SPSparseList alloc] initWithDataSource:playlist batchSize:50];
 		self.title = self.playlist.name;
+		[self addObserver:self forKeyPath:@"playlist.name" options:0 context:nil];
 	}
 	return self;
+}
+
+-(void)dealloc {
+	[self removeObserver:self forKeyPath:@"playlist.name"];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"playlist.name"]) {
+        self.title = self.playlist.name;
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-	[SPAsyncLoading waitUntilLoaded:self.playlist timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
-		self.title = self.playlist.name;
-	}];
-
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -88,7 +98,8 @@
 	SPPlaylistItem *item = self.trackList[indexPath.row];
 	__weak typeof(self) weakSelf = self;
 
-	cell.textLabel.text = @"";
+	cell.textLabel.textColor = [UIColor lightGrayColor];
+	cell.textLabel.text = @"Loading…";
 	
 	if (item == nil) {
 		[self.trackList loadObjectsInRange:NSMakeRange(indexPath.row, 1) callback:^{
@@ -100,11 +111,17 @@
 	id <SPAsyncLoading> wrappedItem = item.item;
 	if (!wrappedItem.loaded) {
 		[SPAsyncLoading waitUntilLoaded:wrappedItem timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
-			[weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+			UITableViewCell *cell = [weakSelf.tableView cellForRowAtIndexPath:indexPath];
+			if (wrappedItem.loaded) {
+				cell.textLabel.textColor = [UIColor darkTextColor];
+				cell.textLabel.text = [(SPTrack *)wrappedItem name];
+			}
 		}];
+	} else {
+		cell.textLabel.textColor = [UIColor darkTextColor];
+		cell.textLabel.text = [(SPTrack *)wrappedItem name];
 	}
 
-	cell.textLabel.text = [(SPTrack *)wrappedItem name];
     return cell;
 }
 

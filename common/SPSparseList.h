@@ -83,6 +83,14 @@
  */
 -(void)unloadObjectsInRange:(NSRange)range;
 
+/** Unload objects at the given indexes.
+
+ For memory usage reasons, it's wise to unload objects you no longer need.
+
+ @param indexes The indexes of the objects to unload. Items in these indexes that aren't loaded will be unaffected.
+ */
+-(void)unloadObjectsAtIndexes:(NSIndexSet *)indexes;
+
 ///----------------------------
 /// @name Accessing Objects
 ///----------------------------

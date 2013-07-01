@@ -185,14 +185,19 @@ static NSUInteger const kSPSparseListDefaultBatchSize = 30;
 }
 
 -(void)unloadObjectsInRange:(NSRange)range {
+	[self unloadObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:range]];
+}
 
-	[self throwIfIndexesInvalid:[NSIndexSet indexSetWithIndexesInRange:range]];
+-(void)unloadObjectsAtIndexes:(NSIndexSet *)indexes {
 	
-	for (NSUInteger index = range.location; index < range.location + range.length; index++)
-		[self.loadedItems removeObjectForKey:@(index)];
+	[self throwIfIndexesInvalid:indexes];
 
+	[indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+		[self.loadedItems removeObjectForKey:@(idx)];
+	}];
+	
 	NSMutableIndexSet *newIndexes = [self.loadedIndexes mutableCopy];
-	[newIndexes removeIndexesInRange:range];
+	[newIndexes removeIndexes:indexes];
 	self.loadedIndexes = newIndexes;
 }
 

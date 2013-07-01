@@ -12,10 +12,16 @@
 		3755E24A16440D400050348E /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3755E24916440D400050348E /* NSData+Base64.m */; };
 		37738CF916F8C59F0080530D /* AsyncLoadingMockObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 37738CF816F8C59F0080530D /* AsyncLoadingMockObjects.m */; };
 		37738CFC16F8C5A60080530D /* SPAsyncLoadingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37738CFB16F8C5A60080530D /* SPAsyncLoadingTests.m */; };
+		378A021A178198A6007E5FCB /* SPPlaylistViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 378A0218178198A6007E5FCB /* SPPlaylistViewController.h */; };
+		378A021B178198A6007E5FCB /* SPPlaylistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 378A0219178198A6007E5FCB /* SPPlaylistViewController.m */; };
+		37A6B0E3177DBC7A00ACDB17 /* SPPlaylistListViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 37A6B0E1177DBC7A00ACDB17 /* SPPlaylistListViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37A6B0E4177DBC7A00ACDB17 /* SPPlaylistListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A6B0E2177DBC7A00ACDB17 /* SPPlaylistListViewController.m */; };
 		37B63363177884DD00AC3265 /* TestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B63362177884DD00AC3265 /* TestRunner.m */; };
 		37B63366177886E000AC3265 /* SPStressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B63365177886E000AC3265 /* SPStressTests.m */; };
 		37B633741778C1FF00AC3265 /* SparseListArrayAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B633731778C1FF00AC3265 /* SparseListArrayAdapter.m */; };
 		37B633771778C21600AC3265 /* SPSparseListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B633761778C21600AC3265 /* SPSparseListTests.m */; };
+		37C2A981177C84AD00146C9C /* SPPlaylistPickerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 37C2A97F177C84AD00146C9C /* SPPlaylistPickerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37C2A982177C84AD00146C9C /* SPPlaylistPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C2A980177C84AD00146C9C /* SPPlaylistPickerViewController.m */; };
 		37E8E09D17463193000A9747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8E09C17463193000A9747 /* Security.framework */; };
 		37F0582316B7D4D3008DC38B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */; };
 		500EC8B51439D02A00E8A60C /* CocoaLibSpotify iOS Library-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 500EC8B41439D02A00E8A60C /* CocoaLibSpotify iOS Library-Prefix.pch */; };
@@ -152,6 +158,10 @@
 		37738CF816F8C59F0080530D /* AsyncLoadingMockObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncLoadingMockObjects.m; sourceTree = "<group>"; };
 		37738CFA16F8C5A60080530D /* SPAsyncLoadingTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPAsyncLoadingTests.h; sourceTree = "<group>"; };
 		37738CFB16F8C5A60080530D /* SPAsyncLoadingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPAsyncLoadingTests.m; sourceTree = "<group>"; };
+		378A0218178198A6007E5FCB /* SPPlaylistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPPlaylistViewController.h; path = "View Controllers/SPPlaylistViewController.h"; sourceTree = "<group>"; };
+		378A0219178198A6007E5FCB /* SPPlaylistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPPlaylistViewController.m; path = "View Controllers/SPPlaylistViewController.m"; sourceTree = "<group>"; };
+		37A6B0E1177DBC7A00ACDB17 /* SPPlaylistListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPPlaylistListViewController.h; path = "View Controllers/SPPlaylistListViewController.h"; sourceTree = "<group>"; };
+		37A6B0E2177DBC7A00ACDB17 /* SPPlaylistListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPPlaylistListViewController.m; path = "View Controllers/SPPlaylistListViewController.m"; sourceTree = "<group>"; };
 		37B63361177884DD00AC3265 /* TestRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestRunner.h; path = ../../common/Tests/TestRunner.h; sourceTree = "<group>"; };
 		37B63362177884DD00AC3265 /* TestRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestRunner.m; path = ../../common/Tests/TestRunner.m; sourceTree = "<group>"; };
 		37B63364177886E000AC3265 /* SPStressTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPStressTests.h; sourceTree = "<group>"; };
@@ -160,6 +170,8 @@
 		37B633731778C1FF00AC3265 /* SparseListArrayAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparseListArrayAdapter.m; sourceTree = "<group>"; };
 		37B633751778C21600AC3265 /* SPSparseListTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPSparseListTests.h; sourceTree = "<group>"; };
 		37B633761778C21600AC3265 /* SPSparseListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPSparseListTests.m; sourceTree = "<group>"; };
+		37C2A97F177C84AD00146C9C /* SPPlaylistPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPPlaylistPickerViewController.h; path = "View Controllers/SPPlaylistPickerViewController.h"; sourceTree = "<group>"; };
+		37C2A980177C84AD00146C9C /* SPPlaylistPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPPlaylistPickerViewController.m; path = "View Controllers/SPPlaylistPickerViewController.m"; sourceTree = "<group>"; };
 		37E8E09C17463193000A9747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		37F0582216B7D4D3008DC38B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		500EC8B41439D02A00E8A60C /* CocoaLibSpotify iOS Library-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CocoaLibSpotify iOS Library-Prefix.pch"; sourceTree = "<group>"; };
@@ -315,6 +327,17 @@
 			path = "../../common/Tests/Mock Objects";
 			sourceTree = "<group>";
 		};
+		37A6B0E0177D97D000ACDB17 /* Playlist View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				37A6B0E1177DBC7A00ACDB17 /* SPPlaylistListViewController.h */,
+				37A6B0E2177DBC7A00ACDB17 /* SPPlaylistListViewController.m */,
+				378A0218178198A6007E5FCB /* SPPlaylistViewController.h */,
+				378A0219178198A6007E5FCB /* SPPlaylistViewController.m */,
+			);
+			name = "Playlist View Controllers";
+			sourceTree = "<group>";
+		};
 		37B633711778C1CE00AC3265 /* Helper Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,6 +391,9 @@
 		5046739A15135F6000F59AC4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				37C2A97F177C84AD00146C9C /* SPPlaylistPickerViewController.h */,
+				37C2A980177C84AD00146C9C /* SPPlaylistPickerViewController.m */,
+				37A6B0E0177D97D000ACDB17 /* Playlist View Controllers */,
 				50B1F2891518E69A00CB7186 /* SPLoginViewController.h */,
 				501F7BE81521C2FB009CB9F4 /* SPLoginViewControllerInternal.h */,
 				50B1F28A1518E69A00CB7186 /* SPLoginViewController.m */,
@@ -590,10 +616,13 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37A6B0E3177DBC7A00ACDB17 /* SPPlaylistListViewController.h in Headers */,
 				50AF4A501439CF4700E4A5EF /* CocoaLibSpotify.h in Headers */,
 				50AF4A511439CF4700E4A5EF /* CocoaLibSpotifyPlatformImports.h in Headers */,
+				378A021A178198A6007E5FCB /* SPPlaylistViewController.h in Headers */,
 				50AF4A551439CF5B00E4A5EF /* SPURLExtensions.h in Headers */,
 				50AF4A591439CF6500E4A5EF /* SPErrorExtensions.h in Headers */,
+				37C2A981177C84AD00146C9C /* SPPlaylistPickerViewController.h in Headers */,
 				50AF4A7D1439CF8600E4A5EF /* SPAlbum.h in Headers */,
 				50AF4A7F1439CF8600E4A5EF /* SPAlbumBrowse.h in Headers */,
 				50AF4A811439CF8600E4A5EF /* SPArtist.h in Headers */,
@@ -745,11 +774,13 @@
 				50AF4A861439CF8600E4A5EF /* SPImage.m in Sources */,
 				50AF4A881439CF8600E4A5EF /* SPPlaylist.m in Sources */,
 				50AF4A8A1439CF8600E4A5EF /* SPPlaylistContainer.m in Sources */,
+				37A6B0E4177DBC7A00ACDB17 /* SPPlaylistListViewController.m in Sources */,
 				50AF4A8D1439CF8600E4A5EF /* SPPlaylistFolder.m in Sources */,
 				50AF4A901439CF8600E4A5EF /* SPPostTracksToInboxOperation.m in Sources */,
 				50AF4A921439CF8600E4A5EF /* SPSearch.m in Sources */,
 				50AF4A941439CF8600E4A5EF /* SPSession.m in Sources */,
 				50AF4A961439CF8600E4A5EF /* SPToplist.m in Sources */,
+				37C2A982177C84AD00146C9C /* SPPlaylistPickerViewController.m in Sources */,
 				50AF4A981439CF8600E4A5EF /* SPTrack.m in Sources */,
 				50AF4A9A1439CF8600E4A5EF /* SPUser.m in Sources */,
 				5098402A1460444100C0FC18 /* SPPlaylistItem.m in Sources */,
@@ -765,6 +796,7 @@
 				5082C6C91577694C00B74280 /* SPClientUpsellViewController.m in Sources */,
 				50A9F3EE161AE9600009ECA2 /* TestsViewController.m in Sources */,
 				50A9F3F2161AFC9A0009ECA2 /* TestProgressCell.m in Sources */,
+				378A021B178198A6007E5FCB /* SPPlaylistViewController.m in Sources */,
 				3734AF301726B28E00407244 /* SPSparseList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

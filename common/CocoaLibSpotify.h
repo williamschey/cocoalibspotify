@@ -45,6 +45,7 @@
 
 #import "SPSignupViewController.h"
 #import "SPLoginViewController.h"
+#import "SPPlaylistPickerViewController.h"
 
 #import "SPCircularBuffer.h"
 #import "SPCoreAudioController.h"

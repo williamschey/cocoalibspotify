@@ -134,6 +134,15 @@ static NSUInteger const kSPSparseListDefaultBatchSize = 30;
 	return [NSSet setWithSet:objects];
 }
 
+-(NSIndexSet *)loadedIndexesInIndexes:(NSIndexSet *)indexes {
+	[self throwIfIndexesInvalid:indexes];
+
+	NSIndexSet *loadedIndexes = self.loadedIndexes;
+	return [indexes indexesPassingTest:^BOOL(NSUInteger idx, BOOL *stop) {
+		return [loadedIndexes containsIndex:idx];
+	}];
+}
+
 -(void)loadObjectsInRange:(NSRange)range callback:(dispatch_block_t)block {
 
 	/*

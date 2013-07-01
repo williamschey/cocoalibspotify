@@ -123,6 +123,9 @@
 /** Returns the indexes of the loaded objects in the list. */
 -(NSIndexSet *)loadedIndexes;
 
+/** Returns the indexes of the loaded objects in the given indexes. */
+-(NSIndexSet *)loadedIndexesInIndexes:(NSIndexSet *)indexes;
+
 /** Returns a set containing all loaded objects in the list. */
 -(NSSet *)loadedObjects;
 

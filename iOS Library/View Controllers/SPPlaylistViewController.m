@@ -112,7 +112,8 @@
 	
 	if (item == nil) {
 		[self.trackList loadObjectsInRange:NSMakeRange(indexPath.row, 1) callback:^{
-			[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+			if ([self.tableView.indexPathsForVisibleRows containsObject:indexPath])
+				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 		}];
 		return cell;
 	}
@@ -121,7 +122,7 @@
 	if (!wrappedItem.loaded) {
 		[SPAsyncLoading waitUntilLoaded:wrappedItem timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
 			UITableViewCell *cell = [weakSelf.tableView cellForRowAtIndexPath:indexPath];
-			if (wrappedItem.loaded) {
+			if (wrappedItem.loaded && [self.tableView.visibleCells containsObject:cell]) {
 				cell.textLabel.textColor = [UIColor darkTextColor];
 				cell.textLabel.text = [(SPTrack *)wrappedItem name];
 			}

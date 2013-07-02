@@ -186,7 +186,7 @@ static NSUInteger const kSPSparseListDefaultBatchSize = 30;
 		NSArray *blocks = [self.loadingBlocks copy];
 		for (SPSparseListWaitingBlock *waitingBlock in blocks) {
 			if ([loadedIndexes containsIndexes:waitingBlock.indexes]) {
-				dispatch_async(dispatch_get_main_queue(), ^{ waitingBlock.block(); });
+				if (waitingBlock.block != nil) dispatch_async(dispatch_get_main_queue(), ^{ waitingBlock.block(); });
 				[self.loadingBlocks removeObject:waitingBlock];
 			}
 		}

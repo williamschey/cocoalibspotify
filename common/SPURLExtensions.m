@@ -28,19 +28,14 @@
 	
 	if (link == NULL) 
 		return nil;
-
-	int linkLength = sp_link_as_string(link, NULL, 0);
+	
+	char buffer[256];
+	NSUInteger linkLength = sp_link_as_string(link, buffer, sizeof(buffer));
 	
 	if (linkLength == 0) 
 		return nil;
-
-	char *buffer = malloc(linkLength + 1); // Extra byte for NULL terminator
-	memset(buffer, 0, linkLength + 1);
-	sp_link_as_string(link, buffer, linkLength + 1);
-
-	NSString *urlString = [NSString stringWithUTF8String:buffer];
-
-	return [NSURL URLWithString:urlString];
+	
+	return [NSURL URLWithString:[NSString stringWithUTF8String:buffer]];
 }
 
 +(NSString *)urlDecodedStringForString:(NSString *)encodedString {

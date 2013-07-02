@@ -38,6 +38,8 @@
 	if (self) {
 		self.mode = mode;
 		self.session = session;
+		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
 	}
 
 	return self;

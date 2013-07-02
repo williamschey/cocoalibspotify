@@ -163,6 +163,13 @@
         [self unloadDistantTracksTravellingDown:scrollView.contentOffset.y > self.lastScrollOffset];
 }
 
+-(BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+	NSRange rangeToLoad = NSMakeRange(0, self.tableView.visibleCells.count);
+	if (rangeToLoad.length == 0) return YES;
+	[self.trackList loadObjectsInRange:rangeToLoad callback:nil];
+	return YES;
+}
+
 -(void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
 	[self unloadDistantTracksTravellingDown:NO];
 }
@@ -171,8 +178,14 @@
 					withVelocity:(CGPoint)velocity
 			 targetContentOffset:(inout CGPoint *)targetContentOffset {
 
-	// TODO: Load tracks where the scrollview will land
-	
+	CGPoint point = *targetContentOffset;
+	NSRange destinationRange = NSMakeRange([self.tableView indexPathForRowAtPoint:point].row, self.tableView.visibleCells.count);
+
+	if ((destinationRange.location + destinationRange.length) >= self.trackList.count)
+		destinationRange.length = self.trackList.count - destinationRange.location;
+
+	if (destinationRange.length == 0) return;
+	[self.trackList loadObjectsInRange:destinationRange callback:nil];
 }
 
 #pragma mark - Memory Management

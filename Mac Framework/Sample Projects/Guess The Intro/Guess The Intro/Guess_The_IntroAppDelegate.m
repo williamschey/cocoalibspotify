@@ -38,7 +38,6 @@ static NSTimeInterval const kGameCountdownThreshold = 30.0;
 	NSError *error = nil;
 	[SPSession initializeSharedSessionWithApplicationKey:[NSData dataWithBytes:&g_appkey length:g_appkey_size]
 											   userAgent:@"com.spotify.GuessTheIntro"
-										   loadingPolicy:SPAsyncLoadingImmediate
 												   error:&error];
 	if (error != nil) {
 		NSLog(@"CocoaLibSpotify init failed: %@", error);

@@ -149,7 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				50EECB0615CAA856006E54FA /* CocoaLibSpotify.framework */,
-				50EECB0815CAA856006E54FA /* CocoaLibSpotify Test Container.app */,
+				50EECB0815CAA856006E54FA /* CocoaLSTests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -182,7 +182,7 @@
 		50EECAD215CAA82C006E54FA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Your Company";
 			};
 			buildConfigurationList = 50EECAD515CAA82C006E54FA /* Build configuration list for PBXProject "Empty CocoaLibSpotify Project" */;
@@ -216,7 +216,7 @@
 			remoteRef = 50EECB0515CAA856006E54FA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		50EECB0815CAA856006E54FA /* CocoaLibSpotify Test Container.app */ = {
+		50EECB0815CAA856006E54FA /* CocoaLSTests.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = CocoaLSTests.app;
@@ -290,7 +290,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -318,7 +317,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

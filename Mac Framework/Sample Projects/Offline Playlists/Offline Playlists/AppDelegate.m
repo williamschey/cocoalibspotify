@@ -43,7 +43,6 @@
 	NSError *error = nil;
 	[SPSession initializeSharedSessionWithApplicationKey:[NSData dataWithBytes:&g_appkey length:g_appkey_size]
 											   userAgent:@"com.spotify.OfflinePlaylists"
-										   loadingPolicy:SPAsyncLoadingImmediate
 												   error:&error];
 	if (error != nil) {
 		NSLog(@"CocoaLibSpotify init failed: %@", error);
@@ -154,6 +153,10 @@
 	
 	[self.loginSheet orderOut:self];
 	[NSApp endSheet:self.loginSheet];
+
+	[SPAsyncLoading waitUntilLoaded:[SPSession sharedSession] withKeyPaths:@[@"userPlaylists"] timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+
+	}];
 }
 
 -(void)session:(SPSession *)aSession didFailToLoginWithError:(NSError *)error; {

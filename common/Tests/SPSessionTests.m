@@ -40,7 +40,6 @@
     NSError *error = nil;
     [SPSession initializeSharedSessionWithApplicationKey:nil
                                                userAgent:@"com.spotify.CocoaLSUnitTests"
-                                           loadingPolicy:SPAsyncLoadingManual
                                                    error:&error];
 
     SPTestAssert(error != nil, @"Session initialisation should have provided an error.");
@@ -49,7 +48,6 @@
     error = nil;
     [SPSession initializeSharedSessionWithApplicationKey:nil
                                                userAgent:@""
-                                           loadingPolicy:SPAsyncLoadingManual
                                                    error:&error];
 
     SPTestAssert(error != nil, @"Session initialisation should have provided an error.");
@@ -69,7 +67,6 @@
 	NSError *error = nil;
     [SPSession initializeSharedSessionWithApplicationKey:appKey
                                                userAgent:@"com.spotify.CocoaLSUnitTests"
-                                           loadingPolicy:SPAsyncLoadingManual
                                                    error:&error];
 
     SPTestAssert(error == nil, @"Error should be nil: %@.", error);

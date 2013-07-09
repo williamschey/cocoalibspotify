@@ -25,7 +25,6 @@
 	NSError *error = nil;
 	[SPSession initializeSharedSessionWithApplicationKey:[NSData dataWithBytes:&g_appkey length:g_appkey_size]
 											   userAgent:@"com.spotify.GuessTheIntro"
-										   loadingPolicy:SPAsyncLoadingManual
 												   error:&error];
 	if (error != nil) {
 		NSLog(@"CocoaLibSpotify init failed: %@", error);

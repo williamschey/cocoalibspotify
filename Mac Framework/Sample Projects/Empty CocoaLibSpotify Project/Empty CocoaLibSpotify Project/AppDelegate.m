@@ -42,7 +42,6 @@
 	NSError *error = nil;
 	[SPSession initializeSharedSessionWithApplicationKey:appKey
 											   userAgent:userAgent
-										   loadingPolicy:SPAsyncLoadingManual
 												   error:&error];
 	if (error != nil) {
 		NSLog(@"CocoaLibSpotify init failed: %@", error);

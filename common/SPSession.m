@@ -70,7 +70,6 @@
 @property (nonatomic, readwrite, strong) NSMutableSet *loadingObjects;
 
 @property (nonatomic, copy, readwrite) NSString *userAgent;
-@property (nonatomic, readwrite) SPAsyncLoadingPolicy loadingPolicy;
 
 @property (readwrite, strong) NSTimer *prodTimeoutTimer;
 
@@ -708,25 +707,21 @@ static SPSession *sharedSession;
 
 +(BOOL)initializeSharedSessionWithApplicationKey:(NSData *)appKey
 									   userAgent:(NSString *)aUserAgent
-								   loadingPolicy:(SPAsyncLoadingPolicy)policy
 										   error:(NSError **)error {
 
 	return [self initializeSharedSessionWithApplicationKey:appKey
 												 userAgent:aUserAgent
-											 loadingPolicy:policy
 												properties:nil
 													 error:error];
 }
 
 +(BOOL)initializeSharedSessionWithApplicationKey:(NSData *)appKey
 									   userAgent:(NSString *)aUserAgent
-								   loadingPolicy:(SPAsyncLoadingPolicy)policy
 									  properties:(NSDictionary *)properties
 										   error:(NSError **)error {
 
 	sharedSession = [[SPSession alloc] initWithApplicationKey:appKey
 													userAgent:aUserAgent
-												loadingPolicy:policy
 												   properties:properties
 														error:error];
 	if (sharedSession == nil)
@@ -741,31 +736,27 @@ static SPSession *sharedSession;
 
 -(id)init {
 	// This will always fail.
-	return [self initWithApplicationKey:nil userAgent:nil loadingPolicy:0 error:nil];
+	return [self initWithApplicationKey:nil userAgent:nil error:nil];
 }
 
 -(id)initWithApplicationKey:(NSData *)appKey
 				  userAgent:(NSString *)aUserAgent
-			  loadingPolicy:(SPAsyncLoadingPolicy)policy
 					  error:(NSError **)error {
 
 	return [self initWithApplicationKey:appKey
 							  userAgent:aUserAgent
-						  loadingPolicy:policy
 							 properties:nil
 								  error:error];
 }
 
 -(id)initWithApplicationKey:(NSData *)appKey
 				  userAgent:(NSString *)aUserAgent
-			  loadingPolicy:(SPAsyncLoadingPolicy)policy
 				 properties:(NSDictionary *)properties
 					  error:(NSError *__autoreleasing *)error {
 
 	if ((self = [super init])) {
 
 		self.userAgent = aUserAgent;
-		self.loadingPolicy = policy;
 		self.userCache = [[NSMutableDictionary alloc] init];
 		self.playlistCache = [[NSMutableDictionary alloc] init];
 		self.loadingObjects = [[NSMutableSet alloc] init];

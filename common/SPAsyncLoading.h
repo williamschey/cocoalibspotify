@@ -32,6 +32,16 @@ static NSTimeInterval const kSPAsyncLoadingDefaultTimeout = 20.0;
 
 @end
 
+@protocol SPPartialAsyncLoading;
+
+/** Provides a protocol for `SPPartialAsyncLoading` objects to inform interested parties that their contents have changed. */
+@protocol SPPartialAsyncLoadingDelegate <NSObject>
+
+/** Called when the caller's items have changed in the given range, such as an item being added, removed or moved. */
+-(void)partialLoadingObject:(id <SPPartialAsyncLoading>)object didChangeItemsInRange:(NSRange)range;
+
+@end
+
 /** Provides a standard protocol for CocoaLibSpotify metadata objects that can provide child metadata in partial ranges, like playlists. */
 @protocol SPPartialAsyncLoading <NSObject>
 
@@ -44,6 +54,9 @@ static NSTimeInterval const kSPAsyncLoadingDefaultTimeout = 20.0;
 
 /** Returns the number of child items the object provides. */
 -(NSUInteger)itemCount;
+
+/** Returns the partial loading delegate of the receiver. This delegate will be informed when the item list has been changed. */
+@property (nonatomic, readwrite, weak) id <SPPartialAsyncLoadingDelegate> partialLoadingDelegate;
 
 @end
 

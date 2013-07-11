@@ -168,13 +168,16 @@
  playlist without good reason as playlists can get *very* large and memory
  usage is a concern on mobile devices. If you're implementing a table view, 
  for instance, it's a better idea to only request the visible items plus a screen
- or so of rows each way. See the `Playlist TableViews` example project to see
+ or so of rows each way. See the `Playlist Picker` example project to see
  this in action.
  
  @param range The range of items to retreive. Must be in the range [0..itemCount].
  @param block Callback to be called with the requested items, or an error if one occurred.
  */
 -(void)fetchItemsInRange:(NSRange)range callback:(void (^)(NSError *error, NSArray *items))block;
+
+/** Returns the partial loading delegate of the receiver. This delegate will be informed when the item list has been changed. */
+@property (nonatomic, readwrite, weak) id <SPPartialAsyncLoadingDelegate> partialLoadingDelegate;
 
 /** Move item(s) to another location in the list. 
  

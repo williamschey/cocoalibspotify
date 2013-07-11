@@ -77,6 +77,11 @@ static void tracks_added(sp_playlist *pl, sp_track *const *tracks, int num_track
 
 	dispatch_async(dispatch_get_main_queue(), ^{
 		playlist.itemCount = itemCount;
+
+		if ([playlist.partialLoadingDelegate respondsToSelector:@selector(partialLoadingObject:didChangeItemsInRange:)])
+			[playlist.partialLoadingDelegate partialLoadingObject:playlist
+											didChangeItemsInRange:NSMakeRange(position, itemCount - position)];
+
 		if ([[playlist delegate] respondsToSelector:@selector(playlist:didAddItemsAtIndexes:)])
 			[(id <SPPlaylistDelegate>)[playlist delegate] playlist:playlist
 											  didAddItemsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(position, num_tracks)]];
@@ -104,6 +109,11 @@ static void	tracks_removed(sp_playlist *pl, const int *tracks, int num_tracks, v
 	
 	dispatch_async(dispatch_get_main_queue(), ^{
 		playlist.itemCount = itemCount;
+
+		if ([playlist.partialLoadingDelegate respondsToSelector:@selector(partialLoadingObject:didChangeItemsInRange:)])
+			[playlist.partialLoadingDelegate partialLoadingObject:playlist
+											didChangeItemsInRange:NSMakeRange(indexes.firstIndex, itemCount - indexes.firstIndex)];
+
 		if ([[playlist delegate] respondsToSelector:@selector(playlist:didRemoveItemsAtIndexes:)])
 			[(id <SPPlaylistDelegate>)[playlist delegate] playlist:playlist
 										   didRemoveItemsAtIndexes:indexes];
@@ -137,6 +147,14 @@ static void	tracks_moved(sp_playlist *pl, const int *tracks, int num_tracks, int
 
 	dispatch_async(dispatch_get_main_queue(), ^{
 		playlist.itemCount = itemCount;
+
+		NSUInteger smallestAffectedIndex = MIN(indexes.firstIndex, newStartIndex);
+		NSUInteger largestAffectedIndex = MAX(indexes.lastIndex, newStartIndex + num_tracks);
+
+		if ([playlist.partialLoadingDelegate respondsToSelector:@selector(partialLoadingObject:didChangeItemsInRange:)])
+			[playlist.partialLoadingDelegate partialLoadingObject:playlist
+											didChangeItemsInRange:NSMakeRange(smallestAffectedIndex, (largestAffectedIndex - smallestAffectedIndex) + 1)];
+
 		if ([[playlist delegate] respondsToSelector:@selector(playlist:didMoveItemsAtIndexes:toIndexes:)])
 			[(id <SPPlaylistDelegate>)[playlist delegate] playlist:playlist
 											 didMoveItemsAtIndexes:indexes

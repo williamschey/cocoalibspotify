@@ -28,4 +28,6 @@
 
 @property (nonatomic, readonly, copy) NSArray *sourceArray;
 
+@property (nonatomic, readwrite, weak) id <SPPartialAsyncLoadingDelegate> partialLoadingDelegate;
+
 @end

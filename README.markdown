@@ -1,6 +1,6 @@
 # SpotSort #
 
-This small app allows the permanent alphabetical sorting of playlists in Spotify. This is useful for iPhones etc. and why this is base functionality, I would never know. The source is under the sample apps directory in the mac framework.
+This small app allows the permanent alphabetical sorting of playlists in Spotify. This is useful for iPhones etc. and why this is NOT base functionality, I would never know. The source is under the sample apps directory in the mac framework.
 
 # Credits #
 

@@ -48,9 +48,11 @@
     
     SPSession *session;
     SPPlaylistContainer *playlistContainer;
+    
+    
+    NSMutableString *logWindowString;
 }
 
-@property (weak) IBOutlet NSSlider *playbackProgressSlider;
 @property (weak) IBOutlet NSTextField *trackURLField;
 @property (weak) IBOutlet NSTextField *userNameField;
 @property (weak) IBOutlet NSSecureTextField *passwordField;
@@ -58,6 +60,7 @@
 @property (unsafe_unretained) IBOutlet NSWindow *window;
 @property IBOutlet NSArrayController *playlistController;
 @property IBOutlet NSButton *sortButton;
+@property IBOutlet NSTextField *logWindow;
 
 
 - (IBAction)login:(id)sender;

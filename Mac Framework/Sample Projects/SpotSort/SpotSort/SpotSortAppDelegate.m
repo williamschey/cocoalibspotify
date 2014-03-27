@@ -35,7 +35,6 @@
 
 @implementation SpotSortAppDelegate
 
-@synthesize playbackProgressSlider;
 @synthesize trackURLField;
 @synthesize userNameField;
 @synthesize passwordField;
@@ -46,6 +45,7 @@
 @synthesize playlists;
 @synthesize playlistController;
 @synthesize sortButton;
+@synthesize logWindow;
 
 -(void)applicationWillFinishLaunching:(NSNotification *)notification {
 
@@ -58,6 +58,8 @@
 		NSLog(@"CocoaLibSpotify init failed: %@", error);
 		abort();
 	}
+    
+    logWindowString = [[NSMutableString alloc] init];
 
 	[[SPSession sharedSession] setDelegate:self];
 	self.playbackManager = [[SPPlaybackManager alloc] initWithPlaybackSession:[SPSession sharedSession]];
@@ -110,11 +112,7 @@
 	// to make sure we don't update the position slider while the user is dragging it around. If the position
 	// slider was read-only, we could just bind its value to playbackManager.trackPosition.
 	
-    if ([keyPath isEqualToString:@"playbackManager.trackPosition"]) {
-        if (![[self.playbackProgressSlider cell] isHighlighted]) {
-			[self.playbackProgressSlider setDoubleValue:self.playbackManager.trackPosition];
-		}
-    } else if ([keyPath isEqualToString:@"userPlaylists"]) {
+    if ([keyPath isEqualToString:@"userPlaylists"]) {
         playlistContainer = [session userPlaylists];
         
         [playlistContainer startLoading];
@@ -174,6 +172,11 @@
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
+-(void)logToWindow:(NSString *)msg; {
+    [logWindowString appendString:msg];
+    [logWindowString appendString:@"\n"];
+    [logWindow  setStringValue:logWindowString];
+}
 
 - (IBAction)quitFromLoginSheet:(id)sender {
 	
@@ -212,6 +215,8 @@
 	[NSApp endSheet:self.loginSheet];
     
     //[playlists addObjectsFromArray:[[aSession userPlaylists] playlists]];
+    
+    [self logToWindow:@"Logged in Successfully"];
     
     session = aSession;
     
@@ -259,6 +264,10 @@
     for (SPPlaylist *playlist in selectPlaylists) {
         
         NSLog(@"Sorting playlist %@", [playlist name]);
+        
+        
+        [self logToWindow:[NSString stringWithFormat:@"Sorting playlist %@", [playlist name]]];
+        
         
         NSMutableArray *unsortedItems = [[playlist items] mutableCopy];
         
@@ -325,6 +334,24 @@
             NSUInteger *newIndex = [sortedItems indexOfObject:item];
             if (currentIndex != newIndex) {
                 NSLog(@"moving item from %zd to %zd",currentIndex, newIndex);
+                
+                NSString *itmArtist = nil;
+                NSString *itmAlbum = nil;
+                NSUInteger *itmTrack = nil;
+                
+                if ([item itemClass] == [SPTrack class]) {
+                    itmArtist = [[[(SPTrack *)[item item] album] artist] name];
+                    itmAlbum = [[(SPTrack *)[item item] album] name];
+                    itmTrack = [(SPTrack *)[item item] trackNumber];
+                    
+                }
+                
+                if ([item itemClass] == [SPAlbum class]) {
+                    itmArtist = [[(SPAlbum *)[item item] artist] name];
+                    itmAlbum = [(SPAlbum *)[item item] name];
+                }
+                
+                [self logToWindow:[NSString stringWithFormat:@"Moving '%@'-'%@' (%zd) from %zd to %zd",itmArtist, itmAlbum, itmTrack, currentIndex, newIndex]];
                 NSIndexSet *currentIndexSet = [NSIndexSet indexSetWithIndex:currentIndex];
                 [playlist moveItemsAtIndexes:currentIndexSet toIndex:newIndex callback:nil];
                 [unsortedItems removeObjectAtIndex:currentIndex];

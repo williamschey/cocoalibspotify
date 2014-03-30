@@ -58,8 +58,6 @@
 		NSLog(@"CocoaLibSpotify init failed: %@", error);
 		abort();
 	}
-    
-    logWindowString = [[NSMutableString alloc] init];
 
 	[[SPSession sharedSession] setDelegate:self];
 	self.playbackManager = [[SPPlaybackManager alloc] initWithPlaybackSession:[SPSession sharedSession]];
@@ -84,7 +82,6 @@
     
     NSArray *usernames = [SSKeychain accountsForService:@"SpotSort"];
     NSDictionary *usernameDic = [usernames objectAtIndexedSubscript:0];
-    NSLog(@"usernameDic = %@",usernameDic);
     NSString *username = [usernameDic objectForKey:@"acct"];
     if (username != nil) {
         [userNameField setStringValue:username];
@@ -115,6 +112,7 @@
     if ([keyPath isEqualToString:@"userPlaylists"]) {
         playlistContainer = [session userPlaylists];
         
+        [session flushCaches:nil];
         [playlistContainer startLoading];
         
         [playlistContainer addObserver:self
@@ -128,25 +126,8 @@
         //[playlists bind:@"arrangedObjects" toObject:@"playlistContainer.playlists" withKeyPath:@"name" options:nil];
         
     } else if ([keyPath isEqualToString:@"playlists"]) {
-        for (SPPlaylist *playlist in [playlistContainer playlists]) {
-            if ([playlist class] == [SPPlaylist class]) {
-                [playlist startLoading];
-                [playlist addObserver:self
-                              forKeyPath:@"name"
-                                 options:0
-                                 context:nil];
-            }
-            if ([playlist class] == [SPPlaylistFolder class]) {
-                for (SPPlaylist *subplaylist in [(SPPlaylistFolder *) playlist playlists]) {
-                    [subplaylist startLoading];
-                    
-                    [subplaylist addObserver:self
-                                  forKeyPath:@"name"
-                                     options:0
-                                     context:nil];
-                }
-            }
-        }
+        
+        [self loadPlaylists:[playlistContainer playlists]];
         
         [playlistContainer removeObserver:self forKeyPath:@"playlists"];
         
@@ -172,10 +153,27 @@
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
--(void)logToWindow:(NSString *)msg; {
-    [logWindowString appendString:msg];
-    [logWindowString appendString:@"\n"];
-    [logWindow  setStringValue:logWindowString];
+
+- (void)loadPlaylists:(NSArray *)playlistItems {
+    for (id playlist in playlistItems) {
+        if ([playlist class] == [SPPlaylist class]) {
+            [playlist startLoading];
+            [playlist addObserver:self
+                       forKeyPath:@"name"
+                          options:0
+                          context:nil];
+        }
+        if ([playlist class] == [SPPlaylistFolder class]) {
+            [self loadPlaylists:[(SPPlaylistFolder *)playlist playlists]];
+        }
+    }
+    
+}
+
+-(void)logToWindow:(NSString *)msg; {    
+    NSAttributedString* attr = [[NSAttributedString alloc] initWithString:[msg stringByAppendingString:@"\n"]];
+    [[logWindow textStorage] appendAttributedString:attr];
+    [logWindow scrollRangeToVisible:NSMakeRange([[logWindow string] length], 0)];
 }
 
 - (IBAction)quitFromLoginSheet:(id)sender {
@@ -254,6 +252,132 @@
 				   alternateButton:@""
 					   otherButton:@""
 		 informativeTextWithFormat:@"This message was sent to you from the Spotify service."] runModal];
+}
+
+- (IBAction)sortPlaylistsAction:(id)sender {
+    do {
+        usleep(200);
+    } while (![playlistContainer isLoaded]);
+    [self sortPlaylists:[playlistContainer playlists] withParent:playlistContainer];
+    
+}
+
+- (void)sortPlaylists:(NSArray *)playlistItems withParent:(id)parent {
+    NSMutableArray *unsortedItems = [playlistItems mutableCopy];
+    
+    NSArray *sortedItems = [unsortedItems sortedArrayUsingComparator:
+                            ^NSComparisonResult(id obj1, id obj2) {
+                                
+                                NSString *itm1Name = nil;
+                                
+                                NSString *itm2Name = nil;
+                                
+                                if ([obj1 class] == [SPPlaylist class]) {
+                                    itm1Name = [(SPPlaylist *)obj1 name];
+                                    
+                                }
+                                
+                                if ([obj1 class] == [SPPlaylistFolder class]) {
+                                    itm1Name = [(SPPlaylistFolder *)obj1 name];
+                                    
+                                }
+                                
+                                if ([obj2 class] == [SPPlaylist class]) {
+                                    itm2Name = [(SPPlaylist *)obj2 name];
+                                    
+                                }
+                                if ([obj2 class] == [SPPlaylistFolder class]) {
+                                    itm2Name = [(SPPlaylistFolder *)obj2 name];
+                                    
+                                }
+                                
+                                return [itm1Name caseInsensitiveCompare:itm2Name];
+                            }];
+    
+    [self sortTheseTracksFrom:unsortedItems to:sortedItems atIndex:0 withParent:parent andChangesOccured:false];
+}
+
+
+- (void)sortTheseTracksFrom:(NSMutableArray *)unsortedItems to:(NSArray *)sortedItems atIndex:(NSUInteger)currentIndex withParent:(id)parent andChangesOccured:(Boolean) changesOccured {
+    Boolean isMoving = false;
+    
+    NSString *parentName = nil;
+    
+    if ([parent class] == [SPPlaylist class]) {
+        parentName = [(SPPlaylist *)parent name];
+        
+    }
+    
+    if ([parent class] == [SPPlaylistFolder class]) {
+        parentName = [(SPPlaylistFolder *)parent name];
+    }
+    
+    [self logToWindow:[NSString stringWithFormat:@"Sorting '%@'",parentName]];
+    
+    while ((!isMoving) && (currentIndex < [unsortedItems count])) {
+        
+        id item = [unsortedItems objectAtIndex:currentIndex];
+        NSUInteger newIndex = [sortedItems indexOfObject:item];
+        
+        NSString *itmName = nil;
+        
+        if ([item class] == [SPPlaylist class]) {
+            itmName = [(SPPlaylist *)item name];
+            
+        }
+        
+        if ([item class] == [SPPlaylistFolder class]) {
+            itmName = [(SPPlaylistFolder *)item name];
+        }
+        
+        
+        if (currentIndex != newIndex) {
+            NSLog(@"moving playlist from %zd to %zd",currentIndex, newIndex);
+            
+            __block NSUInteger currentIndexCopy = currentIndex;
+            __block NSMutableArray *unsortedItemsCopy = [unsortedItems copy];
+            NSUInteger newIndexCopy = newIndex+1;
+            
+            id parentCopy = nil;
+            if ([parent class] != [SPPlaylistContainer class]) {
+                parentCopy = parent;
+            }
+            
+            [self logToWindow:[NSString stringWithFormat:@"Moving playlist '%@' from %zd to %zd with parent '%@'",itmName, currentIndex, newIndex, parentName]];
+            [playlistContainer moveItem:item toIndex:newIndexCopy ofNewParent:parentCopy callback:^(NSError * error)
+             {
+                 [session flushCaches:nil];
+                 [playlistContainer startLoading];
+                 do {
+                     usleep(200);
+                 } while (![playlistContainer isLoaded]);
+                 
+                 unsortedItemsCopy = [[parent playlists] mutableCopy];
+                 
+                 currentIndexCopy++;
+                 [self sortTheseTracksFrom:unsortedItemsCopy to:sortedItems atIndex:currentIndexCopy withParent:parent andChangesOccured:true];
+             }];
+            
+            if (newIndex < [unsortedItems count]) {
+                [unsortedItems removeObjectAtIndex:currentIndex];
+                [unsortedItems insertObject:item atIndex:newIndex];
+            }
+            isMoving = true;
+        }
+        currentIndex++;
+    }
+    
+    if (currentIndex >= [unsortedItems count]) {
+        if (changesOccured) {
+            [self sortTheseTracksFrom:unsortedItems to:sortedItems atIndex:0 withParent:parent andChangesOccured:false]; //keep sorting until all changes have bubbled up
+        } else {
+            for (id item in unsortedItems) {
+                if ([item class] == [SPPlaylistFolder class]) {
+                    [self sortPlaylists:[(SPPlaylistFolder *)item playlists] withParent:item];
+                }
+            }
+        }
+    }
 }
 
 

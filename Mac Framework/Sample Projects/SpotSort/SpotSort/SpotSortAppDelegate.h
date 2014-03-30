@@ -48,9 +48,6 @@
     
     SPSession *session;
     SPPlaylistContainer *playlistContainer;
-    
-    
-    NSMutableString *logWindowString;
 }
 
 @property (weak) IBOutlet NSTextField *trackURLField;
@@ -60,7 +57,7 @@
 @property (unsafe_unretained) IBOutlet NSWindow *window;
 @property IBOutlet NSArrayController *playlistController;
 @property IBOutlet NSButton *sortButton;
-@property IBOutlet NSTextField *logWindow;
+@property IBOutlet NSTextView *logWindow;
 
 
 - (IBAction)login:(id)sender;
@@ -73,7 +70,5 @@
 @property (readwrite, strong) NSMutableArray *playlists;
 
 - (IBAction)sortTracks:(id)sender;
-
--(void)moveItem:(SPPlaylist *)playlist fromArray:(NSArray *)sortedArray toIndex:(NSUInteger *)index;
 
 @end

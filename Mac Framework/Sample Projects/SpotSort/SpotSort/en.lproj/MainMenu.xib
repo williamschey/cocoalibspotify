@@ -658,7 +658,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" id="533">
-                        <rect key="frame" x="641" y="467" width="96" height="32"/>
+                        <rect key="frame" x="641" y="437" width="96" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Sort" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="534">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -672,14 +672,14 @@ DQ
                         </connections>
                     </button>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="rlZ-xq-JLV">
-                        <rect key="frame" x="20" y="287" width="619" height="208"/>
+                        <rect key="frame" x="20" y="219" width="619" height="246"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="MXH-TN-eyp">
-                            <rect key="frame" x="1" y="17" width="617" height="190"/>
+                            <rect key="frame" x="1" y="17" width="617" height="228"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveColumns="NO" headerView="ELb-Yg-Gf3" id="JeS-b3-vr3">
-                                    <rect key="frame" x="0.0" y="0.0" width="617" height="190"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="617" height="228"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -723,21 +723,55 @@ DQ
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="jW1-fj-Yvx">
-                        <rect key="frame" x="20" y="10" width="721" height="269"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="hoO-52-Vxd">
+                    <button verticalHuggingPriority="750" id="JTn-7U-elD">
+                        <rect key="frame" x="14" y="468" width="733" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Sort Playlists" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qzD-l5-MBm">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="sortPlaylistsAction:" target="494" id="BcW-26-6qd"/>
+                        </connections>
+                    </button>
+                    <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="r0Z-mr-wvX">
+                        <rect key="frame" x="20" y="12" width="721" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <clipView key="contentView" id="k1c-Lg-ebu">
+                            <rect key="frame" x="1" y="1" width="719" height="197"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textView importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="GM1-Y2-yen">
+                                    <rect key="frame" x="0.0" y="0.0" width="719" height="197"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <size key="minSize" width="719" height="197"/>
+                                    <size key="maxSize" width="725" height="10000000"/>
+                                    <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <size key="minSize" width="719" height="197"/>
+                                    <size key="maxSize" width="725" height="10000000"/>
+                                </textView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="nAN-34-b36">
+                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="iGg-BA-qa0">
+                            <rect key="frame" x="704" y="1" width="16" height="197"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
                 </subviews>
             </view>
         </window>
         <customObject id="494" userLabel="Spot Sort App Delegate" customClass="SpotSortAppDelegate">
             <connections>
-                <outlet property="logWindow" destination="jW1-fj-Yvx" id="ruL-vS-8fs"/>
+                <outlet property="logWindow" destination="GM1-Y2-yen" id="OXf-A9-l4L"/>
                 <outlet property="loginSheet" destination="541" id="559"/>
                 <outlet property="passwordField" destination="547" id="561"/>
                 <outlet property="playlistController" destination="AI9-RO-CJb" id="S6f-ha-dFj"/>
